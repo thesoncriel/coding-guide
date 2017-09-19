@@ -3,31 +3,31 @@
 ## 1. 명명 규칙
 규칙 | 식별자 유형 | 예시
 -----|-------------|-----
-Camel Case | Variables  Methods | iCount  myHouse
-Upper Camel (Pascal) Case | Classes  Methods (C#) | ProStyle  HongKong
-Upper Case | Constants | IMAGE_TRAIL  YOUR_DOGGY
-Lower Case | UI Controller Instance  ID  Attribute in HTML  Parameters  Table Fields | button_show  list_ducks   item_name  play_count
-Dash Case | CSS Classes | tab-wrap  blue-planet
+Camel Case | Variables<br/>Methods | iCount<br/>myHouse
+Upper Camel (Pascal) Case | Classes<br/>Methods (C#) | ProStyle<br/>HongKong
+Upper Case | Constants | IMAGE_TRAIL<br/>YOUR_DOGGY
+Lower Case | UI Controller Instance<br/>ID<br/>Attribute in HTML<br/>Parameters<br/>Table Fields | button_show<br/>list_ducks<br/>item_name<br/>play_count
+Dash Case | CSS Classes | tab-wrap<br/>blue-planet
 
 ### 1.1. 변수명
 기본적으로 Hungarian Notation을 기반으로 작성 한다.
 
 Data Type | Metadata Rule | Examples
 ----------|---------------|---------
-Integer | i  j (nesting 'for' only)  index  count | iCount  iValue  iPrice
-Long | l (L 의 소문자) | lBigNumber  Double | d  dbl | dRate  dHeight  dWidth
+Integer | i<br/>j (nesting 'for' only)<br/>index<br/>count | iCount<br/>iValue<br/>iPrice
+Long | l (L 의 소문자) | lBigNumber<br/>Double | d<br/>dbl | dRate<br/>dHeight<br/>dWidth
 Float | f | fResult
-Boolean | b  bool  is  has | isDeleted  bReturnValue  hasFruit
+Boolean | b<br/>bool<br/>is<br/>has | isDeleted<br/>bReturnValue<br/>hasFruit
 Char | ch | chWord
-String | s  str  name | sName  sHouse
-Array | a  arr | aHistory  aYears
-Map  HashMap  Dictionary (C#) | m | mHost  mParameters  dicData
+String | s<br/>str<br/>name | sName<br/>sHouse
+Array | a<br/>arr | aHistory<br/>aYears
+Map<br/>HashMap<br/>Dictionary (C#) | m | mHost<br/>mParameters<br/>dicData
 List | list | listPersnalData
-Object | o  obj | oMetaData
+Object | o<br/>obj | oMetaData
 DOM Element | elem | elemBody
 DOM Document | doc | docNovel
-jQuery Object (JS) | jq  $ (php 에서는 사용에 유의) | jqNavigation  $south
+jQuery Object (JS) | jq<br/>$ (php 에서는 사용에 유의) | jqNavigation<br/>$south
 Function (JS) | fn | fnCalcProducts
 Delegate (C#) | dele | deleClickEvent
-Date | date  dt | dateNow  dateYesterday  dtTomorrow
-Regex | regex | regex  regexNamePattern
+Date | date<br/>dt | dateNow<br/>dateYesterday<br/>dtTomorrow
+Regex | regex | regex<br/>regexNamePattern
