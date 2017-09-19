@@ -45,8 +45,7 @@ check | 객체의 특정 상태값을 갱신할 때 | checkCount
 on | 특정 이벤트 발동 시 수행되는 이벤트 메서드 | onPageClick<br/>onSelectedChange
 remove | 객체 내 특정 데이터 일부를 삭제 할 때 | removeFriend
 clear | 객체 내 특정 데이터 모두를 삭제 할 때 | clearSolarSystems
-is | 객체 내 특정 값의 상태를 알아볼 때 | isHuman
-has | ※ 반환 타입은 반드시 Boolean 이어야 한다. | hasAnyPens<br/>disabled<br/>enabled<br/>checked
+is<br/>has | 객체 내 특정 값의 상태를 알아볼 때<br/> | isHuman<br/>hasAnyPens<br/>disabled<br/>enabled<br/>checked
 create | 어떤 객체를 생성할 때.<br/>반드시 그 객체를 반환 해야함.<br/>※ 때에 따라 생성자 역할을 맡을 수도 있음 (ex: Delphi, Factory Pattern) | createProject<br/>createAnimals
 make | 무언가를 만든다. | makeTags
 generate | 객체 내부일 수도, 외부일 수도 있으나 그것이 반드시 객체일 필요는 없다.<br/>반환 타입은 그 결과물을 줄 수도, 만들어진 결과 상태에 대한 Boolean으로 대신할 수 있다. | makeRadar
