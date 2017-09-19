@@ -11,6 +11,7 @@ Dash Case | CSS Classes | tab-wrap  blue-planet
 
 ### 1.1. 변수명
 기본적으로 Hungarian Notation을 기반으로 작성 한다.
+
 Data Type | Metadata Rule | Examples
 ----------|---------------|---------
 Integer | i  j (nesting 'for' only)  index  count | iCount  iValue  iPrice
