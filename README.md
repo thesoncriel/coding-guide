@@ -58,7 +58,7 @@ to | 현재 객체, 혹은 객체 내부의 특정 자료를 다른 형태로 �
 apply | 객체가 가진 데이터를 적용시켜 외부, 혹은 내부적으로 그 현황을 반영하고자 할 때 | apply<br/>applyDayInfo<br/>applyIcecreams
 show | 객체를 화면상에 보여주거나, 그 객체의 특정 내용을 노출 시킬 때 | show<br/>showPopup<br/>showContainer
 hide | 객체를 화면상에서 없애거나, 그 객체의 특정 내용에 대한 노출을 제한 시킬 때 | hide<br/>hideView<br/>hidePersnality
-enable | 화면상에 보이는 객체를 사용할 수 있도록 활성화/비활성화 시킬 때.<br/>disable | enable/disable 둘 중 하나만 쓰인다면 Boolean 형 인수를 받아들여 그 값에 따른 행위를 취한다. | enable<br/>enableControls<br/>disable<br/>disableButton
+enable<br/>disable | 화면상에 보이는 객체를 사용할 수 있도록 활성화/비활성화 시킬 때.<br/>enable/disable 둘 중 하나만 쓰인다면 Boolean 형 인수를 받아들여 그 값에 따른 행위를 취한다. | enable<br/>enableControls<br/><br/>disableButton
 merge | 데이터를 병합 시킨다.<br/> | mergeYearData<br/>mergePhoneList
 find | 객체 내 데이터에서 인수 조건에 맞는 데이터를 찾아서 반환 한다. | findMyData<br/>findSubjectName
 search | 검색한다.<br/> | search<br/>searchHostData<br/>searchList
