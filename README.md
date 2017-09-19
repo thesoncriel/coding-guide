@@ -65,3 +65,137 @@ search | 검색한다.<br/> | search<br/>searchHostData<br/>searchList
 init | Initialize. 초기화를 수행 한다.<br/>초기화 할 내용이 많을경우 다수의 초기화 함수 수행 내용을 포함할 수 있다.<br/>기본적으로 수행 후 자기자신을 반환 한다. | init<br/>initEvent<br/>initSubObject<br/>initProperties
 extract | 객체 내 특정 데이터나 인수로 받아들여지는 데이터에서 무언가를 추출 해 낼 때 | extractMyData<br/>extractCompanyList
 
+## 2. 소스코드 규칙
+### 2.1. 연산자
+#### 2.1.1. 산술 연산자
+연산자와 피연산자는 항상 띄워준다.
+
+```javascript
+// js
+/*wrong*/
+var iValue=1*iCht;
+
+/*good*/
+var iValue = 1 * iCnt;
+```
+
+```java
+/*good*/
+// java, C#
+int iValue = 1 * iCnt;
+```
+
+```php
+// php
+$iValue = 1 * $iCnt;
+```
+
+#### 2.1.2. 비교 연산자
+JS: 비교 연산자 중 동일비교(Equality)는 반드시 =가 3개가 들어가는 Strict Equality 를 사용하도록 한다.  
+JS는 약한타입(Weak Type) 언어 특성상 자동 형변환이 이뤄지기에 제대로된 타입 및 값 검사를 할 필요가 있다.  
+
+```javascript
+/* js */
+
+// wrong
+var isTrue = (hasFood == hasBread);
+// good
+var isTrue = (hasFood === hasBread);
+```
+
+#### 2.1.3. 문자열 연산
+문자열을 합치는 연산자와 피연산자 사이도 항상 띄워준다.
+```javascript
+/* wrong */
+var sTemp="nick name: "+sName;
+
+/* good */
+var sTemp = "nick name: " + sName;
+
+// php
+$sTemp = "nick name: " . $sName;
+```
+
+#### 2.1.4. 조합
+연산자 조합 때는 의도하는 내용 순서를 지키기 위해 반드시 소괄호 ()를 감싸준다. 상황에 따라 연산 결과가 의도치 않게 달라질 수 있으므로 반드시 지킨다.
+```javascript
+// wrong
+if ( iCount >= iAge != iYear % 5 == 0 && iMonth <= 8 ) {
+    
+}
+// good
+if ( ( iCount >= iAge ) != 
+     ( ( iYear % 5 ) == 0 ) && 
+     ( iMonth <= 8 ) ) {
+    
+}
+```
+
+### 2.2. Coding Style
+#### 2.2.1 들여쓰기
+들여쓰기 한번은 기본적으로 4-space 를 기준으로 한다.  
+(만약 IDE 나 Editor 의 기본 들여쓰기 길이가 다르다면 별도로 설정 한다.)  
+
+java, js 등은 기본적으로 K&R 스타일로 작성 한다.
+```javascript
+// class
+public class DongDong{
+    private int age = 0;
+    
+    public int getAge(){
+        return this.age;
+    }
+}
+
+// conditionals
+if ( iVal1 == iVal2 ){
+    doSomeProcess();
+}
+```
+C#은 BSD 스타일로 작성 한다.
+```cs
+// class
+public class DongDong
+{
+    private int age = 0;
+    
+    public int getAge()
+    {
+        return this.age;
+    }
+}
+
+// conditionals
+if ( iVal1 == iVal2 )
+{
+    doSomeProcess();
+}
+```
+
+#### 2.2.2 문자열 (String)
+문자열은 반드시 "" (Double Quotation) 으로 묶는다.  
+JS나 PHP는 예외적으로 Tag 작성시에만 '' (Single Quotation)을 허용한다.  
+(HTML, XML 태그 등은 속성 삽입 시 ""를 입력하기 더 좋기 때문.)
+```javascript
+// wrong
+var sTmp = 'abcdefg';
+
+$sTmp = 'abcdefg';
+
+// good
+var sTmp = "abcdefg";
+
+$sTmp = "abcdefg";
+
+// tag
+var sTag = '<div class="header">Documnents</div>';
+```
+> HTML 태그의 속성은 어느 상황에서든지 반드시 큰따옴표로 묶어야 한다.
+
+ES6 이상을 이용 할 경우, 문자열 붙이기가 많아질 경우, 혹은 다중 라인 (Multi Line)으로 출력 할 일이 있다면 템플릿 문자열 (Template Strings)을 이용한다.
+```javascript
+var str = `hi there~
+I'm fine thank you.
+My Name is ${name}.`;
+```
+
