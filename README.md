@@ -37,6 +37,7 @@ Regexp | regex | regex<br/>regexNamePattern
 > php는 Array 사용 시 순서 있는(indexed) 것은 Array 취급, key-value pair 의 연관 있는(Associative) 것은 Map 취급 한다.
 
 ### 1.2. 메서드명 규칙
+#### 접미사, 동사 (Prefix, Verb)
 Rules | Description | Examples
 ------|-------------|---------
 get | 특정 값을 받아올 때 | getName<br/>getAge
