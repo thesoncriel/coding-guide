@@ -825,3 +825,5 @@ var g_result = (function(){
     // do something..
 })();
 ```
+
+## 코딩 가이드는 계속 작성 중입니다~~ :)
