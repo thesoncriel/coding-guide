@@ -33,7 +33,7 @@ Date | date<br/>dt | dateNow<br/>dateYesterday<br/>dtTomorrow
 Regex | regex | regex<br/>regexNamePattern
 
 ### 1.2. 메서드명 규칙
-Rules | Discription | Examples
+Rules | Description | Examples
 ------|-------------|---------
 get | 특정 값을 받아올 때 | getName<br/>getAge
 set | 특정 값을 설정할 때 | setName<br/>setAge
