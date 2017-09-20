@@ -755,7 +755,7 @@ function int sumData( Map mData ){
 
 본인이 전역변수나 static을 너무 남발하는 것이 아닌지 되새겨본 뒤, 그 정도가 심하다면 본인의 코딩 습관과 로직 제작 패턴을 달리 할 필요가 있다.
 
-#### 3.1.1. 해법: JavaScript
+#### 3.1.1. Solution: JavaScript
 JS에서는 특히 전역변수에 대한 문제가 심각한데, 자체적으로 지원되는 Namespace나 Block Scope 개념이 없기 때문이다. 
 오직 Function Scope 밖에 존재하지 않으며 이에 대한 해결 법이 다양하게 존재한다.
 ```javascript
@@ -826,4 +826,139 @@ var g_result = (function(){
 })();
 ```
 
-## 코딩 가이드는 계속 작성 중입니다~~ :)
+#### 3.1.2. Solution: Java (or C#)
+Java는 특성상 로직을 Class 기반으로 만들어야 하는데, 
+이 때문에 Main Class 에 불필요한 멤버 변수를 수없이 배치 해 놓거나 특정 Class를 만들어 놓고 
+그 안의 멤버 변수를 public static 으로 도배를 하는 형식으로 전역변수 활용을 꽤하기도 한다.
+```java
+/***** java *****/
+//wrong
+package project;
+
+class Main{
+    public static double value = 0.1;
+    public static int age = 20;
+    public static String name = "TheSON";
+    
+    public void run(){
+        // blah blah ...
+    }
+}
+
+public class Controller{
+    public void execute(){
+        double iValue = Main.value;
+        
+        // Logic ...
+    }
+}
+```
+Java나 C#같은 OOP가 강조된 언어는 이러한 전역변수 문제와 더불어 여러가지 다양한 해법들을 제시 하는데, 
+그런 해법중 하나가 바로 디자인 패턴(Design Pattern)이다. 
+물론 꼭 전역변수 때문에 디자인 패턴이 생겨난 것은 아니다. 
+단지 디자인 패턴중엔 이런 문제점의 해결책이 포함 되어 있다는 것이다.  
+(물론 이게 Java나 C#만 적용시키라고 존재하는 것은 결코 아니다.)
+
+##### Singleton Pattern
+다른 곳에서 중복적으로 사용되나 하나만 만들어서 써도 될 경우 이용된다. 개념을 설명하자면, 내부적으로 static을 가지며 이 것은 외부에서 직접적으로 참조할 수 없다. 
+다만 getInstance와 같은 외부참조 메서드만을 가지며 이것은 static에 선언된 Instance Object를 반환시키는 역할을 한다.
+
+즉 싱글톤 패턴을 가지는 객체는 스스로 딱1번만 Instance를 하며 그 자체를 외부에서는 절대 간섭하지 못한다. 
+만약 간섭이 가능하다면 그 자체는 이미 싱글통 패턴이 아니다.
+
+주의점은 Multi-Thread 환경일 경우 Synchronize 와 Multi-Access 의 문제를 가지므로 이에 대한 적절한 해결책이 필요하다. 
+메서드로만 이뤄져 있다면 상관 없겠으나 자체적인 멤버 속성을 가졌다면 Thread-Safe 하게 객체 설계를 할 필요성이 있다.
+```java
+/***** java *****/
+// good
+
+// class
+public class ValueMaker{
+    private static ValueMaker my = null;
+    
+    private double value;
+    
+    private ValueMaker(){
+        this.value = 0.1;
+    }
+    
+    public static ValueMaker getInstance(){
+        if (ValueMaker.my == null){
+            ValueMaker.my = new ValueMaker();
+        }
+        
+        return ValueMaker.my;
+    }
+    
+    public double getValue(){
+        return this.value;
+    }
+}
+
+// execution
+class Main{
+    public void run(){
+        double dValue = ValueMaker.getInstance().getValue();
+        
+        // Logic ...
+    }
+}
+```
+##### Factory Pattern
+Global 형태로 필요한 기능이 담긴 객체를 미리 정의하고 필요할 때 마다 불러서 쓰는 패턴이다.
+
+일반적으로 Abstract Class 에 static method 로 create를 만들고 이 메서드에 특정 인수를 넣어줌으로써 
+그에 대응되는 Instance Object를 얻는 것이 특징이다. 이 때 얻게되는 Object는 Factory 역할을 하는 Abstract class를 상속받거나 
+interface를 구현한 것으로 만들어지는 것이 보통이다.
+```java
+/***** java *****/
+// good
+
+// abstract class or interface
+public interface IValueProvider{
+    public double getValue();
+}
+
+// factory class
+public class ValueProviderFactory{
+    private class DoubleValueProvider implements IValueProvider{{
+        private double value = 0.1;
+        
+        @override
+        public double getValue(){
+            return this.value;
+        }
+    }
+    
+    private class PriceValueProvider implements IValueProvider{{
+        private double value = 10000.101;
+        
+        @override
+        public double getValue(){
+            return this.value;
+        }
+    }
+    
+    public static IValueProvider create(String name){
+        if ( "double".equals( name ) == true ){
+            return new DoubleValueProvider();
+        }
+        if ( "price".equals( name ) == true ){
+            return new PriceValueProvider();
+        }
+        
+        return null;
+    }
+}
+
+// execution
+class Main{
+    public void run(){
+        double dValue = ValueProviderFactory.create( "double" ).getValue();
+        
+        // Logic ...
+    }
+}
+```
+
+## 코딩 가이드는 규칙이 떠올려 지는대로  계속 작성 합니다 :)
