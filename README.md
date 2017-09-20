@@ -15,22 +15,26 @@ Dash Case | CSS Classes | tab-wrap<br/>blue-planet
 Data Type | Metadata Rule | Examples
 ----------|---------------|---------
 Integer | i<br/>j (nesting 'for' only)<br/>index<br/>count | iCount<br/>iValue<br/>iPrice
-Long | l (L 의 소문자) | lBigNumber<br/>Double | d<br/>dbl | dRate<br/>dHeight<br/>dWidth
+Long | l (L 의 소문자) | lBigNumber
+Double | d<br/>dbl | dRate<br/>dHeight<br/>dWidth
 Float | f | fResult
 Boolean | b<br/>bool<br/>is<br/>has | isDeleted<br/>bReturnValue<br/>hasFruit
 Char | ch | chWord
 String | s<br/>str<br/>name | sName<br/>sHouse
-Array | a<br/>arr | aHistory<br/>aYears
+StringBuilder | sb | sbNations
+Array | a<br/>arr | aHistory<br/>arrYears
 Map<br/>HashMap<br/>Dictionary (C#) | m | mHost<br/>mParameters<br/>dicData
 List | list | listPersnalData
 Object | o<br/>obj | oMetaData
 DOM Element | elem | elemBody
 DOM Document | doc | docNovel
 jQuery Object (JS) | jq<br/>$ (php 에서는 사용에 유의) | jqNavigation<br/>$south
-Function (JS) | fn | fnCalcProducts
+Function (JS) | fn<br/>callback | fnCalcProducts
 Delegate (C#) | dele | deleClickEvent
 Date | date<br/>dt | dateNow<br/>dateYesterday<br/>dtTomorrow
-Regex | regex | regex<br/>regexNamePattern
+Regexp | regex | regex<br/>regexNamePattern
+
+> php는 Array 사용 시 순서 있는(indexed) 것은 Array 취급, key-value pair 의 연관 있는(Associative) 것은 Map 취급 한다.
 
 ### 1.2. 메서드명 규칙
 Rules | Description | Examples
