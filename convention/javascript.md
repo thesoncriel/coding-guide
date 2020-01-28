@@ -7,20 +7,9 @@
 문서를 읽기 전 미리 확인하고 알아두면 좋은 페이지들을 링크 해 두었다.
 
   * [JavaScript Garden](http://bonsaiden.github.io/JavaScript-Garden/ko/)
+    - 웹프론트엔드 개발 시 기본적으로 지켜야 할 내용들이 잘 정리되어 있다.
   * [자바스크립트 최적화: 응답성 좋은 인터페이스](https://jicjjang.github.io/2017/05/19/javascript-optimize-6/)
-      * setTimeout vs setInterval 에서 setTimeout 만 써야하는 이유에 대하여 볼 것
-
-### 생각해 보기
-
-  * bind, apply, call 의 차이점은 ?
-  * typeof 와 instanceof 를 적절히 사용하는 방법은?
-  * JS(ES5) 는 scope 가 몇 종류나 될까?
-  * DTO 역할을 맡은 객체 내 key value pair 를 반복문으로 확인하는 방법은 ?
-  * 확인한 내용과 eslint 혹은 tslint 와의 연관성은?
-
-### 꼭 지킵시다
-
-    * 코드 작성 시 tab space 는 공백 2글자로 사용한다.
+    - setTimeout vs setInterval 에서 setTimeout 만 써야하는 이유에 대하여 볼 것
 
 ## Polyfill
 모든 웹브라우저가 ECMAScript5 (이하 ES5) 혹은 ECMAScript6 (이하 ES6) 내용을 지원하지는 않는다.
