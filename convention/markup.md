@@ -435,12 +435,12 @@ form 요소의 onSubmit 이벤트가 처리되는 자세한 내역은 각 framew
 ```
 
 ## Icons
-이미지 태그는 <i> 태그로 통일하며, <i> 태그는 반드시 아이콘 관련 내용이어야만 한다.
+이미지 태그는 `<i>` 태그로 통일하며, `<i>` 태그는 반드시 아이콘 관련 내용이어야만 한다.
 
 태그로 아이콘을 적용시키는건 아래와 같이 크게 2가지 이다.
 
-  1. 이미 만들어진 CSS Sprite 를 적용
-  2. 외부 icon font를 이용할 때 (ex: font awesome 등)
+1. 이미 만들어진 CSS Sprite 를 적용
+2. 외부 icon font를 이용할 때 (ex: font awesome 등)
 
 ```html
 <!-- CSS Sprite 이용 -->

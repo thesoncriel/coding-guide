@@ -139,7 +139,7 @@ interface Props {
   onClick: () => void;
 }
 
-const Comp:FC<Props> = props => (
+const Comp: FC<Props> = props => (
   <>
     <div>
       {props.name} : {props.age}
@@ -336,7 +336,7 @@ export const InputText: FC<InputComponentProps> = props => {
  */
 export interface CheckedChangeArgs {
   /**
-   * 컴포넌트의 일음.
+   * 컴포넌트의 이름.
    */
   name: string;
   /**
@@ -366,7 +366,13 @@ props 내 options 를 구성하는 모델은 다음과 같다.
 
 ```ts
 export interface SelectOption {
+  /**
+   * 출력될 문자열
+   */
   text: string;
+  /**
+   * 선택됐을 때 이용될 값
+   */
   value: string;
 }
 ```
