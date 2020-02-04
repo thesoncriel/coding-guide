@@ -48,6 +48,49 @@ interface FnArgs {
 const fn = (args: FnArgs) => args.min + args.max;
 ```
 
+## 모델 인터페이스 작성
+Model 이용 시 구조체(struct)대용으로 인터페이스로 선언하여 자주 이용된다.
+
+이 때 아래와 같은 Sub Object 는 반드시 별도로 interface를 명시하여 사용한다.
+
+```ts
+// wrong
+interface Model {
+  items: Array<{ age: number, name: string }>;
+  user: {
+    id: string;
+    name: string;
+    info: {
+      address: string;
+      school?: string;
+    };
+  };
+}
+```
+
+```ts
+// good
+interface Item {
+  age: number;
+  name: string;
+}
+
+interface UserInfo {
+  address: string;
+  school?: string;
+}
+
+interface User {
+  id: string;
+  name: string;
+  info: UserInfo;
+}
+
+interface Model {
+  items: Item[];
+  user: User;
+}
+```
 
 ## API Service Rules
 
