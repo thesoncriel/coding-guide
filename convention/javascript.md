@@ -6,12 +6,13 @@
 
 문서를 읽기 전 미리 확인하고 알아두면 좋은 페이지들을 링크 해 두었다.
 
-  * [JavaScript Garden](http://bonsaiden.github.io/JavaScript-Garden/ko/)
-    - 웹프론트엔드 개발 시 기본적으로 지켜야 할 내용들이 잘 정리되어 있다.
-  * [자바스크립트 최적화: 응답성 좋은 인터페이스](https://jicjjang.github.io/2017/05/19/javascript-optimize-6/)
-    - setTimeout vs setInterval 에서 setTimeout 만 써야하는 이유에 대하여 볼 것
+- [JavaScript Garden](http://bonsaiden.github.io/JavaScript-Garden/ko/)
+  - 웹프론트엔드 개발 시 기본적으로 지켜야 할 내용들이 잘 정리되어 있다.
+- [자바스크립트 최적화: 응답성 좋은 인터페이스](https://jicjjang.github.io/2017/05/19/javascript-optimize-6/)
+  - setTimeout vs setInterval 에서 setTimeout 만 써야하는 이유에 대하여 볼 것
 
 ## Polyfill
+
 모든 웹브라우저가 ECMAScript5 (이하 ES5) 혹은 ECMAScript6 (이하 ES6) 내용을 지원하지는 않는다.
 
 과거에는 모든 polyfill 코드를 넣고, prototype 을 검사하여 없으면 해당 기능을 확장(extend) 하였으나, 이럴 경우 사용자에게 전달되는 bundle 크기가 늘어나는 단점이 있어, 필요한 것만 선택적으로 추가 하게 되었다.
@@ -22,7 +23,10 @@
 <html>
   <head></head>
   <body>
-    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default%2CString.prototype.padStart"></script>
+    <script
+      crossorigin="anonymous"
+      src="https://polyfill.io/v3/polyfill.min.js?features=default%2CString.prototype.padStart"
+    ></script>
   </body>
 </html>
 ```
@@ -35,8 +39,8 @@ polyfill.io 는 User-Agent 정보를 바탕으로 웹브라우저가 지원하�
 
 그 것을 체크하여 전달하는 방법에 대해서는 다음 블로그 글을 참고 한다.
 
-  * [Polyfill을 사용하는 보다 쉬운 방법](http://hacks.mozilla.or.kr/2014/12/an-easier-way-of-using-polyfills/)
-  * [Smarter polyfill loading with polyfill.io](https://gomakethings.com/smarter-polyfill-loading-with-polyfill-io/)
+- [Polyfill을 사용하는 보다 쉬운 방법](http://hacks.mozilla.or.kr/2014/12/an-easier-way-of-using-polyfills/)
+- [Smarter polyfill loading with polyfill.io](https://gomakethings.com/smarter-polyfill-loading-with-polyfill-io/)
 
 ## Function Size
 
@@ -50,7 +54,7 @@ vscode 를 맥북 메인 화면에 옮기고 화면 확대/축소를 하지 않�
 
 아래는 관련된 내용에 대해 답변이 들어 온 스택오버플로우 질문이다.
 
-  * [What Should be the maximum length of a function](https://softwareengineering.stackexchange.com/questions/27798/what-should-be-the-maximum-length-of-a-function)
+- [What Should be the maximum length of a function](https://softwareengineering.stackexchange.com/questions/27798/what-should-be-the-maximum-length-of-a-function)
 
 ## Immutable
 
@@ -60,9 +64,9 @@ JS SW 내 모든 객체(Object)는 참조형(Reference Type) 으로 동작되므
 
 따라서 아래와 같은 경우, 객체를 복사 하여 전달 해야 한다.
 
-  * 현재 클래스의 property 들을 참고 하기 위해 해당 인스턴스를 통째로 넘길 때
-  * effect module 을 통해 데이터가 변경 될 때
-  * 이벤트나 콜백으로 자기 자신의 데이터를 전달 할 때
+- 현재 클래스의 property 들을 참고 하기 위해 해당 인스턴스를 통째로 넘길 때
+- effect module 을 통해 데이터가 변경 될 때
+- 이벤트나 콜백으로 자기 자신의 데이터를 전달 할 때
 
 이 때는 필요한 property 만 묶어서 객체 (혹은 인터페이스)로 넘긴다.
 
@@ -72,12 +76,12 @@ JS SW 내 모든 객체(Object)는 참조형(Reference Type) 으로 동작되므
 
 이 때 어느 것을 쓸지는 논란의 여지가 있으니 아래 내용을 먼저 확인 하도록 한다.
 
-  * [MDN - spread 문법](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
-  * [Object.assign vs Object Spread (영문)](https://thecodebarbarian.com/object-assign-vs-object-spread.html)
+- [MDN - spread 문법](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+- [Object.assign vs Object Spread (영문)](https://thecodebarbarian.com/object-assign-vs-object-spread.html)
 
 요약하자면
 
-  * Object.assign 은 setter property 에 대한 trigger 를 일으킬 수 있다.
+- Object.assign 은 setter property 에 대한 trigger 를 일으킬 수 있다.
 
 수행 속도등을 검증한 내용도 있는데 속도 및 문법 간소화 측면에 있어 객체 복사엔 spread 문법을 권장한다.
 
@@ -88,29 +92,30 @@ JS SW 내 모든 객체(Object)는 참조형(Reference Type) 으로 동작되므
 ```js
 // 일반적인 불변성을 위해선 권장하지 않음
 const obj = {
-    _haha: '',
-    set haha(val) {
-      console.log('set haha', val);
-      this._haha = val;
-    },
-    get haha() {
-      return this._haha;
-    }
-  };
+  _haha: "",
+  set haha(val) {
+    console.log("set haha", val);
+    this._haha = val;
+  },
+  get haha() {
+    return this._haha;
+  }
+};
 
-  obj.haha = '하하하!';
+obj.haha = "하하하!";
 
-  console.log(obj.haha); // 하하하!
+console.log(obj.haha); // 하하하!
 
-  const obj2 = Object.assign(obj, { haha: '웃자!'} );
+const obj2 = Object.assign(obj, { haha: "웃자!" });
 
-  console.log(obj2.haha); // 웃자!
-  console.log(obj === obj2); // true
+console.log(obj2.haha); // 웃자!
+console.log(obj === obj2); // true
 ```
 
 ## 반복문 안에서의 비동기 및 클로저
 
 반복문을 사용하면서 그 안의 index 를 매 반복마다 다르게 쓰려고 다음과 같이 작성하는 경우가 있다.
+
 ```js
 for (var i = 0; i < 10; i++) {
   setTimeout(() => console.log(i), 200);
@@ -121,11 +126,12 @@ for (var i = 0; i < 10; i++) {
 
 ```js
 for (var i = 0; i < 10; i++) {
-  (idx =>  setTimeout(() => console.log(idx), 200))(i);
+  (idx => setTimeout(() => console.log(idx), 200))(i);
 }
 ```
 
 하지만 이럴 경우엔 아래와 같이 함수를 별도로 만들어서 사용한다.
+
 ```js
 function log(i) {
   setTimeout(() => console.log(i), 200);
@@ -137,8 +143,9 @@ for (var i = 0; i < 10; i++) {
 ```
 
 만약 반복문의 주체가 Array 라면 아래와 같이 forEach 를 이용하고, 각 요소의 내용을 변경 할 때는 map 을 이용한다.
+
 ```js
-const arr = [1,2,3,4,5,6,7,8,9,10];
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function log(i) {
   setTimeout(() => console.log(i), 200);
@@ -159,3 +166,30 @@ const aRemake = arr.map((item, idx) => item * 2);
 위와 같이 반복문의 주체가 HashMap 혹은 Array 와 같은 Collection 일 경우, JS API 에서 기본적으로 제공되는 기능을 적극 활용하여 작성토록 한다.
 
 그 것이 성능적으로 좋을 뿐만 아니라 코드 가독성도 높아진다.
+
+## 즉시 실행 함수 사용 금지
+
+일반적으로 외부와 단절된 별도의 scope를 생성하기위해 쓰이는 즉시 실행 함수(Immediately invoked Function)는 사용하지 않는다.
+
+만약 쓸 일이 있다면 아래와 같이 별도 함수를 만들어 이용한다.
+
+```js
+// do not this
+function example(val1, val2) {
+  const result = (function() {
+    return (val1 + val2) / 2;
+  })();
+
+  console.log(result);
+}
+
+// good~!!
+function average(val1, val2) {
+  return (val1 + val2) / 2;
+}
+function example(val1, val2) {
+  const result = average(val1, val2);
+
+  console.log(result);
+}
+```
