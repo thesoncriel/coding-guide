@@ -10,7 +10,7 @@
 
 ### 타입 및 접두어/접미어별 정리
 
-사용 시 특별히 언급이 없다면 [Hungarian-notation](https://ko.wikipedia.org/wiki/%ED%97%9D%EA%B0%80%EB%A6%AC%EC%95%88_%ED%91%9C%EA%B8%B0%EB%B2%95) 으로 작성한다.
+사용 시 특별히 언급이 없다면 타입이 접두어로 명시된 [Hungarian-notation](https://ko.wikipedia.org/wiki/%ED%97%9D%EA%B0%80%EB%A6%AC%EC%95%88_%ED%91%9C%EA%B8%B0%EB%B2%95) 으로 작성한다.
 
 #### Primitive Type
 
@@ -24,16 +24,29 @@
 | seq                                                     | number<br/>(integer) | 시퀀스 (Sequence). 혹은 순번. | seq                           | 특정 목록의 순번을 의미한다. 1부터 시작된다.                                        |
 | cnt                                                     | number<br/>(integer) | 카운트 (Count)                | cntPayment<br/>cntCustomer    | 특정 로직에 의하여 횟수를 셀 때 사용한다.                                           |
 | d<br/>dbl                                               | number<br/>(double)  | 실수 (Floating Number)        | dPrice<br/>dTall              | 실수만 넣어준다.                                                                    |
-| b<br/>is<br/>has<br/>checked<br/>disabled<br/>activated | boolean              | 불리언. true/false 만 가능    | bRet<br/>isChild<br/>hasMoney |                                                                                     |
+| b<br/>is<br/>has<br/>checked<br/>disabled<br/>activated | boolean              | 불리언. true/false 만 가능    | bRet<br/>isChild<br/>hasMoney | 영문 과거형으로 상태를 전달하는 목적이면 모두 가능.                                 |
 | loading                                                 | boolean              | 데이터 호출/변환중일 때.      | loading                       | 사용자를 기다리게 하는 모든 상황에 대해서 사용 가능.                                |
+
+```ts
+// 객체의 key 순환 예제
+const mData: HashMap<number> = { a: 10, b: 20, c: 30 };
+
+// key-value object 에서 key 를 사용하는 부분을 주목.
+const sum = Object.keys(mData).reduce((sum, key) => mData[key] + sum, 0);
+```
+
+```ts
+// 배열 순회를 통한 idx 이용 예제
+[1, 2, 3, 4, 5].forEach((val, idx) => console.log(`${idx} - ${val}`));
+```
 
 #### Collection Type
 
-| prefix              | type                                                    | desc.                                                | examples                    | note                                                          |
-| :------------------ | :------------------------------------------------------ | :--------------------------------------------------- | :-------------------------- | :------------------------------------------------------------ |
-| a<br/>arr<br/>items | Array&lt;T&gt;<br/>T[]                                  | 배열 혹은 목록(List)                                 | aList<br/>arrData<br/>items | 반드시 Generic 으로 타입을 명시 해준다.                       |
-| m                   | KV Object<br/>HashMap&lt;T&gt;<br/>{ [key: string]: T } | 해시맵으로 쓰여지는 객체.                            | mRet<br/>mParams            | Generic 명시 필수.<br/>또 한 명시된 타입만을 쓰도록 유의한다. |
-| iter                | Iterator<br/>Iterable                                   | 반복자 객체. Generator 를 통해 만들어진 객체도 포함. | iterCollection<br/>iterData |                                                               |
+| prefix              | type                                                    | desc.                                                | examples                    | note                                                                                                               |
+| :------------------ | :------------------------------------------------------ | :--------------------------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| a<br/>arr<br/>items | Array&lt;T&gt;<br/>T[]                                  | 배열 혹은 목록(List)                                 | aList<br/>arrData<br/>items | 반드시 Generic 으로 타입을 명시 해준다.<br/>변수명이 타입명을 기반으로 복수의 형태를 가지면 배열로 간주할 수 있다. |
+| m                   | KV Object<br/>HashMap&lt;T&gt;<br/>{ [key: string]: T } | 해시맵으로 쓰여지는 객체.                            | mRet<br/>mParams            | Generic 명시 필수.<br/>또 한 명시된 타입만을 쓰도록 유의한다.                                                      |
+| iter                | Iterator<br/>Iterable                                   | 반복자 객체. Generator 를 통해 만들어진 객체도 포함. | iterCollection<br/>iterData |                                                                                                                    |
 
 #### Object Type
 
@@ -100,24 +113,20 @@
 
 SC작성 시 아래와 같은 명명 규칙을 따른다.
 
-| prefix                                         | suffix | type                       | desc.                      | examples               | note                                                          |
-| :--------------------------------------------- | :----- | :------------------------- | :------------------------- | :--------------------- | ------------------------------------------------------------- |
-| css                                            |        | FlattenSimpleInterpolation | SC 에서 스타일만 담은 객체 | cssBlock<br/>cssButton | 반드시 SC의 css 함수를 통해서 만들어져야 한다.                |
-| Wrap<br/>Anchor<br/>Button<br/>Input<br/>etc.. |        | StyledComponent            | 스타일이 적용된 컴포넌트.  |                        | 필요 시 각 태그 요소의 명칭을 Pascal Case 로 바꾸어 사용한다. |
+| prefix                                                    | suffix | type                       | desc.                      | examples               | note                                                          |
+| :-------------------------------------------------------- | :----- | :------------------------- | :------------------------- | :--------------------- | ------------------------------------------------------------- |
+| css                                                       |        | FlattenSimpleInterpolation | SC 에서 스타일만 담은 객체 | cssBlock<br/>cssButton | 반드시 SC의 css 함수를 통해서 만들어져야 한다.                |
+| Section<br/>Div<br/>Anchor<br/>Button<br/>Input<br/>etc.. |        | StyledComponent            | 스타일이 적용된 컴포넌트.  |                        | 필요 시 각 태그 요소의 명칭을 Pascal Case 로 바꾸어 사용한다. |
 
-div, span 등 container 역할을 맡을 수 있는 요소로 만들경우 그 SC 명칭은 Wrap 으로 통일한다.
+SC 사용 시 div, span, button, input, anchor 등 태그 요소 명칭을 Pascal Case 로 바꿔서 사용한다.
 
 ```tsx
-const Wrap = styled.div`
+const Div = styled.div`
   border: 1px solid #888;
 `;
 
-export const BorderedBox: FC = () => <Wrap>테두리 박스</Wrap>;
-```
+export const BorderedBox: FC = () => <Div>테두리 박스</Div>;
 
-button, input, anchor 등 단독으로 쓰일 경우엔 각 태그 요소 명칭을 Pascal Case 로 바꿔서 사용한다.
-
-```tsx
 const Input = styled.input`
   &:focus {
     outline: 1px solid blue;
@@ -169,7 +178,7 @@ export const CenteredBoxWrap = styled.section`
 `;
 
 // CenteredBox.tsx
-import { CenteredBoxWrap } from "./CenteredBoxWrap";
+import { CenteredBoxWrap } from './CenteredBoxWrap';
 
 export const CenteredBox: FC = ({ children }) => (
   <CenteredBoxWrap>{children}</CenteredBoxWrap>
@@ -178,38 +187,38 @@ export const CenteredBox: FC = ({ children }) => (
 
 #### ETC
 
-| suffix | type     | desc.                                                                     | examples               | note                                                                                             |
-| :----- | :------- | :------------------------------------------------------------------------ | :--------------------- | ------------------------------------------------------------------------------------------------ |
-| Api    | IHttpApi | 외부 Http API를 호출하는 서비스 객체                                      | baseApi<br/>uploadApi  | 생성시 IHttpApi 인터페이스 기능을 준수하는 객체를 만드는 apiFactory 를 별도로 정의하여 사용한다. |
-| t      | number   | setTimeout 혹은 setInterval 호출 시 clear 수행을 위해 발급된 timer id 값. | tDelay<br/>tAfterTimer |                                                                                                  |
+| prefix | suffix | type     | desc.                                                                     | examples               | note                                                                                             |
+| :----- | :----- | :------- | :------------------------------------------------------------------------ | :--------------------- | ------------------------------------------------------------------------------------------------ |
+|        | Api    | IHttpApi | 외부 Http API를 호출하는 서비스 객체                                      | baseApi<br/>uploadApi  | 생성시 IHttpApi 인터페이스 기능을 준수하는 객체를 만드는 apiFactory 를 별도로 정의하여 사용한다. |
+| t      |        | number   | setTimeout 혹은 setInterval 호출 시 clear 수행을 위해 발급된 timer id 값. | tDelay<br/>tAfterTimer |                                                                                                  |
 
 ```ts
 // Api 생성 예제
-const cdnApi = apiFactory("https://cdn.sample.com");
-const appApi = apiFactory("https://api.sample.com");
+const cdnApi = apiFactory('https://cdn.sample.com');
+const appApi = apiFactory('https://api.sample.com');
 
 // timer id 이용 예제
-const tTimeout = setTimeout(() => console.log("timeout!!"), 2000);
+const tTimeout = setTimeout(() => console.log('timeout!!'), 2000);
 
 document
-  .getElementById("btn_stop")
-  .addEventListener("click", () => clearTimeout(tTimeout));
+  .getElementById('btn_stop')
+  .addEventListener('click', () => clearTimeout(tTimeout));
 ```
 
 #### 상황별 정리
 
 각 변수의 역할별로 쓰여지는 명칭을 정리 해 놓았다.
 
-| prefix                              | suffix         | type   | desc.                                               | examples                                       | note                                                                                                     |
-| :---------------------------------- | :------------- | :----- | :-------------------------------------------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
-|                                     | Ret<br/>Result | any    | 함수의 수행 결과를 바깥으로 전달하는 변수.          | iRet<br/>sRet<br/>mRet<br/>aRet<br/>dataResult | Ret 좌측에 타입을 명시하는 패턴으로 사용한다.                                                            |
-| params                              | Params         | Object | Api Service 에 요청 파라미터를 보낼 때 쓰이는 자료. | params<br/>sendingParams                       | 일반적으로 params 단독으로 쓰이며 부득이하게 파라미터가 여러 변수로 존재한다면 접미사 형식으로 사용한다. |
-| value<br/>values<br/>data<br/>datum |                | any    | 임시로 보관할 값.                                   | value                                          | 단독으로 쓰인다.<br/>써야 할 변수명을 특정하기 힘들거나 애매할 때 사용.                                  |
+| prefix                                               | suffix         | type   | desc.                                               | examples                                       | note                                                                                                     |
+| :--------------------------------------------------- | :------------- | :----- | :-------------------------------------------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
+|                                                      | Ret<br/>Result | any    | 함수의 수행 결과를 바깥으로 전달하는 변수.          | iRet<br/>sRet<br/>mRet<br/>aRet<br/>dataResult | Ret 좌측에 타입을 명시하는 패턴으로 사용한다.                                                            |
+| params                                               | Params         | Object | Api Service 에 요청 파라미터를 보낼 때 쓰이는 자료. | params<br/>sendingParams                       | 일반적으로 params 단독으로 쓰이며 부득이하게 파라미터가 여러 변수로 존재한다면 접미사 형식으로 사용한다. |
+| value<br/>val<br/>values<br/>vals<br/>datum<br/>data |                | any    | 임시로 보관할 값.                                   | value                                          | 단독으로 쓰인다.<br/>써야 할 변수명을 특정하기 힘들거나 애매할 때 사용.                                  |
 
 ```ts
 // 단독 파라미터
 async function execApi(params: ExParams) {
-  return await cdnApi.get<string[]>("/data.json");
+  return await cdnApi.get<string[]>('/data.json');
 }
 
 // 파라미터 여러개
