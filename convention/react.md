@@ -51,15 +51,15 @@
     - root - 루트 (/) 경로에서 쓰이는 내용
     - {feature} - 특정 페이지에서만 쓰이는 모듈
       - components - 각종 React Component 가 위치한다.
-        - _complex - 복합 컴포넌트 (Molecule)
-        - _combine - 조합 컴포넌트 (Organism)
-        - _single - 단일 컴포넌트 (Atom)
+        - atom - 단일 컴포넌트
+        - molecule - 조합 컴포넌트
+        - organism - 복합 컴포넌트
+        - adaptive - 적응형 (Adaptive) 컴포넌트 모음. 사용자 Device 나 해상도에 따라 기능이 달라지는 컴포넌트가 필요할 때 쓰인다.
       - containers - 컨테이너 컴포넌트 모음
       - pages - 페이지 컴포넌트 모음
-      - contexts - 특정 컴포넌트들에 자료를 공유 할 때 쓰이는 Contenxt를 정의 해 둔 곳. 가급적 Flux Architecture를 활용하되 특수한 경우 (예: resizing 여부 전파)만 사용한다.
+      - contexts - 특정 컴포넌트들에 자료를 공유 할 때 쓰이는 Context 를 정의 해 둔 곳. 가급적 Flux Architecture 를 활용하되 특수한 경우 (예: resizing 여부 전파)만 사용한다.
       - hooks - Custom Hook 함수 모음
       - hoc - High Order Component 모음
-      - adaptives - 적응형 (Adaptive) 컴포넌트 모음. 사용자 Device 나 해상도에 따라 기능이 달라지는 컴포넌트가 필요할 때 쓰인다.
       - actions - redux 액션들
       - effects - redux 의 side effect 를 처리하기 위한 이펙트 함수 모음
       - reducers - redux 의 state 를 변경하기 위한 역할인 리듀서 모음
@@ -149,37 +149,6 @@ const Comp: FC<Props> = props => (
 );
 ```
 
-### Wrap
-특별한 사유가 없다면, Wrap 은 **컴포넌트 내 스타일을 정의할 수 있는 유일한 컴포넌트** 이다.
-
-Wrap 은 styled components 를 이용해 작성하며, 다음과 같이 작성 할 수 있다.
-
-```tsx
-const Wrap = styled.div`
-  ${normalBorderStyle}
-  padding: 0.5em 0.75em;
-  border-radius: 3px;
-`;
-
-export const Test: FC<Props> = props => (
-  <Wrap>
-    {/* 컴포넌트 내용.. */}
-  </Wrap>
-);
-```
-
-Wrap 은 그 원래 용어처럼, 다른 요소를 감쌀 수 있는 요소로 이뤄져야 한다.
-
-단, input 태그 같이 다른 것을 감쌀 수 없는 요소는 아래와 같이 기존 요소명을 따른다.
-
-```tsx
-const Input = styled.input`
-`;
-export const TestInput: FC<Props> = props => (
-  <Input {...props} />
-);
-```
-
 ### Button
 버튼 컴포넌트의 주요 역할은 다음과 같다.
 
@@ -244,26 +213,38 @@ export const Button: React.FC<ButtonComponentProps> = props => (
 
 여기서 name 과 values 는 html 내 다양한 입력 요소의 name 및 value property 를 이용하면 되며, 전반적인 컴포넌트 에 쓰이는 Props 는 아래와 같이 명시된 InputComponentProps 를 따르도록 한다.
 
+아래는 Props interface 의 예시이다.
+
 ```tsx
+/**
+ * 모든 입력 컴포넌트의 공통 프로퍼티를 정의해 놓은 것.
+ * 입력 컴포넌트들은 모두 이 인터페이스를 Props 로 이용한다.
+ */
 export interface InputComponentProps {
-  autoCompleteOff?: boolean;
-  id?: string;
-  label?: string;
-  name: string;
-  value: string;
+  /**
+   * 컴포넌트에 적용할 CSS 클래스명.
+   */
   className?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  options?: SelectOption[];
-  min?: string | number;
-  max?: string | number;
-  maxlen?: number;
-  pattern?: string;
+  /**
+   * 입력값
+   */
+  value?: string;
+  /**
+   * 변경 이벤트
+   */
   onChange?: (args: InputChangeArgs) => void;
+  /**
+   * 입력란에 적용되는 name 속성값
+   */
+  name: string;
+  /**
+   * 비활성화 여부
+   */
+  disabled?: boolean;
 }
 ```
 
-이벤트는 아래와 같은 InputChangeArgs 객체를 callback에 전달 하도록 한다.
+이벤트는 아래와 같은 InputChangeArgs 객체를 callback 에 전달 하도록 한다.
 
 ```ts
 export interface InputChangeArgs {
@@ -298,7 +279,7 @@ export const InputText: FC<InputComponentProps> = props => {
   };
 
   return (
-    <Wrap
+    <Section
       type="text"
       autoComplete={props.autoCompleteOff ? 'off' : 'on'}
       id={props.id}
@@ -457,7 +438,7 @@ const SamplePage: FC = () => {
 }
 ```
 
-만약 [next.js](https://nextjs.org/docs/api-reference/next/router#userouter) 라면 아래와 같은 방법으로 hook을 쓰도록 한다.
+만약 [next.js](https://nextjs.org/docs/api-reference/next/router#userouter) 라면 아래와 같은 방법으로 hook 을 쓰도록 한다.
 
 ```tsx
 // 파라미터 인터페이스 정의
