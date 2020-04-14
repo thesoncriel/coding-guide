@@ -12,21 +12,11 @@
 - [타입스크립트, 써야할까?](https://hyunseob.github.io/2018/08/12/do-you-need-to-use-ts/)
 - [TypeScript 현업 적용 후기](https://medium.com/tapjoykorea/typescript-%ED%98%84%EC%97%85-%EC%A0%81%EC%9A%A9-%ED%9B%84%EA%B8%B0-caad266c8142)
 
-## TSLint
+## ESLint
 
-개발 진행 시 tslint 를 기본적으로 이용하며,
+개발 진행 시 eslint 를 기본적으로 이용하며,
 
-linting library 는 다음과 같다.
-
-- tslint:latest - 기본 라이브러리. 항상 최신으로 유지.
-- tslint-react - react 문법이 추가됨.
-- tslint-react-hooks - hook 문법이 추가됨.
-
-작업 시 project root 에 tslint.json 을 만들고 다음 내용을 복사해서 쓰도록 한다.
-
-예외 사항에 대한 사유가 주석으로 추가되어 있으니 함께 참고 한다.
-
-**eslint**가 tslint 기능을 포함하게 되어 업데이트 필요.
+코딩 작업 시 자동으로 lint 규칙에 맞게 바꿔주는 prettier 를 함께 쓰길 권장한다.
 
 ## 타입 명시
 
