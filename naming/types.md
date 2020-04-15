@@ -6,6 +6,13 @@
 
 한편, React 내 Component 역시 클래스 범주에 포함되기에 Class Component, Function Component 구별 없이 모두 **Pascal Case** 로 작성한다.
 
+## Suffix
+
+| usage | keyword | desc. | examples |
+| :---- | :---- | :---- | :---- |
+| Container Component | Container | Store 나 Context 의 자료에 직접적으로 연관되는 컴포넌트. | LoginContainer<br/>ProductContainer |
+
+
 # Interfaces
 
 인터페이스는 OOP 에서 SW의 유연성을 책임지는 것 중 하나이다.
@@ -16,8 +23,10 @@
 
 인터페이스를 이용하는 case 는 다음과 같다.
 
-- DTO (Data Transfer Object) 혹은 VO (Value Object) 의 Data Type 으로 사용
-- 다중 상속 (Multiple Inheritance)
+* Model 용
+  - DTO (Data Transfer Object) 혹은 VO (Value Object) 의 Data Type 으로 사용
+* Class 용
+  - 다중 상속 (Multiple Inheritance)
   - 인터페이스를 통한 추상화 (Abstraction)
 
 아래는 언급된 case 별 사용 방법을 정리 해 놓은 것이다.
@@ -42,7 +51,7 @@ DTO 라 불리우는 자료 전달 객체는 크게 2가지로 구분된다.
 | DTO<br/>VO                     | Model   | suffix | 내부 클래스/함수 끼리 주고받는 데이터 모델.                    | UserModel<br/>StudentGroupModel     |
 | React Props                    | Props   | suffix | 리액트 컴포넌트의 프로퍼티 타입 정의.                          | RadioButtonProps<br/>PaymentProps   |
 | Event Arguments                | Args    | suffix | 이벤트 전달용 객체.                                            | InputChangeArgs<br/>UploadStateArgs |
-| Flux Action Payload            | Payload | suffix | Action 수행 시 전달되는 페이로드 데이터.<br/>Flux 에서 쓰인다. | SigninAction<br/>DataLoadedAction   |
+| Flux Action Payload            | Payload | suffix | Action 수행 시 전달되는 페이로드 데이터.<br/>Flux 에서 쓰인다. | SigninPayload<br/>DataLoadedPayload   |
 | Flux State<br/>Component State | State   | suffix | Store, 혹은 Component 상태를 보관하는 객체.                    | UserInfoState<br/>PaymentState      |
 
 ### 프론트엔드 UI 표현용 (Presentation Model)
@@ -65,13 +74,15 @@ Backend API 에서 제공되는 자료가 UI 친화적이지 못하여 업무 �
 | API Parameters                           | Params  | suffix | 백엔드 API 호출 시 사용되는 파라미터.<br/>그 용도는 쿼리 파라미터 일 수도,<br/>post 및 put 메서드일 때는 body 파라미터일 수도 있다.<br/>즉 API 사용측에선 굳이 body 파라미터 변환 여부를 알 필요가 없다. | ListLoadParams<br/>UserUpdateParams |
 | URL Query Parameters<br/>Path Parameters | Query   | suffix | 외부에서 프론트엔드 영역 수행을 위한 쿼리 파라미터 전달 시 그 데이터를 모델화 시킨 자료이다.                                                                                                             | MainPageQuery                       |
 
-## Multiple Inheritance
+## Class 용 인터페이스
 
-일반적으로 하나의 클래스를 작성할 때 필요한 모든 기능을 다 넣기 마련이나, 그 것을 실제 사용하는 외부에선 필요한 부분만 보도록 충분히 추상화 할 필요가 있다.
+일반적으로 하나의 클래스를 작성할 때 필요한 모든 기능을 다 넣기 마련이나, 그 것을 실제 사용하는 외부에선 필요한 부분만 노출 되도록 충분히 추상화 할 필요가 있다.
 
-그래서 OOP 5대 원칙 중 하나인 Interface Segregation Principle - 인터페이스 분리 원칙에 의해 상호 필요한 부분들만 쪼개어 선언한 뒤 사용하게 된다.
+그래서 OOP 5대 원칙 중 하나인 Interface Segregation Principle - **인터페이스 분리 원칙** 에 의해 상호 필요한 부분들만 쪼개어 선언한 뒤 사용하게 된다.
 
-이러한 용도의 인터페이스 중 메서드가 있는 클래스를 대상으로 **다중 상속** 을 목적으로 만들어지는 인터페이스는 그 명칭 앞에 대문자로 '**I**' 를 붙인다.
+이러한 용도의 인터페이스는 **기능 추상화** 혹은 **다중 상속(Multiple Inheritance)** 을 목적으로 만들어지며
+
+이러한 목적의 인터페이스는 그 명칭 앞에 대문자로 '**I**' 를 붙인다.
 
 ```ts
 // class 혹은 object 구현체를 위한 다중상속 목적의 인터페이스 작성 예제
@@ -163,7 +174,7 @@ class UserInfoComponent implements ILoginManager, IUserInfoManager {
 }
 ```
 
-다만, DTO 용 interface 는 'I' 를 붙이지 않으며 인터페이스 간에 다중 상속을 하여도 그 인터페이스의 목적에 따라 명칭을 붙여주면 된다.
+다만, DTO 용 interface 는 `I` 를 붙이지 않으며 인터페이스 간에 다중 상속을 하여도 그 인터페이스의 목적에 따라 명칭을 붙여주면 된다.
 
 ```ts
 // 내부 용도인 저자 정보

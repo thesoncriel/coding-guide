@@ -34,12 +34,12 @@ CSS 클래스명은 기본적으로 [kebab-case](https://zetawiki.com/wiki/%EC%B
 
 ```scss
 // wrong
-.bbros-active {
+.stsh-active {
   // attrs..
 }
 
 // good
-.bbros {
+.stsh {
   &.active {
     // attrs..
   }
@@ -48,9 +48,9 @@ CSS 클래스명은 기본적으로 [kebab-case](https://zetawiki.com/wiki/%EC%B
 
 ```html
 <!-- 보통 상태 -->
-<div class="bbros"></div>
+<div class="stsh"></div>
 <!-- 활성화 상태 -->
-<div class="bbros active"></div>
+<div class="stsh active"></div>
 ```
 
 ### 상태 클래스 예시

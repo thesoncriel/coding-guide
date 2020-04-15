@@ -148,7 +148,7 @@ const TestContainer: FC = () => {
   const dispatch = useDispatch();
   const items = useSelector(selTestItems);
 
-  useEffect(() => dispatch(effTestListLoad('theson')));
+  useEffect(() => dispatch(effTestListLoad('theson')), []);
 
   return (
     <TestListComponent items={items} />
@@ -203,7 +203,7 @@ export const testReducer = createReducer<
 ```
 
 ### Selectors
-필요에 따라 [reselector](https://github.com/reduxjs/reselect) 를 이용하여 성능 향상도 할 수 있다.
+필요에 따라 [reselect](https://github.com/reduxjs/reselect) 를 이용하여 성능 향상도 할 수 있다.
 
 다만 여기서의 셀렉터는 일반적인 함수(pure function)로 이용하는 방법을 서술한다.
 

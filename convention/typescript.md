@@ -439,18 +439,46 @@ export const ListContainer: FC = () => {
 };
 ```
 
-## Component Exporting
+## Module Exporting
 
-구성된 모듈이나 폴더 내 반드시 **index.ts** 를 구성하여 외부에서 index 로만 import 할 수 있도록 모듈화 시킨다.
+구성된 모듈이나 폴더 내 컴포넌트나 함수 및 클래스들은 반드시 **index.ts** 를 구성하여 외부에서 index 로만 import 할 수 있도록 모듈화 시킨다.
 
 작성된 컴포넌트를 export 구문으로 넘길 때는 default 를 쓰지 않는다. 까닭은 default 로 할 경우, index 에서 export 하는 구문이 복잡 해 질 수 있기 때문이다.
 
 (Component, Container, Page 모두 해당 된다.)
 
-아래는 atomic design 에서 single(atom) 을 맡는 구성요소에 대한 예시이다.
+```tsx
+// wrong case
+
+// ListSection.tsx
+export default (props: Props) => {
+  // code...
+};
+
+// index.ts
+export { default as ListSection } from './ListSection';
+```
 
 ```tsx
-// src/components/sample/_single/Loading.tsx
+// good case
+
+// ListSection.tsx
+export const ListSection: FC<Props> = props => {
+  // code...
+};
+
+// index.ts
+export * from './ListSection';
+```
+
+- 참고: [순환 참조 문제 해결](https://rinae.dev/posts/fix-circular-dependency-kr)
+
+### Component Exporting
+
+아래는 atomic design 에서 atom(단일 컴포넌트)을 맡는 구성요소에 대한 예시이다.
+
+```tsx
+// src/modules/sample/components/atoms/Loading.tsx
 
 import React from "react";
 import styled from "styled-components";
@@ -465,8 +493,10 @@ const Wrap = styled.div`
 
 export const Loading: React.FunctionComponent<Props> = props =>
   props.show ? <Wrap>Loading...</Wrap> : null;
+```
 
-// src/components/sample/_single/Button.tsx
+```tsx
+// src/modules/sample/components/atoms/Button.tsx
 export const Button: FC<ButtonComponentProps> = props => (
   <Wrap
     type={props.submit ? "submit" : "button"}
@@ -479,10 +509,10 @@ export const Button: FC<ButtonComponentProps> = props => (
 );
 ```
 
-\_single 폴더 내 index.
+atoms 폴더 내 index.
 
 ```ts
-// src/components/sample/_single/index.ts
+// src/modules/sample/components/atoms/index.ts
 
 export * from "./Loading";
 export * from "./Button";
@@ -491,26 +521,28 @@ export * from "./Button";
 sample 폴더 내 index.
 
 ```ts
-// src/components/sample/index.ts
+// src/modules/sample/components/index.ts
 
-export * from "./_single";
-export * from "./_combine";
-export * from "./_complex";
+export * from "./atoms";
+export * from "./molecules";
+export * from "./organisms";
 ```
 
 Container 에서 실제 사용 예제. 몇몇 코드는 생략 되어 있다.
 
 ```tsx
-import React, { FC } from "react";
+// ReloadableContainer.tsx
+
+import React, { FC, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Loading,
   SampleList,
   SampleIcon
-} from "../../components/sample"; // index 를 이용함으로써 import 구문이 단순해진다.
+} from "../components"; // index 를 이용함으로써 import 구문이 단순해진다.
 
-export const ContainerComponent: FC = () => {
+const ReloadableComponent: FC = () => {
   const disaptch = useDispatch();
   const loading = useSelector(state => state.loading);
   const list = useSelector(state => state.list);
@@ -534,4 +566,9 @@ export const ContainerComponent: FC = () => {
     </>
   );
 };
+
+/**
+ * 컨테이너: 다시 불러올 수 있는 영역.
+ */
+export const ReloadableContainer = memo(ReloadableComponent);
 ```

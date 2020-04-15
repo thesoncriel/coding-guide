@@ -5,6 +5,7 @@
 
 ## Code Convention
 
+* [Architecture](convention/architecture.md)
 * [Markup](convention/markup.md)
 * [Styles](convention/styles.md)
 * [JavaScript](convention/javascript.md)

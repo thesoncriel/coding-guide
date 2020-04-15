@@ -29,49 +29,6 @@
 - JSX 및 styled-component 를 이용하여 직접 만들어진 컴포넌트. 다른 컴포넌트를 가져와 쓰지 않는다.
 - 또는 이미 잘 만들어진 3rd party library 를 가져와 쓰되 내부 프로젝트에서 작성된 Component 를 직접적으로 쓰지 아니한다.
 
-## Project Structure
-아래는 Single Page Application (이하 SPA) 기준 프로젝트 구조이다.
-
-* environments - 환경변수 파일들. 개발/빌드 진행 시 환경에 알맞은 파일이 /.env 파일로 복사 되어 쓰인다.
-  - .env.dev - 개발용 환경변수
-  - .env.production - 운영서버용 환경변수
-  - .env.test - 개발서버용 환경변수
-* gulp
-  - css-sprite - CSS Background Image Sprite 를 생성하는 스크립트
-    - images - 스프라이트를 생성 할 아이콘 파일(.png)을 두는 곳. 하위 폴더를 두면 생성 뒤 테스트 페이지(sprite-test.html) 에서 그룹별로 나눠진 모습을 볼 수 있다. (실제 아이콘 클래스명에는 영향을 끼치지 않음) 그리고 하위 폴더나 파일명 앞에 @를 붙이면 스프라이트 생성 시 무시(ignore) 한다.
-  - s3-upload - AWS S3 에 빌드된 내용을 업로드 하는 스크립트. 수행 시 awsaccess.json 내용을 참고 한다.
-* public - 정적 파일 모음
-  - sprite - 이미지 스프라이트가 포함된 폴더. 배포전에 sprite.png 파일을 https://tinypng.com/ 에서 반드시 최적화 시키도록 한다.
-  - index.html - 프로젝트가 시작되는 html 파일
-* src
-  - common - 모든 페이지에 공통으로 쓰이는 것들.
-    - app.config.ts - 앱 내 환경설정. 상기 environments 의 내용을 따른다.
-  - modules - 앱 내 각종 모듈을 정의 해 놓은 곳.
-    - _shared - 공통으로 쓰이는 각종 컴포넌트 및 서비스가 모여있는 모듈
-    - root - 루트 (/) 경로에서 쓰이는 내용
-    - {feature} - 특정 페이지에서만 쓰이는 모듈
-      - components - 각종 React Component 가 위치한다.
-        - atom - 단일 컴포넌트
-        - molecule - 조합 컴포넌트
-        - organism - 복합 컴포넌트
-        - adaptive - 적응형 (Adaptive) 컴포넌트 모음. 사용자 Device 나 해상도에 따라 기능이 달라지는 컴포넌트가 필요할 때 쓰인다.
-      - containers - 컨테이너 컴포넌트 모음
-      - pages - 페이지 컴포넌트 모음
-      - contexts - 특정 컴포넌트들에 자료를 공유 할 때 쓰이는 Context 를 정의 해 둔 곳. 가급적 Flux Architecture 를 활용하되 특수한 경우 (예: resizing 여부 전파)만 사용한다.
-      - hooks - Custom Hook 함수 모음
-      - hoc - High Order Component 모음
-      - actions - redux 액션들
-      - effects - redux 의 side effect 를 처리하기 위한 이펙트 함수 모음
-      - reducers - redux 의 state 를 변경하기 위한 역할인 리듀서 모음
-      - selectors - redux 의 state 값을 받아오기위한 셀렉터 모음
-      - models - 현재 모듈에서만 쓰이는 모델들을 정의 해 둔다.
-      - constants - 현재 모듈에서만 쓰이는 상수를 정의 해 둔다. 메시지 내용은 아래 messages 에 정의 한다.
-      - messages - 사용자 UI에 출력되는 각종 메시지 상수를 정의 해 둔다.
-      - services - 데이터 처리를 위한 각종 함수 및 객체 모음. API Service 도 여기에 포함된다.
-      - styles - 현재 모듈에서만 사용되는 CSS Style 을 정의한다. 일반적으론 styled-components 를 사용하기에 쓸일은 없지만, 유사한 스타일이 반복될 경우 여기에 별도 스타일을 두어 사용한다.
-  - factories - 개체를 생성하는 Factory 를 모아둔 곳.
-  - routes - 라우팅 세팅을 하는 곳.
-  - utils - 프로젝트 전반적으로 고루 쓰이는 각종 유틸리티 함수가 모인 곳.
 
 ## Component
 UI 컴포넌트는 가능한한 **함수형 컴포넌트 (Functional Component)**로 작성하며 hooks 를 적극 이용하여 작성하는 것을 기본으로 한다.
@@ -85,8 +42,8 @@ UI 컴포넌트는 가능한한 **함수형 컴포넌트 (Functional Component)*
 
 또 한 아래와 같은 사례를 주의 한다.
 
-1. props 로 들어온 데이터는 변경하지 않는다. 즉 있는 그대로 표현한다.
-  - 단, format 변경등은 이뤄질 수 있다.
+1. props 로 들어온 데이터는 변경하지 않는다. 즉 있는 그대로 표현한다. (immutable)
+  - 단, 들어온 자료를 이용하여 format 변경등은 이뤄질 수 있다.
 2. 외부에서 특정 컴포넌트에 대하여 직접적인 영향을 끼치지 않는다.
   - 외부 Wrap 이나 부모 요소에서 강제로 스타일 변경 금지
   - 외부 개입 금지
@@ -94,10 +51,72 @@ UI 컴포넌트는 가능한한 **함수형 컴포넌트 (Functional Component)*
 
 참고로 본 섹션에서의 컴포넌트란, Container, Page 에서 쓰이는 컴포넌트가 아닌 일반적인 UI 를 구성하는 컴포넌트를 말한다.
 
-### Properties
-JSX는 기본적으로 XML의 문법을 기반으로 한다.
+### 작성 순서
 
-따라서 아래와 같이 문자열(String)로 값을 받는 프로퍼티를 상수로 전달 시 아래와 같이 2중 따옴표 (double quotation)로 작성 한다.
+React 컴포넌트의 구성 요소는 다음의 순서를 따른다. 그 외 문법적인 내용은 eslint 및 prettier 의 설정 내용을 따른다.
+
+```tsx
+import React, { FC } from 'react';
+import styled from 'styled-components';
+import { SampleButton } from './SampleButton';
+import { hocThrottle, hocSomething } from '../hoc';
+
+// 1. props 인터페이스
+interface Props {
+  name: string;
+  id: string;
+}
+
+// 2. 스타일 내용
+const Wrap = styled.div`
+  display: inline-block;
+`;
+
+// 3. 이 곳에서만 사용되는 추가 요소 및 hoc 사용 컴포넌트.
+//    가급적 외부로 분리하여 import 권장
+const ThrottledButton = hocThrottle(SampleButton);
+
+// 4. 외부 함수. 길어지면 외부로 분리하여 import 권장
+function getWidth() {
+  return window.innerWidth;
+}
+
+// 5. 컴포넌트 본체. hoc 수행 하지 않는다면 여기까지.
+export const SampleSection: FC<Props> = props => {
+  // hook 은 항상 최상단에..
+  const [
+    value,
+    setValue
+  ] = useState(0);
+
+  useEffect(() => console.log('did mount !'), []);
+
+  const handleClick: MouseEventHandler = () => {
+    setValue((value + 1) * getWidth());
+  };
+
+  return (
+    <Wrap>
+      숫자: {value}<br/>
+      {props.children}
+      <ThrottledButton onClick={handleClick}>클릭!</ThrottledButton>
+    </Wrap>
+  );
+};
+
+// 6. hoc 사용 한다면?
+
+// 6.1. 이름을 바꾸고 export 하지 않음
+const SampleSectionComponent: FC<Props> = props => { /* code.. */ };
+
+// 6.2. hoc 수행 후 본래 컴포넌트 이름으로 받고 export 수행.
+export const SampleSection = hocSomething(SampleSectionComponent);
+```
+
+### JSX
+JSX는 기본적으로 XML의 문법을 기반으로 한다. 따라서 [Well-Formed Document](http://mm.sookmyung.ac.kr/~sblim/lec/xml03/xml03-02.htm) 의 방식을 따르도록 한다.
+
+따라서 아래와 같이 문자열(String)로 값을 받는 프로퍼티를 상수로 전달 시엔 아래와 같이 2중 따옴표 (double quotation)로 작성 한다.
 
 ```tsx
 const Sample: FC = () => (
@@ -107,9 +126,78 @@ const Sample: FC = () => (
 );
 ```
 
+한편 Context 나 외부 UI Component 를 사용 시 아래와 같이 `.` 을 태그 요소에 포함시키지 않도록 한다.
+
+또 한 Fragment 는 단축 사용법인 `<></>` 으로만 사용한다.
+
+```tsx
+// wrong
+
+import React from 'react';
+import Core from '@some-ui/core';
+import { SampleContext } from './contexts/';
+
+const Sample: FC = () => (
+  <SampleContext.Provider value={11}>
+    <React.Fragment>
+      <Core.Button>
+        Click Here !
+      </Core.Button>
+      <Core.Text text="sample" />
+    </React.Fragment>
+  </SampleContext.Provider>
+);
+```
+
+```tsx
+// good
+
+import React from 'react';
+import { Button, Text } from '@some-ui/core';
+// Context Provider 의 이름을 바꿔서 하나 더 export 한다.
+import { SampleContextProvider } from './contexts/';
+
+const Sample: FC = () => (
+  <SampleContextProvider value={11}>
+    <>
+      <Button>
+        Click Here !
+      </Button>
+      <Text text="sample" />
+    </>
+  </SampleContextProvider>
+);
+```
+
+Context Provider 를 별도 상수로 받아 렌더링하는 방법도 좋다.
+
+```tsx
+// other case
+
+import React from 'react';
+import { Button, Text } from '@some-ui/core';
+import { SampleContext } from './contexts/';
+
+const CtxProvider = SampleContext.Provider;
+
+const Sample: FC = () => (
+  <CtxProvider value={11}>
+    <>
+      <Button>
+        Click Here !
+      </Button>
+      <Text text="sample" />
+    </>
+  </CtxProvider>
+);
+```
+
 ### Props Interface
-React 를 TypeScript 와 함께 운용할 경우 컴포넌트의 속성(Properties - 이하 Props) React 의 propTypes 대신 Generic 으로 선언하여 사용할 수 있다.
-따라서 아래와 같이 컴포넌트 속성은 interface 로 선언한 뒤 제네릭을 적용한다.
+React 를 TypeScript 와 함께 운용할 경우 컴포넌트의 속성(Properties - 이하 Props)을 자주 사용하게 된다.
+
+이 때 React 의 propTypes 대신 타입을 선언하고 Generic 으로 사용할 수 있다.
+
+컴포넌트 속성은 interface 로 선언한 뒤 제네릭을 적용한다.
 
 ```jsx
 // 이전 jsx 방식
@@ -148,6 +236,66 @@ const Comp: FC<Props> = props => (
   </>
 );
 ```
+
+#### Basic
+
+컴포넌트의 속성을 외부에 노출시켜 사용하는 프로퍼티(이하 props)는 아래와 같이 **interface** 로 선언하여 사용한다.
+
+이 때 명칭은 **Props** 로 고정이며 인터페이스 내 각 속성에는 주석을 달도록 한다.
+
+```tsx
+interface Props {
+  /**
+   * 입력할 이름값
+   */
+  value: string;
+  /**
+   * 출력될 나이
+   */
+  age: number;
+  /**
+   * 이름 변경시 발생되는 이벤트
+   */
+  onNameChange: (value: string) => void;
+}
+
+/**
+ * 이름을 입력하는 컴포넌트.
+ */
+export const NameInput: FC<Props> = props => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
+    props.onNameChange(e.target.value);
+  };
+
+  return (
+    <>
+      <span>나이: {props.age}세</span>
+      <input name="userName" value={props.value} onChange={handleChange} />
+    </>
+  );
+};
+```
+
+#### Props Sharing
+
+만약 props 내용이 다른 컴포넌트에서 동일하게 쓰여 공유 해야 할 경우엔 다음과 같이 기존에 사용되던 컴포넌트 명을 함께 명시 한다.
+
+```tsx
+// props 좌측에 컴포넌트명을 붙여 주고 export 한다.
+export interface NameInputProps {
+  // code...
+}
+
+// props 가 변경되었으니 변경된 내용을 적용 한다.
+export const NameInput: FC<NameInputProps> = props => {
+  // code...
+};
+```
+
+
+## UI Component
+
+자주 쓰이는 UI 컴포넌트 패턴을 설명한다.
 
 ### Button
 버튼 컴포넌트의 주요 역할은 다음과 같다.
@@ -419,7 +567,7 @@ export const SampleContainer: FC = props => {
 
 ```tsx
 // 파라미터 인터페이스 정의
-interface QueryParams {
+interface SampleQueries {
   id?: string;
   name?: string;
 }
@@ -427,7 +575,7 @@ interface QueryParams {
 const SamplePage: FC = () => {
   const {
     id, name,
-  } = useParams<QueryParams>(); // 제네릭 선언하여 타입 유추가 되도록 한다.
+  } = useParams<SampleQueries>(); // 제네릭 선언하여 타입 유추가 되도록 한다.
 
   return (
     <PageContainer title="샘플 페이지">
@@ -442,7 +590,7 @@ const SamplePage: FC = () => {
 
 ```tsx
 // 파라미터 인터페이스 정의
-interface QueryParams {
+interface SampleQueries {
   id?: string;
   name?: string;
 }
@@ -450,7 +598,7 @@ interface QueryParams {
 const SamplePage: FC = () => {
   const {
     id, name,
-  } = useRouter().query as QueryParams; // 타입 변환하여 사용한다.
+  } = useRouter().query as SampleQueries; // 타입 변환하여 사용한다.
 
   return (
     <PageContainer title="샘플 페이지">
@@ -466,7 +614,7 @@ React 컴포넌트는 생명 주기를 가지는데, 이 때 작성 시 주의�
 
 ### setTimeout
 
-컴포넌트 내부에서 setTimeout 을 이용 할 때가 있다. 이 때는 아래와 같이 self property 로 _t 를 주고, unmount 할 때 clearTimeout 을 반드시 수행 시켜 준다.
+컴포넌트 내부에서 setTimeout 을 이용 할 때가 있다. 이 때는 아래와 같이 state 를 별도 선언하고, unmount 할 때 clearTimeout 을 반드시 수행 시켜 준다.
 
 ```tsx
 // 컴포넌트가 렌더링되고 1초뒤 무언가를 수행할 때의 예제
@@ -483,18 +631,18 @@ const TestTimer: FC = () => {
     return () => {
       clearTimeout(timerId);
     };
-  });
+  }, []);
 };
 ```
 
-### DOM Reference
+## DOM Reference
 
 컴포넌트 작성 시 DOM 참조를 해야 할 경우, 아래와 같이 useRef 를 사용한다.
 
 ```tsx
 const TestRef: FC = () => {
   // 레퍼런스 객체는 앞에 'ref' 를 접두어로 붙여서 쓴다.
-  const refWrap = useRef();
+  const refWrap = useRef<HTMLDivElement>();
 
   return (
     <div ref={refWrap}>
@@ -502,4 +650,69 @@ const TestRef: FC = () => {
     </div>
   );
 }
+```
+
+특정 함수형 컴포넌트에 레퍼런스를 넘겨야 할 경우엔 그 컴포넌트는 forwardRef 를 이용하여 작성한다.
+
+```tsx
+const Block = forwardRef<HTMLDivElement, Props>((props, ref) => (
+  <div {...props} ref={ref}>{props.children}</div>
+));
+
+const TestRef: FC = () => {
+  // 레퍼런스 객체는 앞에 'ref' 를 접두어로 붙여서 쓴다.
+  const refBlock = useRef<HTMLDivElement>();
+
+  return (
+    <Block ref={refBlock}>
+      테스트 ^^
+    </Block>
+  );
+}
+```
+
+
+## Using HOC
+
+한편 HOC(High Order Component) 를 사용하여 기능이 첨가될 경우엔 다음을 따른다.
+  1. 기존 컴포넌트 명칭 우측에 `Component` 를 덧붙이고 export 를 제거 한다.
+  2. hoc 를 통해 만들어진 컴포넌트 명칭을 기존에 쓰던 명칭으로 적용, export 한다.
+  3. 기존 주석을 export 되는 컴포넌트로 옮긴다.
+
+아래는 위 단계를 따랐을 때 최종적으로 변경된 예시이다.
+
+```tsx
+// memo 를 통해 최적화 할 때의 예제
+
+import React, { memo } from 'react';
+
+const NameInputComponent: FC<Props> = props => {
+  // code...
+};
+
+/**
+ * 이름을 입력하는 컴포넌트.
+ */
+export const NameInput = memo(NameInputComponent);
+```
+
+만약 Container Component 일 경우엔 선언은 Component 로, export 는 Container 로 한다.
+
+```tsx
+// Redux 의 connect 를 이용할 때의 예제
+
+const LoginSectionComponent: FC<Props> = props => {
+  // code...
+};
+
+const mapStateToProps: Props = {
+  // code...
+};
+
+/**
+ * 컨테이너: 로그인 영역을 담당한다.
+ */
+export const LoginSectionContainer = connect(
+  mapStateToProps
+)(LoginSectionComponent);
 ```
