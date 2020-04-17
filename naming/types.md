@@ -8,10 +8,9 @@
 
 ## Suffix
 
-| usage | keyword | desc. | examples |
-| :---- | :---- | :---- | :---- |
+| usage               | keyword   | desc.                                                    | examples                            |
+| :------------------ | :-------- | :------------------------------------------------------- | :---------------------------------- |
 | Container Component | Container | Store 나 Context 의 자료에 직접적으로 연관되는 컴포넌트. | LoginContainer<br/>ProductContainer |
-
 
 # Interfaces
 
@@ -23,9 +22,9 @@
 
 인터페이스를 이용하는 case 는 다음과 같다.
 
-* Model 용
+- Model 용
   - DTO (Data Transfer Object) 혹은 VO (Value Object) 의 Data Type 으로 사용
-* Class 용
+- Class 용
   - 다중 상속 (Multiple Inheritance)
   - 인터페이스를 통한 추상화 (Abstraction)
 
@@ -51,7 +50,7 @@ DTO 라 불리우는 자료 전달 객체는 크게 2가지로 구분된다.
 | DTO<br/>VO                     | Model   | suffix | 내부 클래스/함수 끼리 주고받는 데이터 모델.                    | UserModel<br/>StudentGroupModel     |
 | React Props                    | Props   | suffix | 리액트 컴포넌트의 프로퍼티 타입 정의.                          | RadioButtonProps<br/>PaymentProps   |
 | Event Arguments                | Args    | suffix | 이벤트 전달용 객체.                                            | InputChangeArgs<br/>UploadStateArgs |
-| Flux Action Payload            | Payload | suffix | Action 수행 시 전달되는 페이로드 데이터.<br/>Flux 에서 쓰인다. | SigninPayload<br/>DataLoadedPayload   |
+| Flux Action Payload            | Payload | suffix | Action 수행 시 전달되는 페이로드 데이터.<br/>Flux 에서 쓰인다. | SigninPayload<br/>DataLoadedPayload |
 | Flux State<br/>Component State | State   | suffix | Store, 혹은 Component 상태를 보관하는 객체.                    | UserInfoState<br/>PaymentState      |
 
 ### 프론트엔드 UI 표현용 (Presentation Model)
@@ -67,12 +66,12 @@ Backend API 에서 제공되는 자료가 UI 친화적이지 못하여 업무 �
 
 ### 외부 전달용 (Domain Model)
 
-| usage                                    | keyword | rule   | desc.                                                                                                                                                                                                    | examples                            |
-| :--------------------------------------- | :------ | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------- |
-| API Response                             | Res     | suffix | 백엔드 API 결과물.<br/>내부적으로 parsing 하기 전 Raw Data 이다.                                                                                                                                         | SigninRes<br/>BoardListRes          |
-| API Response (Item)                      | ResItem | suffix | 백엔드 API 결과물이 Array 로 구성되어 있을 때 각각의 Item Data 를 정의.                                                                                                                                  | BoardResItem<br/>PolicyResItem      |
-| API Parameters                           | Params  | suffix | 백엔드 API 호출 시 사용되는 파라미터.<br/>그 용도는 쿼리 파라미터 일 수도,<br/>post 및 put 메서드일 때는 body 파라미터일 수도 있다.<br/>즉 API 사용측에선 굳이 body 파라미터 변환 여부를 알 필요가 없다. | ListLoadParams<br/>UserUpdateParams |
-| URL Query Parameters<br/>Path Parameters | Query   | suffix | 외부에서 프론트엔드 영역 수행을 위한 쿼리 파라미터 전달 시 그 데이터를 모델화 시킨 자료이다.                                                                                                             | MainPageQuery                       |
+| usage                                    | keyword | rule   | desc.                                                                                                                                                                                                    | examples                             |
+| :--------------------------------------- | :------ | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- |
+| API Response                             | Res     | suffix | 백엔드 API 결과물.<br/>내부적으로 parsing 하기 전 Raw Data 이다.                                                                                                                                         | SigninRes<br/>BoardListRes           |
+| API Response (Item)                      | ResItem | suffix | 백엔드 API 결과물이 Array 로 구성되어 있을 때 각각의 Item Data 를 정의.                                                                                                                                  | BoardResItem<br/>PolicyResItem       |
+| API Parameters                           | Params  | suffix | 백엔드 API 호출 시 사용되는 파라미터.<br/>그 용도는 쿼리 파라미터 일 수도,<br/>post 및 put 메서드일 때는 body 파라미터일 수도 있다.<br/>즉 API 사용측에선 굳이 body 파라미터 변환 여부를 알 필요가 없다. | ListLoadParams<br/>UserUpdateParams  |
+| URL Query Parameters<br/>Path Parameters | Queries | suffix | 외부에서 프론트엔드 영역 수행을 위한 쿼리 파라미터 전달 시 그 데이터를 모델화 시킨 자료이다.                                                                                                             | MainPageQueries<br/>BoardPageQueries |
 
 ## Class 용 인터페이스
 
@@ -131,7 +130,7 @@ function createPicker(): ICherryPicker {
     },
     accessData(): Promise<boolean> {
       // code...
-    }
+    },
   };
 }
 

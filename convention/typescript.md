@@ -104,7 +104,7 @@ interface PaymentUiModel {
 }
 ```
 
-만약 모델이 서버에서 전달된 것이면 아래와 같이 **해당 모델의 API 문서 주소**를 함께 주석에 명시하도록 한다.
+만약 모델이 서버에서 전달된 것이면 아래와 같이 **해당 모델의 API 문서 주소** 를 함께 주석에 명시하도록 한다.
 
 ```ts
 /**
@@ -256,7 +256,7 @@ export const baseApi: IHttpApi = apiFactory(appConfig.apiUrl);
  * SSR 환경이 아닐 때의 예제.
  */
 const createAuthTokenHeader: HeaderStrategy = () => ({
-  authToken: sessionStorage.getItem("auth_token")
+  authToken: sessionStorage.getItem("auth_token"),
 });
 
 /**
@@ -322,7 +322,7 @@ base api 수행 후엔 반드시 generic 을 지정하여 어떠한 타입을 �
 export const sampleApi = {
   getTestSample() {
     return staticApi.get<ResData>("/test/sample.json");
-  }
+  },
 };
 ```
 
@@ -340,7 +340,7 @@ interface ListRes<T> {
 const api = {
   loadTestList(params: Params) {
     return authApi.get<ListRes<BillDataResItem>>("/test/list", params);
-  }
+  },
 };
 ```
 
@@ -376,7 +376,7 @@ export interface UploadStateArgs {
 const api = {
   sendBill(params: Params, callback?: (args: UploadStateArgs) => void) {
     return uploadApi.postUpload<void>("/test/create", params, callback);
-  }
+  },
 };
 ```
 
@@ -394,7 +394,7 @@ interface Params {
 
 // 토큰 제공자 작성
 const tokenStrategy = () => ({
-  authToken: sessionStorage.getItem("auth_token")
+  authToken: sessionStorage.getItem("auth_token"),
 });
 
 // 기본 API 작성
@@ -404,7 +404,7 @@ const normalApi: IHttpApi = apiFactory("https://api.theson.kr", tokenStrategy);
 const exApi = {
   loadList(params: Params) {
     return normalApi.get<ListRes<ExItem>>("/exp/list", params);
-  }
+  },
 };
 
 // 액션 작성
@@ -418,13 +418,13 @@ const effListLoad = createEffect((params: Params, dispatch) => {
 
   exApi
     .loadList(params)
-    .then(payload => disaptch(actExListLoad(payload)))
-    .catch(err => dispatch(actExListLoadFail(err)));
+    .then((payload) => disaptch(actExListLoad(payload)))
+    .catch((err) => dispatch(actExListLoadFail(err)));
 });
 
 // ListContainer 예시
 export const ListContainer: FC = () => {
-  const list = useSelector(state => state.list);
+  const list = useSelector((state) => state.list);
   const dispatch = useDispatch();
 
   useEffect(() => dispatch(effListLoad({ keyword: "theson" })));
@@ -456,19 +456,19 @@ export default (props: Props) => {
 };
 
 // index.ts
-export { default as ListSection } from './ListSection';
+export { default as ListSection } from "./ListSection";
 ```
 
 ```tsx
 // good case
 
 // ListSection.tsx
-export const ListSection: FC<Props> = props => {
+export const ListSection: FC<Props> = (props) => {
   // code...
 };
 
 // index.ts
-export * from './ListSection';
+export * from "./ListSection";
 ```
 
 - 참고: [순환 참조 문제 해결](https://rinae.dev/posts/fix-circular-dependency-kr)
@@ -491,13 +491,13 @@ const Wrap = styled.div`
   background: #eee;
 `;
 
-export const Loading: React.FunctionComponent<Props> = props =>
+export const Loading: React.FunctionComponent<Props> = (props) =>
   props.show ? <Wrap>Loading...</Wrap> : null;
 ```
 
 ```tsx
 // src/modules/sample/components/atoms/Button.tsx
-export const Button: FC<ButtonComponentProps> = props => (
+export const Button: FC<ButtonComponentProps> = (props) => (
   <Wrap
     type={props.submit ? "submit" : "button"}
     theme={props.color}
@@ -535,18 +535,13 @@ Container 에서 실제 사용 예제. 몇몇 코드는 생략 되어 있다.
 
 import React, { FC, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Button,
-  Loading,
-  SampleList,
-  SampleIcon
-} from "../components"; // index 를 이용함으로써 import 구문이 단순해진다.
+import { Button, Loading, SampleList, SampleIcon } from "../components"; // index 를 이용함으로써 import 구문이 단순해진다.
 
 const ReloadableComponent: FC = () => {
   const disaptch = useDispatch();
-  const loading = useSelector(state => state.loading);
-  const list = useSelector(state => state.list);
-  const totalCount = useSelector(state => state.totalCount);
+  const loading = useSelector((state) => state.loading);
+  const list = useSelector((state) => state.list);
+  const totalCount = useSelector((state) => state.totalCount);
   const handleLoading = () => dispatch(actListLoad());
 
   useEffect(() => {

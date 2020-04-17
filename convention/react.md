@@ -46,7 +46,7 @@ export const SampleInput = hocDebounce(SampleInputComponent);
 
 ## Component
 
-UI 컴포넌트는 가능한한 **함수형 컴포넌트 (Functional Component)**로 작성하며 hooks 를 적극 이용하여 작성하는 것을 기본으로 한다.
+UI 컴포넌트는 가능한한 **함수형 컴포넌트 (Functional Component)** 로 작성하며 hooks 를 적극 이용하여 작성하는 것을 기본으로 한다.
 
 또한 컴포넌트는 아래와 같이 2가지만 책임지도록 한다.
 
@@ -564,7 +564,7 @@ export const SampleContainer: FC = (props) => {
 
 위와 같이 함수형 컴포넌트에 hook을 활용한다.
 
-이벤트 헨들러 이용 시 전달되는 이벤트 프로퍼티명을 기준으로 **on**을 **handler**로 바꾸어 헨들러를 명시하여 사용한다.
+이벤트 헨들러 이용 시 전달되는 이벤트 프로퍼티명을 기준으로 **on** 을 **handler** 로 바꾸어 헨들러를 명시하여 사용한다.
 
 만약 외부 Page Component 에서 받아올 파라미터가 필요하다면 위와 같이 Props 인터페이스를 선언하여 사용한다.
 
