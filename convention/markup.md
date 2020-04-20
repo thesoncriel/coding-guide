@@ -539,7 +539,7 @@ form 요소의 onSubmit 이벤트가 처리되는 자세한 내역은 각 framew
 
 분명한 것은 웹표준상, &lt;div&gt; 나 &lt;sapn&gt; 은 button 역할을 위한 요소가 아니라는 것이다!
 
-- [참고](https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-011100101)
+- [참고1](https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-011100101)
 
 따라서 버튼은 &lt;button&gt; 요소만을 이용하여 구성한다. 가령 현재 페이지에 머물면서 Modal/Popup 을 띄우거나 Form 입력 내용을 동작 시키는 등 사용자와의 소통(Interaction)을 위한 도구일 때 이다.
 
@@ -553,6 +553,8 @@ form 요소의 onSubmit 이벤트가 처리되는 자세한 내역은 각 framew
 - tab 이나 modal 을 여는 용도인데, history 관리를 별도로 하여 뒤로가기 등의 웹브라우저 액션에 의하여 이전에 선택했던 tab 이나 열렸던 modal이 닫힐 때
 
 즉, 사용자의 뒤로가기 행위에 따라 history 혹은 routing 을 이용하여 이전 상태를 보여줄 필요가 있는 것들은 &lt;a&gt; 요소를 권장한다.
+
+- [참고2](https://karlgroves.com/2013/05/14/links-are-not-buttons-neither-are-divs-and-spans)
 
 ## Typography
 
