@@ -46,15 +46,16 @@ Feature 는 일반적으로 `기능` 위주이고, 그 뜻은 각 페이지 라�
   - custom hook 을 정의한 곳. 이러한 hook 은 반드시 UI Component 내에서만 사용토록 한다.
   - hoc 를 거친 컴포넌트는 atomic design 기준, complex 로 간주된다.
 - interactors
-  - conext 의 상태를 이용하여 비동기 및 자료조작 등 전반적인 비즈니스 로직이 구성되는 곳이다.
+  - context 의 상태를 이용하여 비동기 및 자료조작 등 전반적인 비즈니스 로직이 구성되는 곳이다.
   - 간단한건 context 선언 시 함께 작성해도 되나, 가급적 이 곳에 관련 인터렉터를 구성하길 권장한다.
   - 각종 data service 는 이곳에서만 이용한다.
 - messages
   - 긴 메시지가 쓰인다면 이곳에 정의하고 import 해서 사용한다.
   - template 성향의 메시지도 이 곳에 정의해서 i18n 등과 함께 조합하여 사용한다.
+  - 구성 되는 메시지 상수는 접두어로 `MSG_`를 쓰도록 한다
 - models - 업무에 쓰이는 각종 데이터 모델을 정의한다. 크게 server model, ui model 등이 있다.
   - {feature}-server.model.ts - 서버에서 온 도메인 모델 모음.
-  - {feature}-ui.model.ts - Presentation Model Pattern 에 따라 UI 로직에 에 적합하게 변환된 모델. Context 의 State 는 반드시 이 모델을 기반으로 구성되어야 한다.
+  - {feature}-ui.model.ts - Presentation Model Pattern 에 따라 UI 로직에 적합하게 변환된 모델. Context 의 State 는 반드시 이 모델을 기반으로 구성되어야 한다.
     - 만약 서버 모델이 UI 친화적일 경우 단순히 type 문으로 alias 하여 넘겨주고 이 것을 이용토록 한다.
 - pages
   - 특정 라우트에 대응되는 페이지 자체를 렌더링 하는 컴포넌트. 자세한 가이드는 [다음링크](https://www.google.com)를 확인 한다.
