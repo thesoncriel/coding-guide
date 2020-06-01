@@ -18,9 +18,9 @@
 
 이유는 명백하다. 컴포넌트를 쪼개야 하기 때문이다.
 
-안쪼개고 그냥 쓴다고?
+안쪼개고 그냥 쓰게 되면,
 
-그럼 내부에 각종 UI 로직과 스타일이 얽히고 섥혀서 CBD(Component Based Development) 기반 개발이 될 수가 없다.
+내부에 각종 UI 로직과 스타일이 얽히고 섥혀서 CBD(Component Based Development) 기반 개발이 될 수가 없다.
 
 CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할 때의 기준이 필요하다.
 
@@ -290,7 +290,7 @@ interface Props {
   onChange: (event: KeyboardEvent) => void;
 }
 
-export const SampleInput: FC<Props> = props => {
+export const SampleInput: FC<Props> = (props) => {
   // 이런 데이터 중 필요한 데이터를 추출하고 검증하는 등 데이터 로직이 들어가면 필연적으로 비대해 진다.
   // 보라! 결국 이 컴포넌트에게 필요한 건 나이 숫자값과 입력값 변경에 대한 이벤트 뿐이다!
   const age =
@@ -389,7 +389,7 @@ export interface SampleButtonProps {
 export const SampleButton: FC<SampleButtonProps> = ({
   name,
   onClick,
-  children
+  children,
 }) => {
   return (
     <Button type="button" name={name} onClick={onClick}>
@@ -417,12 +417,12 @@ Page 를 제외한 모든 컴포넌트는 export 시 default 를 쓰지 아니�
 // ExampleButton.tsx
 
 // what ?!
-export default props => {
+export default (props) => {
   // ..codes
 };
 
 // good good !!
-export const ExampleButton: FC<Props> = props => {
+export const ExampleButton: FC<Props> = (props) => {
   // ..codes
 };
 ```
@@ -440,7 +440,7 @@ export const {파일명} = hoc({파일명}Component);
 
 // bad
 
-const ExampleButton: FC<Props> = props => {
+const ExampleButton: FC<Props> = (props) => {
   // ..codes
 };
 
@@ -452,7 +452,7 @@ export default hocCustom(ExampleButton);
 
 // good good !!
 
-const ExampleButtonComponent: FC<Props> = props => {
+const ExampleButtonComponent: FC<Props> = (props) => {
   // ..codes
 };
 
@@ -461,9 +461,9 @@ export const ExampleButton = hocCustom(ExampleButtonComponent);
 
 ### 7. import 시 주의 (순환적 의존)
 
-import 는 `./components` 와 같이 index.ts 를 대상으로 가져와서 사용한다.
+컴포넌트 끼리가 아닌 외부에서 import 할 때는 `./components` 와 같이 index.ts 를 대상으로 가져와서 사용한다.
 
-단, 아래처럼 의도치 않게 circular dependancies 가 발생되기도 하므로 주의한다.
+만약 컴포넌트 끼리 import 하면, 아래처럼 의도치 않게 circular dependancy 가 발생되기도 하므로 주의한다.
 
 ```tsx
 // 순환적 의존이 의심된다..
@@ -473,10 +473,10 @@ import {
   SampleInput, // atoms/...
   SampleWrap, // atoms/...
   WhatTheHellSelect, // combines/...
-  AutoCompleteContainer // containers/...
+  AutoCompleteContainer, // containers/...
 } from "../"; // index.ts
 
-export const ComplexPanel: FC<Props> = props => {
+export const ComplexPanel: FC<Props> = (props) => {
   return (
     <SampleWrap>
       <SampleInput />
@@ -497,7 +497,7 @@ import { SampleInput, SampleWrap } from "../atoms";
 import { WhatTheHellSelect } from "../combines";
 import { AutoComplete } from "../containers";
 
-export const ComplexPanel: FC<Props> = props => {
+export const ComplexPanel: FC<Props> = (props) => {
   return (
     <SampleWrap>
       <SampleInput />
