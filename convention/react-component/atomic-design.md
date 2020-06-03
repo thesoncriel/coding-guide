@@ -4,7 +4,7 @@
 
 아토믹 디자인이란 각 페이지 부터 컴포넌트 까지 쪼개어지는 단위를 마치 화학구조의 그것을 닮도록 구조를 만드는 것에서 비롯된 패턴이다.
 
-## 개요
+# 개요
 
 먼저 아래의 내용을 읽고 오길 권장한다.
 
@@ -14,7 +14,7 @@
 
 그러나 웹프론트엔드는 각각의 기능별로 컴포넌트를 만들어서 사용하기에 이에 맞춰 좀 더 확장된 기준을 제시한다.
 
-## 사용 이유
+# 사용 이유
 
 이유는 명백하다. 컴포넌트를 쪼개야 하기 때문이다.
 
@@ -30,7 +30,7 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 
 그 방법론으로 아토믹 디자인을 이용하는 것이다.
 
-### 오해?!
+## 오해?!
 
 아토믹은 View 단을 쪼개는 기준을 제시 할 뿐이지, 비즈니스 로직은 염두에 두고 있지 않다!
 
@@ -38,19 +38,20 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 
 여기선 오직 View 측 UI 컴포넌트의 분리에 대해서만 다룬다.
 
-## 작성 방법
+# 작성 방법
 
 이제부터 설명할 아래 내용들을 요약하면 아래와 같은 조건으로 정리된다.
 
 1. 5단계로 쪼개며 각각 atoms, combines, complexes, containers, pages 이다.
 2. 하나의 컴포넌트는 최대 5개의 다른 컴포넌트 요소를 가질 수 있다.
 3. List 컴포넌트안에는 단 1가지의 Item 컴포넌트만 가질 수 있다.
-4. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
-5. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
-6. export 는 Page 를 제외, default 를 쓰지 않는다.
-7. import 시 circular dependancy 주의
+4. 컴포넌트는 `Controlled dumb Component` 형식으로 만든다. [참고](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
+5. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
+6. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
+7. export 는 Page 를 제외, default 를 쓰지 않는다.
+8. import 시 circular dependancy 주의
 
-### 1. 각 단계별 명칭
+# 1. 각 단계별 명칭
 
 위 블로그 내용처럼 5가지 구분 단계로 나뉘되 각 단계는 아래와 같이 실제 적용 기준을 변경하여 사용한다.
 
@@ -62,7 +63,7 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 | 4    | Templates   | Containers    | 하나의 업무를 구성할 수 있는 단위. Store 에서 State 및 Dispatch 한다.<br />내부에 스타일 코드를 가져선 안된다.<br />컨테이너는 내부에 또 다른 컨테이너를 가질 수 있다.                                            |                     |
 | 5    | Pages       | 동일          | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     |
 
-#### Atoms ~ Complexes
+## Atoms ~ Complexes
 
 이들 1~3단계 컴포넌트들은 스타일링을 포함시킬 수 있는 유일한 컴포넌트이다.
 
@@ -80,7 +81,7 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 
 반응형(responsible/scalable)은 한 컴포넌트에서 media query 로 대처하되, 적응형(adaptive)은 이 후 내용을 참고 한다.
 
-##### 스타일 중복은 어떻게 ??
+### 스타일 중복은 어떻게 ??
 
 방법은 아래와 같다.
 
@@ -94,7 +95,7 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 
 4번 채택시 단점으론, 여기저기 마구 가져와 확장시켜 쓸 수도 있긴 하지만, 이럴 땐 다시 분리해서 정의하면 된다.
 
-#### Container
+## Container
 
 컨테이너 컴포넌트는 Redux 의 Store 나 Context 의 State 에 접근하여 하위 컴포넌트에 제공 될 수 있는 유일한 컴포넌트다.
 
@@ -109,7 +110,7 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 3. Did-mount 시 자료 호출을 맡을 수 있다.
    - 다만 여러 sibling container 들에 영향을 미치기에 특정 컨테이너를 선택해 두기 애매하다면, 보다 상위 Container 를 만들어 포함 시키던지, 아니면 상위 Page 에서 호출 시키는 것도 나쁘지 않다.
 
-##### PageContainer
+### PageContainer
 
 페이지 컨테이너는 페이지 컴포넌트에서만 쓰이는 특별한 컨테이너 컴포넌트이다.
 
@@ -122,7 +123,7 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 
 기본적으로 공용으로 사용되지만, 만약 페이지마다 레이아웃이나 메타 데이터등의 요소가 달라진다면 (당연히) 페이지별로 따로 페이지 컨테이너를 만들어 운용한다.
 
-#### Page
+## Page
 
 페이지 컴포넌트는 아래와 같은 일을 주로 맡는다.
 
@@ -133,13 +134,13 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
    - 만약 그 레이아웃 처리가 한 페이지를 모두 덮는 (Wrapping) 형태라면 차라리 페이지 컨테이너를 그렇게 고치자.
      - 현재 Feature 에서 공용으로 쓰고 싶어서 그랬다고? 그냥 페이지별로 따로 만들어라...
 
-#### 정리
+## 정리
 
 각 5단계의 레벨별 컴포넌트는 자신만의 역할이 확실히 분리되어 있다.
 
 이들 역할을 반드시 지킬 수 있도록 노력한다.
 
-### 2. 최대 5개의 요소
+# 2. 최대 5개의 요소
 
 컴포넌트 하나당 최대 5개의 요소를 허용한다.
 
@@ -178,7 +179,7 @@ export const SimpleInput: FC<Props> = ({ value, onChange }) => {
 };
 ```
 
-### 3. List 안에는 1가지 Item
+# 3. List 안에는 1가지 Item
 
 List 컴포넌트를 작성할 때 아래와 같이 Array.prototype.map 을 이용하여 반복자 처리하는 경우가 많다.
 
@@ -260,7 +261,97 @@ export const List: FC<Props> = ({ items }) => {
 
 이렇게 되면 기존 Combine 요소였던 `List` 컴포넌트는 추가된 `Item` 컴포넌트로 인하여 Complex 로 승격될 수 있다.
 
-### 4. 단순함
+# 4. 내부 컴포넌트에 대한 조건별 렌더링 사용 제한
+
+아래와 같이 컴포넌트를 사용함에 있어 children 을 통한 Wrapping 은 매우 자연스러운 현상이다.
+
+```tsx
+// no problem!
+
+const Sample: FC = ({ title, desc, imgSrc }) => {
+  return (
+    <Section>
+      <Heading>{title}</Heading>
+      <Article>
+        <Image src={imgSrc} />
+        <Paragraph>{desc}</Paragraph>
+      </Article>
+    </Section>
+  );
+};
+```
+
+다만, 아래와 같이 조건에 따른 출력을 하는 경우가 있다.
+
+```tsx
+const Sample: FC = ({ title, desc, imgSrc }) => {
+  return (
+    <Section>
+      <Heading>{title}</Heading>
+      {!!desc && (
+        <Article>
+          <Image src={imgSrc} />
+          <Paragraph>{desc}</Paragraph>
+        </Article>
+      )}
+    </Section>
+  );
+};
+
+// -------- or --------
+
+// Article 대신 Fragment 사용
+const Sample: FC = ({ title, desc, imgSrc }) => {
+  return (
+    <Section>
+      <Heading>{title}</Heading>
+      {!!desc && (
+        <>
+          <Image src={imgSrc} />
+          <Paragraph>{desc}</Paragraph>
+        </>
+      )}
+    </Section>
+  );
+};
+```
+
+이런 경우는 아래와 같이 변경한다.
+
+```tsx
+// 추가됨 ! - Fragment 사용 시 예제
+const Description: FC<Props> = ({ imgSrc, show, children }) => {
+  if (!show) {
+    return null;
+  }
+  return (
+    <>
+      <Image src={imgSrc} />
+      <Paragraph>{children}</Paragraph>
+    </>
+  );
+};
+
+// 변경된 샘플 컴포넌트.
+const Sample: FC<Props> = ({ title, desc, imgSrc }) => {
+  return (
+    <Section>
+      <Heading>{title}</Heading>
+      <Description show={!!desc} src={imgSrc}>
+        {desc}
+      </Description>
+    </Section>
+  );
+};
+```
+
+즉, 자기 자신에 대한 최종 변경 권한은 자기 자신에게 두어야 한다.
+
+이러한 컴포넌트를 `Controlled dumb Component(제어되는 멍청한 컴포넌트)` 라 부른다.
+
+[참고글](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
+
+# 5. 단순함
 
 UI 컴포넌트는 그 내부에 데이터 조작 로직이 가능한 한 들어가서는 안된다.
 
@@ -268,7 +359,7 @@ UI 컴포넌트는 그 내부에 데이터 조작 로직이 가능한 한 들어
 
 즉 관심사 분리 (Separation of Concerns) 원칙을 지키도록 한다.
 
-#### 잘못된 예시
+## 잘못된 예시
 
 ```tsx
 // bad
@@ -323,7 +414,7 @@ export const ExecutionContainer: FC = () => {
 };
 ```
 
-#### 잘 된 예시
+## 잘 된 예시
 
 ```tsx
 // good !
@@ -359,7 +450,7 @@ export const ExecutionContainer: FC = () => {
 };
 ```
 
-### 5. Props Interface
+# 6. Props Interface
 
 React 와 TypeScript 를 함께 쓰는 프로젝트 기준, 컴포넌트의 프로퍼티 정의는 인터페이스(interface)를 사용한다.
 
@@ -399,7 +490,7 @@ export const SampleButton: FC<SampleButtonProps> = ({
 };
 ```
 
-### 6. export 규칙
+# 7. export 규칙
 
 SSOT (Single Source Of Truth - 단일진실공급원) 원리에 따라 모든 컴포넌트는 자신이 속한 모듈내 `index.ts` 파일에 자신의 사용처를 제한한다.
 
@@ -409,7 +500,7 @@ SSOT (Single Source Of Truth - 단일진실공급원) 원리에 따라 모든 �
 
 단, index.ts 내에 주변의 모든 컴포넌트를 export 를 넣어줘야하는 불편함은 vscode 기준, `export-typescript` 확장 기능을 이용하면 매우 편리하게 대처할 수 있다!
 
-#### 작성 방법
+## 작성 방법
 
 Page 를 제외한 모든 컴포넌트는 export 시 default 를 쓰지 아니한다.
 
@@ -459,7 +550,7 @@ const ExampleButtonComponent: FC<Props> = (props) => {
 export const ExampleButton = hocCustom(ExampleButtonComponent);
 ```
 
-### 7. import 시 주의 (순환적 의존)
+# 8. import 시 주의 (순환적 의존)
 
 컴포넌트 끼리가 아닌 외부에서 import 할 때는 `./components` 와 같이 index.ts 를 대상으로 가져와서 사용한다.
 
@@ -509,3 +600,5 @@ export const ComplexPanel: FC<Props> = (props) => {
 ```
 
 이렇게 각 레벨별로 따로 불러오면 해결된다.
+
+순환적 의존은 비단 컴포넌트 만의 문제가 아니라 프로젝트 전반적으로 주의해야 할 사항이다. 😄
