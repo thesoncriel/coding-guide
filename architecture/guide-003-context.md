@@ -107,6 +107,8 @@ export const sampleInteractor = (
 ## 컨텍스트 패키지 사용 예시
 
 ```tsx
+// SampleContainer.tsx
+
 const SampleComponent = () => {
   const { items } = sampleContext.useSelectorAll();
   const inter = sampleContext.useInteractor();
