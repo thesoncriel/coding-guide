@@ -52,6 +52,7 @@ TypeScript 기반으로 작업하는 특성상, 관련 타입을 먼저 작성�
 | Convert    |         | /services    | article.convert.ts      |
 | Extract    |         | /services    | article.extract.ts      |
 | Create     |         | /services    | article.create.ts       |
+| Merge      |         | /services    | article.merge.ts        |
 | Parse      |         | /services    | article.parse.ts        |
 | Context    |         | /contexts    | article.context.ts      |
 | Interactor |         | /interactors | article.interactor.ts   |

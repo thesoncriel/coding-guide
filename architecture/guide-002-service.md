@@ -71,7 +71,7 @@ export const cdnApi = apiFactory(appConfig.cdnBaseUrl);
 /**
  * 공개된 API 를 통해 가져오는 서비스.
  */
-export const publicApi = apiFactory('');
+export const publicApi = apiFactory(''); // 정해진 도메인이 없으므로 빈 값을 준다.
 ```
 
 ### 서비스 작성 예시
@@ -90,7 +90,9 @@ export const blogDataService = {
 };
 ```
 
-root object 에 data 나 items 가 있을 경우 아래와 같이 즉석 타입을 넣지 않고 미리 정의된 `DataRes` 나 `ItemsRes` 를 대신 이용한다.
+위와 같이 root object 에 data 나 items 가 있을 경우 즉석 타입을 넣지 않고 미리 정의된 `DataRes` 나 `ItemsRes` 를 대신 이용한다.
+
+즉, 아래와 같은 작성법은 권장하지 않는다.
 
 ```ts
 // bad
@@ -138,11 +140,15 @@ export const addressDataService = {
 
 ## 2. Data Manipulation
 
-데이터 조작기는 크게 3가지 유형으로 분류된다.
+데이터 조작기는 크게 4가지 유형으로 분류된다.
 
-- create : 자료를 생성한다. 테스트용 mock data 나 복잡한 detail model 이나 item model 등을 만들어준다.
-- convert : 자료를 변환한다. `Presentation Model Pattern`에 따라 주로 서버 모델 -> Ui 모델로의 변환이 이뤄진다. 반대의 경우도 발생된다. (예: put, post 처리를 위한 request body 자료 변환용)
-- extract : 자료에서 특정 자료를 추출한다. 대체로 convert 의 하위 작업으로 발생된다. 여기서 추출이라 함은 depth 가 깊은 특정 객체의 필요한 부분만 가져오거나, 길고 긴 자료의 필요한 부분만 추출하는 등의 행위를 의미 한다. 조건별 필터링 등도 해당된다.
+- create : 자료를 생성한다. 테스트용 mock data 나 복잡한 detail model, item model 등을 만들어준다.
+- convert : 자료를 변환한다. `Presentation Model Pattern`에 따라 주로 서버 모델 -> Ui 모델로의 변환이 이뤄지며, 반대의 경우도 발생된다. (예: put, post 처리를 위한 request body 자료 변환용)
+- extract : 자료에서 특정 자료를 추출한다. 대체로 convert 의 하위 작업으로 발생된다. 여기서 추출이라 함은 아래와 같은 상황을 말한다. (모든 경우는 아님)
+   - depth 가 깊은 특정 객체의 필요한 부분만 가져오기
+   - 길고 긴 자료의 필요한 부분만 추출하기
+   - 조건별 필터링
+- merge : 두가지 이상의 자료를 하나로 병합한다. convert 와의 차이점이라면 convert 는 `A -> B` 형태로 끝나지만, merge 는 `A,B,[...n] -> Z` 의 형식인 것이다. 이 때 대상자료(A,B 등등)는 배열이 아님을 유의한다.
 
 ### 작성 요령
 
@@ -154,9 +160,15 @@ export const addressDataService = {
 
 여기서 주의점은 이 자료 변환기는 **절대 Data Service, Component 에서 쓰이면 안된다**는 것이다.
 
-(단, Mockup 자료를 위한 테스트 용도로써 잠시 Data Service 에서의 활용은 가능하다.)
+(단, Data Service 에서 테스트 용도로써 Mockup 자료 생성 및 활용은 가능하다.)
 
 ### 작성 예시
+
+보통은 이렇게 깔끔(?) 하게 끝나는 경우가 대부분이지만, 각 변환 및 조작 과정에 있어 다른 기능을 가져다 쓰는 경우가 있을 수 있다.
+
+가령 convert 를 하는데, merge 나 기본 자료 생성을 위한 create 가 필요할 수 있다.
+
+아래는 각 상황별 작성 예시이다.
 
 ```ts
 // blog.create.ts
@@ -177,6 +189,17 @@ export function createBlogListUiModelItem_mock(): BlogListUiModelItem {
     title: '포메는 사랑입니다!',
     tagList: [],
     imageUrl: 'https://www.pompom.com/image/12356',
+  };
+}
+
+// 특정 인자 값을 넣으면 다른 결과가 나오는 팩토리
+export function createTempUser(type: UserType = UserType.GUEST): UserModel {
+  return {
+    name: getNameByType(type),
+    age: 13,
+    school: 'seocho middle school',
+    classNo: 4,
+    speciality: 'Computer Science',
   };
 }
 ```
@@ -210,6 +233,42 @@ export function toNewCartUiModelItem(res: CartResItem): NewCartUiModelItem {
     subGoods: res.subList.map(toSubGoods),
     addedDate: res.date || new Date(),
   };
+}
+
+// 만약 특정 정보가 Array 형식이면 단일 변환과 더불어 아래와 같이 다수 변환기를 별도로 만들어 만들어 사용한다.
+export function toNewCartUiModelItems(items: CartResItem[]): NewCartUiModelItem[] {
+  return items.map(toNewCartUiModelItem);
+}
+```
+
+```ts
+// 몇가지의 서로 다른 데이터를 병합 할 시엔 필연적으로 변환 작업이 필요하다.
+// 이 때 그 변환 작업이 길어지면, 별도 함수를 각 서비스에 작성, import 하여 사용한다.
+
+// shipOwner.merge.ts
+
+import { extractLatestLocName } from './shipOwner.extract';
+
+// 선박 정보와 사용자 정보를 합쳐 선주(Ship Owner) 정보를 만든다.
+export function mergeForShipOwner(ship: ShipModel, user: UserModel): ShipOwnerModel {
+  return {
+    userName: user.name,
+    userAge: user.age,
+    shipName: ship.name,
+    location: extractLatestLocName(ship),
+    price: ship.shopInfo.myShip.cost,
+    writtenAt: new Date(),
+  };
+}
+
+// shipOwner.extract.ts
+
+export function extractLatestLocName(ship: ShipModel) {
+  try {
+    return ship.locations[ship.locations.length - 1].locName;
+  } catch(e) {
+    return '';
+  }
 }
 ```
 
