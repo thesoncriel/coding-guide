@@ -82,5 +82,5 @@ type 은 다음 표를 참고 한다.
 
 1. [모델 작성](guide-001-model.md)
 2. [서비스 작성](guide-002-service.md)
-3. [서비스 작성](guide-003-context.md)
+3. [컨텍스트 작성](guide-003-context.md)
 4. [컴포넌트 작성(Atomic Design)](atomic-design.md)
