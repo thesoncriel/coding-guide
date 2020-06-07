@@ -94,8 +94,10 @@ root object 에 data 나 items 가 있을 경우 아래와 같이 즉석 타입�
 
 ```ts
 // bad
+
 export const blogDataService = {
   loadBlogList(params: BlogSearchParams) {
+    // 아래와 같은 즉석 타입은 사용하지 않는다.
     return baseApi.get<{ items: BlogResItem[] }>('/api/blog', params);
   },
 };
