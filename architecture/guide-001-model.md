@@ -23,7 +23,9 @@ export enum TrainUserType {
 }
 ```
 
-이러한 모델들은 다음과 같이 크게 2가지로 구분 되어진다.
+만약 Array 나 Object 상수가 필요할 경우, 그 내용은 이곳 Model 에 작성하지 말고, [Create Service](guide-002-service.md) 를 통해서 이용토록 한다.
+
+프로젝트에서 쓰이는 모델들은 다음과 같이 크게 `Server Model` 과 `UI Model` 2가지로 구분 된다.
 
 ## Server Model
 
