@@ -2,7 +2,7 @@
 
 상태 관리는 프론트엔드 기능의 핵심이다.
 
-사실상 이곳으로 화면에 맞는 자료를 주기위해 이전의 모든 과정이 있다 봐도 과언이 아니다.
+사실상 이곳으로 화면에 맞는 자료를 주기 위해 이전의 모든 과정이 있다 봐도 과언이 아니다.
 
 그 와 함께 비동기 자료와 이벤트 처리를 위한 Effect 및 Interactor 도 함께 언급할 것이다.
 
@@ -151,8 +151,8 @@ export const SampleContainer = sampleContext.withCtx(SampleComponent);
 ```ts
 // duplicate.context.ts
 export const duplicateContext = contextInjector(getInitState(), interactor);
-
 ```
+
 ```tsx
 // OneContainer.tsx
 const OneComponent = () => {
@@ -167,6 +167,7 @@ const OneComponent = () => {
 
 export const OneContainer = duplicateContext.withCtx(OneComponent);
 ```
+
 ```tsx
 // TwoContainer.tsx
 const TwoComponent = () => {
@@ -181,6 +182,7 @@ const TwoComponent = () => {
 
 export const TwoContainer = duplicateContext.withCtx(TwoComponent);
 ```
+
 이렇게 사용하면, 가장 최근에 적용한 컨테이너에만 의도대로 동작되는 생각치도 못한 오류가 발생된다.
 
 만약 이렇게 쓸 경우엔 아래와 같이 상위 컨테이너를 만들고 여기에 `withCtx`를 사용한다.
@@ -200,6 +202,7 @@ const ParentComponent = () => {
 
 export const ParentContainer = duplicateContext.withCtx(ParentComponent);
 ```
+
 ```tsx
 // OneContainer.tsx
 export const OneContainer = () => {
@@ -212,6 +215,7 @@ export const OneContainer = () => {
   );
 };
 ```
+
 ```tsx
 // TwoContainer.tsx
 export const TwoContainer = () => {
@@ -267,14 +271,11 @@ const NowUseComponent = () => {
 
 export const NowUsePage = subContext.withCtx(
   childContext.withCtx(
-    yourContext.withCtx(
-      ourContext.withCtx(
-        NowUseComponent
-      )
-    )
-  )
+    yourContext.withCtx(ourContext.withCtx(NowUseComponent)),
+  ),
 );
 ```
+
 다소 극단적인 예시이지만, 업무를 구성하다 보면 이런 일도 있지 않을까 한다.
 
 다만, 이런 경우가 발생 되었다면 이 후 저 컨텍스트는 하나로 묶어서 쓰도록 리팩토링이 필요한 시점일 수도 있다.
