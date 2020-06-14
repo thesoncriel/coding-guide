@@ -46,10 +46,11 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 2. 하나의 컴포넌트는 최대 5개의 다른 컴포넌트 요소를 가질 수 있다.
 3. List 컴포넌트안에는 단 1가지의 Item 컴포넌트만 가질 수 있다.
 4. 컴포넌트는 `Controlled dumb Component` 형식으로 만든다. [참고](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
-5. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
-6. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
-7. export 는 Page 를 제외, default 를 쓰지 않는다.
-8. import 시 circular dependancy 주의
+5. 조건별 컴포넌트 출력은 `A or B` 형식을 지킨다.
+6. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
+7. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
+8. export 는 Page 를 제외, default 를 쓰지 않는다.
+9. import 시 circular dependancy 주의
 
 # 1. 각 단계별 명칭
 
@@ -172,7 +173,7 @@ export const SimpleInput: FC<Props> = ({ value, onChange }) => {
 
 ```tsx
 // Material-UI 이용
-import { TextField } from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 
 export const SimpleInput: FC<Props> = ({ value, onChange }) => {
   return <TextField type="text" value={value} onChange={onChange} />;
@@ -351,7 +352,80 @@ const Sample: FC<Props> = ({ title, desc, imgSrc }) => {
 
 [참고글](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
 
-# 5. 단순함
+# 5. 조건별 컴포넌트 출력은 A or B
+
+데이터 로딩중일 때 대신 사용하는 Indicator 나 Skeleton 은 그 조건에 따라 출력하게 된다.
+
+이 때 조건에 따라 출력되는 컴포넌트는 A or B 형태어야 한다.
+
+즉 아래와 같은 형태여야 한다.
+
+```tsx
+const ViewContainer: FC = () => {
+  const { loading, items } = useSelector(selLoading);
+
+  return loading ? <ListSkeleton /> : <List items={items} />;
+};
+```
+
+만약 아래와 같이 Fragment 나 children 을 이용하게 된다면 별도 컴포넌트로 분리한다.
+
+```tsx
+// bad
+const ViewContainer: FC = () => {
+  const { loading, items } = useSelector(selLoading);
+
+  return loading ? (
+    <ListSkeleton />
+  ) : (
+    <>
+      <Header>
+        <Heading>쓱싹쓱싹</Heading>
+      </Header>
+      <List items={items} />
+    </>
+  );
+};
+```
+
+```tsx
+// good
+
+// ListPanel.tsx
+import { List, ListProps, Heading } from '../combines';
+
+// List 컴포넌트에서 export 한 자기자신의 Props 를 이용한다.
+const ListPanel: FC<ListProps> = ({ items }) => {
+  return (
+    <>
+      <Header>
+        <Heading>쓱싹쓱싹</Heading>
+      </Header>
+      <List items={items} />
+    </>
+  );
+};
+
+// ------------------------------------ //
+
+// ViewContainer.tsx
+
+const ViewContainer: FC = () => {
+  const { loading, items } = useSelector(selLoading);
+
+  return loading ? <ListSkeleton /> : <ListPanel items={items} />;
+};
+```
+
+이렇게 하는 까닭은 하나의 컴포넌트가 여러개의 책임을 지게 만드는 상황을 피하기 위함이다.
+
+즉 단일 책임 원칙 (Single Responsibility Principle)을 준수하기 위함이다.
+
+이렇게 책임을 분리 해 놓으면 깔끔한 코드가 완성된다.
+
+대체로 Fragment 로 감싸진 것은 하나의 컴포넌트로 분리된다 보아도 좋다.
+
+# 6. 단순함
 
 UI 컴포넌트는 그 내부에 데이터 조작 로직이 가능한 한 들어가서는 안된다.
 
@@ -407,7 +481,7 @@ export const ExecutionContainer: FC = () => {
   const handlerChange = (event: KeyboardEvent) => {
     const value = parseInt(event.target.value, 10) || 0;
 
-    dispatch({ type: "change", payload: value });
+    dispatch({ type: 'change', payload: value });
   };
 
   return <SampleInput value={data} onChange={handleChange} />;
@@ -443,14 +517,14 @@ export const ExecutionContainer: FC = () => {
   const age: number = useSelector(selDomainProfileAge);
 
   const handlerChange = (value: number) => {
-    dispatch({ type: "change", payload: value });
+    dispatch({ type: 'change', payload: value });
   };
 
   return <SampleInput value={age} onChange={handleChange} />;
 };
 ```
 
-# 6. Props Interface
+# 7. Props Interface
 
 React 와 TypeScript 를 함께 쓰는 프로젝트 기준, 컴포넌트의 프로퍼티 정의는 인터페이스(interface)를 사용한다.
 
@@ -490,7 +564,7 @@ export const SampleButton: FC<SampleButtonProps> = ({
 };
 ```
 
-# 7. export 규칙
+# 8. export 규칙
 
 SSOT (Single Source Of Truth - 단일진실공급원) 원리에 따라 모든 컴포넌트는 자신이 속한 모듈내 `index.ts` 파일에 자신의 사용처를 제한한다.
 
@@ -550,7 +624,7 @@ const ExampleButtonComponent: FC<Props> = (props) => {
 export const ExampleButton = withCustom(ExampleButtonComponent);
 ```
 
-# 8. import 시 주의 (순환적 의존)
+# 9. import 시 주의 (순환적 의존)
 
 컴포넌트 끼리가 아닌 외부에서 import 할 때는 `./components` 와 같이 index.ts 를 대상으로 가져와서 사용한다.
 
@@ -565,7 +639,7 @@ import {
   SampleWrap, // atoms/...
   WhatTheHellSelect, // combines/...
   AutoCompleteContainer, // containers/...
-} from "../"; // index.ts
+} from '../'; // index.ts
 
 export const ComplexPanel: FC<Props> = (props) => {
   return (
@@ -584,9 +658,9 @@ export const ComplexPanel: FC<Props> = (props) => {
 // good~!
 // ./components/complexes/ComplexPanel.tsx
 
-import { SampleInput, SampleWrap } from "../atoms";
-import { WhatTheHellSelect } from "../combines";
-import { AutoComplete } from "../containers";
+import { SampleInput, SampleWrap } from '../atoms';
+import { WhatTheHellSelect } from '../combines';
+import { AutoComplete } from '../containers';
 
 export const ComplexPanel: FC<Props> = (props) => {
   return (
