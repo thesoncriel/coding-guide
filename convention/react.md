@@ -79,7 +79,7 @@ React 컴포넌트의 구성 요소는 다음의 순서를 따른다. 그 외 �
 import React, { FC } from "react";
 import styled from "styled-components";
 import { SampleButton } from "./SampleButton";
-import { hocThrottle, hocSomething } from "../hoc";
+import { withThrottle, withSomething } from "../hoc";
 
 // 1. props 인터페이스
 interface Props {
@@ -94,7 +94,7 @@ const Wrap = styled.div`
 
 // 3. 이 곳에서만 사용되는 추가 요소 및 hoc 사용 컴포넌트.
 //    가급적 외부로 분리하여 import 권장
-const ThrottledButton = hocThrottle(SampleButton);
+const ThrottledButton = withThrottle(SampleButton);
 
 // 4. 외부 함수. 길어지면 외부로 분리하여 import 권장
 function getWidth() {
@@ -130,7 +130,7 @@ const SampleSectionComponent: FC<Props> = (props) => {
 };
 
 // 6.2. hoc 수행 후 본래 컴포넌트 이름으로 받고 export 수행.
-export const SampleSection = hocSomething(SampleSectionComponent);
+export const SampleSection = withSomething(SampleSectionComponent);
 ```
 
 ### JSX

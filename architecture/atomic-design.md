@@ -523,7 +523,7 @@ export const ExampleButton: FC<Props> = (props) => {
 ```
 const {파일명}Component = () => { /* ... */ };
 
-export const {파일명} = hoc({파일명}Component);
+export const {파일명} = with({파일명}Component);
 ```
 
 ```tsx
@@ -535,7 +535,7 @@ const ExampleButton: FC<Props> = (props) => {
   // ..codes
 };
 
-export default hocCustom(ExampleButton);
+export default withCustom(ExampleButton);
 ```
 
 ```tsx
@@ -547,7 +547,7 @@ const ExampleButtonComponent: FC<Props> = (props) => {
   // ..codes
 };
 
-export const ExampleButton = hocCustom(ExampleButtonComponent);
+export const ExampleButton = withCustom(ExampleButtonComponent);
 ```
 
 # 8. import 시 주의 (순환적 의존)
