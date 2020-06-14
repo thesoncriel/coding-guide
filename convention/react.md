@@ -35,7 +35,7 @@ const SampleInputComponent: FC<Props> = (props) => {
   /* code... */
 };
 
-export const SampleInput = hocDebounce(SampleInputComponent);
+export const SampleInput = withDebounce(SampleInputComponent);
 ```
 
 ### Atom - `Single Component` 조건
