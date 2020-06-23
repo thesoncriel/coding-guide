@@ -66,29 +66,31 @@ export interface SampleUpdatePayload {
 // sample.interactor.ts
 
 export const sampleInteractor = (
-  state: SampleState,
-  dispatch: Dispatch<SampleState>,
+  getState: () => SampleState,
+  dispatch: Dispatch<Partial<SampleState>>,
 ) => ({
+  // 액션 메서드 내 dispatch 수행 시 변화가 필요한 필드만 명시하여 반영한다.
+  // 나머지 object spread 는 라이브러리에서 처리 해 준다.
   async loadList() {
-    dispatch({ ...state, loading: true });
+    dispatch({ loading: true });
 
     try {
       const res = await baseApi.loadSampleList();
       const items = toSampleUiModelItems(res.items);
 
-      dispatch({ ...state, loading: false, items });
+      dispatch({ loading: false, items });
     } catch (e) {
-      didspatch({ ...state, loading: false });
+      didspatch({ loading: false });
     }
   },
   async updateItem(payload: SampleUpdatePayload) {
-    dispatch({ ...state, loading: true });
+    dispatch({ loading: true });
 
     try {
       const params = toSampleUpdateParams(payload.item);
       const { name } = await baseApi.updateItem(params);
 
-      const items = [...state.items];
+      const items = [...getState().items];
 
       // lazy patch 를 하고 있다.
       items[payload.index] = {
@@ -96,9 +98,9 @@ export const sampleInteractor = (
         name,
       };
 
-      dispatch({ ...state, loading: false, items });
+      dispatch({ loading: false, items });
     } catch (e) {
-      didspatch({ ...state, loading: false });
+      didspatch({ loading: false });
     }
   },
 });
