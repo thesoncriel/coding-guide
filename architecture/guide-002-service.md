@@ -6,6 +6,7 @@
 - 계산 및 처리 (Calcuation & Processing)
 - 자료 가공 (Data Manipulation)
 - 자료 분석 (Data Parsing)
+- 유효성 검사 (Validation Check)
 - 유틸리티 (Utillity)
 
 ...좀 장황하게 써 놨지만 저러한 유형이 모두 작성되는 경우는 매우 드물다!
@@ -145,10 +146,11 @@ export const addressDataService = {
 - create : 자료를 생성한다. 테스트용 mock data 나 복잡한 detail model, item model 등을 만들어준다.
 - convert : 자료를 변환한다. `Presentation Model Pattern`에 따라 주로 서버 모델 -> Ui 모델로의 변환이 이뤄지며, 반대의 경우도 발생된다. (예: put, post 처리를 위한 request body 자료 변환용)
 - extract : 자료에서 특정 자료를 추출한다. 대체로 convert 의 하위 작업으로 발생된다. 여기서 추출이라 함은 아래와 같은 상황을 말한다. (모든 경우는 아님)
-   - depth 가 깊은 특정 객체의 필요한 부분만 가져오기
-   - 길고 긴 자료의 필요한 부분만 추출하기
-   - 조건별 필터링
+  - depth 가 깊은 특정 객체의 필요한 부분만 가져오기
+  - 길고 긴 자료의 필요한 부분만 추출하기
+  - 조건별 필터링
 - merge : 두가지 이상의 자료를 하나로 병합한다. convert 와의 차이점이라면 convert 는 `A -> B` 형태로 끝나지만, merge 는 `A,B,[...n] -> Z` 의 형식인 것이다. 이 때 대상자료(A,B 등등)는 배열이 아님을 유의한다.
+- update: 특정 자료를 업데이트 한다. 일반적으론 많이 쓰일 일이 없으나, 그 업데이트 과정이 복잡할 경우 별도로 두어 사용 한다. 만약 단순 변환 이면 convert, extract, merge 를 이용한다.
 
 ### 작성 요령
 
@@ -236,7 +238,9 @@ export function toNewCartUiModelItem(res: CartResItem): NewCartUiModelItem {
 }
 
 // 만약 특정 정보가 Array 형식이면 단일 변환과 더불어 아래와 같이 다수 변환기를 별도로 만들어 만들어 사용한다.
-export function toNewCartUiModelItems(items: CartResItem[]): NewCartUiModelItem[] {
+export function toNewCartUiModelItems(
+  items: CartResItem[],
+): NewCartUiModelItem[] {
   return items.map(toNewCartUiModelItem);
 }
 ```
@@ -250,7 +254,10 @@ export function toNewCartUiModelItems(items: CartResItem[]): NewCartUiModelItem[
 import { extractLatestLocName } from './shipOwner.extract';
 
 // 선박 정보와 사용자 정보를 합쳐 선주(Ship Owner) 정보를 만든다.
-export function mergeForShipOwner(ship: ShipModel, user: UserModel): ShipOwnerModel {
+export function mergeForShipOwner(
+  ship: ShipModel,
+  user: UserModel,
+): ShipOwnerModel {
   return {
     userName: user.name,
     userAge: user.age,
@@ -266,7 +273,7 @@ export function mergeForShipOwner(ship: ShipModel, user: UserModel): ShipOwnerMo
 export function extractLatestLocName(ship: ShipModel) {
   try {
     return ship.locations[ship.locations.length - 1].locName;
-  } catch(e) {
+  } catch (e) {
     return '';
   }
 }
@@ -304,4 +311,14 @@ type 은 다음 표를 참고 한다.
 | format     | 서식(포맷) 관련                            | util.format.ts     |
 | etc        | 그 외 어느 카테고리에도 포함되지 않는 것들 | util.etc.ts        |
 
-기 작성된 유틸리티가 다른 곳에서도 쓰인다면, common module 로 옮겨서 공용화 할 수 있다.
+### 유의사항
+
+이들은 현재 Feature 내 `Domain Logic` 과 관련이 없어야 한다.
+
+여기서 도메인 로직이란, Feature Module 내 특정 Model 을 반드시 끼고 수행되는 로직들을 말한다.
+
+즉, 유틸리티가 되려면 이러한 `Domail Model` 과는 무관한 로직이어야 한다.
+
+다만 이들이 특정 Feature 내에 포함된 이유는 `이 곳 Feature 에서만 쓰이기 때문` 이다.
+
+한편, 기 작성된 유틸리티가 다른 곳에서도 쓰인다면, common module 로 옮겨서 공용화 할 수 있다.

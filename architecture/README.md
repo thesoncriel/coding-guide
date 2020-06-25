@@ -37,25 +37,25 @@ TypeScript 기반으로 작업하는 특성상, 관련 타입을 먼저 작성�
 상기 언급된 작성 순서에 따른 파일명 규칙은 다음과 같다.
 
 ```
-{feature[subFeature]}[-{subType}].{suffix}.ts
+{feature[subFeature]}.{subType}.ts
 ```
 
 아래는 Feature 가 `article` 일 때의 예시이다.
 
-| type       | subType | folder       | filename examples       |
-| :--------- | :------ | :----------- | :---------------------- |
-| Model      | Server  | /models      | article-server.model.ts |
-| Model      | UI      | /models      | article-ui.model.ts     |
-| Service    | Data    | /services    | article-data.service.ts |
-| Service    | Calc    | /services    | article-calc.service.ts |
-| Service    | Proc    | /services    | article-proc.service.ts |
-| Convert    |         | /services    | article.convert.ts      |
-| Extract    |         | /services    | article.extract.ts      |
-| Create     |         | /services    | article.create.ts       |
-| Merge      |         | /services    | article.merge.ts        |
-| Parse      |         | /services    | article.parse.ts        |
-| Context    |         | /contexts    | article.context.ts      |
-| Interactor |         | /interactors | article.interactor.ts   |
+| type       | subType    | folder       | filename examples     |
+| :--------- | :--------- | :----------- | :-------------------- |
+| Model      | Server     | /models      | article.server.ts     |
+| Model      | UI         | /models      | article.ui.ts         |
+| Service    | Data       | /services    | article.data.ts       |
+| Service    | Calc       | /services    | article.calc.ts       |
+| Service    | Proc       | /services    | article.proc.ts       |
+| Service    | Convert    | /services    | article.convert.ts    |
+| Service    | Extract    | /services    | article.extract.ts    |
+| Service    | Create     | /services    | article.create.ts     |
+| Service    | Merge      | /services    | article.merge.ts      |
+| Service    | Parse      | /services    | article.parse.ts      |
+| Context    | Context    | /contexts    | article.context.ts    |
+| Interactor | Interactor | /interactors | article.interactor.ts |
 
 유틸리티는 `/util` 내에 포함되며 예외적으로 아래와 같은 패턴을 따른다.
 

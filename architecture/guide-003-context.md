@@ -78,7 +78,11 @@ export const sampleInteractor = (
       const res = await baseApi.loadSampleList();
       const items = toSampleUiModelItems(res.items);
 
-      dispatch({ loading: false, items });
+      dispatch({
+        successCount: getState().successCount + 1,
+        loading: false,
+        items,
+      });
     } catch (e) {
       didspatch({ loading: false });
     }
@@ -99,6 +103,34 @@ export const sampleInteractor = (
       };
 
       dispatch({ loading: false, items });
+    } catch (e) {
+      dispatch({ loading: false });
+    }
+  },
+});
+```
+
+2020년 6월 24일 현재 기준, dispatch 수행 시 spread syntax 는 더이상 필요치 않다. (수행해도 상관은 없음)
+
+만약 `getState` 를 쓸 일이 없다면 아래와 같이 함수명을 underbar(\_) 로 바꿔준다.
+
+```ts
+export const sampleInteractor = (
+  // state 를 쓸 일이 없다면 요렇게 바꿔줘욥!!
+  _: () => SampleState,
+  dispatch: Dispatch<Partial<SampleState>>,
+) => ({
+  async loadList() {
+    dispatch({ loading: true });
+
+    try {
+      const res = await baseApi.loadSampleList();
+      const items = toSampleUiModelItems(res.items);
+
+      dispatch({
+        loading: false,
+        items,
+      });
     } catch (e) {
       didspatch({ loading: false });
     }
