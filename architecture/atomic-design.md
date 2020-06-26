@@ -56,13 +56,13 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 
 위 블로그 내용처럼 5가지 구분 단계로 나뉘되 각 단계는 아래와 같이 실제 적용 기준을 변경하여 사용한다.
 
-| 단계 | 명칭 (원본) | 명칭 (실사용) | 설명                                                                                                                                                                                                              | 예시                |
-| :--- | :---------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 1    | Atoms       | 동일          | 단일 컴포넌트 (Single Component). 더 이상 쪼개질 수 없는 최소한의 단위.                                                                                                                                           | Button, InputBox 등 |
-| 2    | Molecules   | Combines      | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       |
-| 3    | Organisms   | Complexes     | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     |
-| 4    | Templates   | Containers    | 하나의 업무를 구성할 수 있는 단위. Store 에서 State 및 Dispatch 한다.<br />내부에 스타일 코드를 가져선 안된다.<br />컨테이너는 내부에 또 다른 컨테이너를 가질 수 있다.                                            |                     |
-| 5    | Pages       | 동일          | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     |
+| atomic level | 명칭 (원본) | 명칭 (실사용) | 설명                                                                                                                                                                                                              | 예시                |
+| :----------- | :---------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 1            | Atoms       | 동일          | 단일 컴포넌트 (Single Component). 더 이상 쪼개질 수 없는 최소한의 단위.                                                                                                                                           | Button, InputBox 등 |
+| 2            | Molecules   | Combines      | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       |
+| 3            | Organisms   | Complexes     | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     |
+| 4            | Templates   | Containers    | 하나의 업무를 구성할 수 있는 단위. Store 에서 State 및 Dispatch 한다.<br />내부에 스타일 코드를 가져선 안된다.<br />컨테이너는 내부에 또 다른 컨테이너를 가질 수 있다.                                            |                     |
+| 5            | Pages       | 동일          | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     |
 
 ## Atoms ~ Complexes
 
@@ -111,31 +111,164 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 3. Did-mount 시 자료 호출을 맡을 수 있다.
    - 다만 여러 sibling container 들에 영향을 미치기에 특정 컨테이너를 선택해 두기 애매하다면, 보다 상위 Container 를 만들어 포함 시키던지, 아니면 상위 Page 에서 호출 시키는 것도 나쁘지 않다.
 
-### PageContainer
+## Page
 
-페이지 컨테이너는 페이지 컴포넌트에서만 쓰이는 특별한 컨테이너 컴포넌트이다.
+페이지 컴포넌트는 Routing System (React Route, Next Route 등) 에서 직접적으로 접근 가능한 유일한 컴포넌트다.
 
-이들은 아래와 같은 역할을 가진다.
+하나의 View 업무를 마무리 짓는 entry point 역할을 하기 때문이다.
+
+따라서 이들은 절대 다른 컴포넌트에 소속되는 일이 없다.
+
+이들은 아래와 같은 일을 주로 맡는다.
+
+1. 현재 페이지 호출 시 함께 전달된 Query Parameter 를 받아서 하위 컨테이너 컴포넌트에게 적절히 분배한다.
+2. PageTemplate 을 불러와 현재 페이지와 관련된 제목이나 전반적인 레이아웃 처리를 맡는다.
+3. (당연하지만) 가급적 스타일링 코드가 포함되면 안된다.
+4. (가능한 한) 하위에 컨테이너 컴포넌트만 가지도록 한다. 추가적인 레이아웃 처리가 필요하다면 그걸 처리하는 Container 나 Wapper Component 를 따로 만들고 아래에 하위 컨테이너를 두는 방향으로 하자.
+   - 만약 그 레이아웃 처리가 한 페이지를 모두 덮는 (Wrapping) 형태라면 차라리 PageTemplate 에게 그 기능을 위임한다.
+
+아래는 사용 예시 이다.
+
+```tsx
+const StylePage: FC = () => {
+  const { keyword } = useQueryParams<StylePageQuery>();
+
+  return (
+    <PageTemplate title="스타일의 완성!">
+      <KeywordSearchContainer keyword={keyword} />
+      <TopStyleSectionContainer />
+    </PageTemplate>
+  );
+};
+
+export default StylePage;
+```
+
+## 특수 컴포넌트
+
+아래는 특수한 상황에서 쓰이는 컴포넌트 종류이다.
+
+### PageTemplate (구 PageContainer)
+
+페이지 템플릿은 페이지 컴포넌트에서만 쓰이는 특별한 컴포넌트이다.
+
+이들은 아래와 같은 역할 및 특징을 가진다.
 
 1. 페이지 레이아웃 잡아주기
 2. header, footer, navigation 등 기본적으로 반복되는 요소들의 렌더링에 대한 책임
 3. title, description, open graph 등의 메타 데이터 관리
-   - title 을 제외한 나머지 자료는 Redux Store 나 Context State 에서 제공받는다.
+   - 필요하다면, title 을 제외한 나머지 자료는 Redux Store 나 Context State 에서 제공받을 수 있다.
+4. 일반적으로 `/components/pageTemplates` 내에 위치 한다.
 
-기본적으로 공용으로 사용되지만, 만약 페이지마다 레이아웃이나 메타 데이터등의 요소가 달라진다면 (당연히) 페이지별로 따로 페이지 컨테이너를 만들어 운용한다.
+기본적으로 공용으로 사용되지만, 만약 페이지마다 레이아웃이나 메타 데이터등의 요소가 달라진다면 (당연히) 페이지별로 따로 페이지 템플릿을 만들어 운용한다.
 
 **주의:** 현 페이지에서 쓰일 여러 Context 를 묶어서 보내지 않는다. 컨텍스트는 관련된 각각의 Container 가 책임을 져야 한다!
 
-## Page
+아래는 작성 예시 이다.
 
-페이지 컴포넌트는 아래와 같은 일을 주로 맡는다.
+```tsx
+interface Props {
+  title?: string;
+}
 
-1. 현재 페이지 호출 시 함께 전달된 Query Parameter 를 받아서 하위 컨테이너 컴포넌트에게 적절히 분배한다.
-2. PageContainer 를 불러와 현재 페이지와 관련된 제목이나 전반적인 레이아웃 처리를 맡는다.
-3. (당연하지만) 가급적 스타일링 코드가 포함되면 안된다.
-4. 하위에 컨테이너 컴포넌트만 가질 수 있다. 추가적인 레이아웃 처리가 필요하다면 그걸 처리하는 컨테이너를 따로 만들고 아래에 하위 컨테이너를 두는 방향으로 하자.
-   - 만약 그 레이아웃 처리가 한 페이지를 모두 덮는 (Wrapping) 형태라면 차라리 페이지 컨테이너를 그렇게 고치자.
-     - 현재 Feature 에서 공용으로 쓰고 싶어서 그랬다면, 그냥 페이지별로 따로 만들자!
+// 공통으로 가장 많이 쓰이는 페이지 템플릿은 아래와 같이 PageTemplate 으로 명칭을 고정한다.
+export const PageTemplate: FC<Props> = ({ title, children }) => {
+  // 필요하다면 컨텍스트를 이용할 수 있다.
+  const ogMeta = metaContext.useCtxSelector(selOgMeta);
+
+  // 필요에 따라 fragment 가 아닌 일반 Wapper 를 써도 된다.
+  return (
+    <>
+      <Helmet>
+        <meta content={ogMeta.descrition} property="og:description" />
+        <meta content={ogMeta.image} property="og:image" />
+        <meta content="StyleShare" property="og:site_name" />
+        <meta content="스타일쉐어" property="og:title" />
+        <meta content="website" property="og:type" />
+        <title>{title}</title>
+        <script>{getGtmScripts()}</script>
+        <script>{getThirdPartyScripts()}</script>
+      </Helmet>
+      {/* 페이지 헤더에는 일반적으로 GNB 가 들어간다. */}
+      <PageHeaderContainer />
+      {/* 반드시 <main> 요소를 이용한 Layout Wrapper 가 존재해야 하며, children 을 넘겨 주어야 한다. */}
+      <MainLayout>{children}</MainLayout>
+      <PageFooter />
+    </>
+  );
+};
+```
+
+### Adaptive Component
+
+프론트엔드 업무를 진행하다보면, 반응형(Responsive)이 아니라 적응형(Adaptive) 컴포넌트가 필요할 때가 있다.
+
+이런 경우엔 아래와 같이 정의 해둔 `withAdaptiveRender` HOC 를 이용한다.
+
+```tsx
+// ./feature/components/atoms/MobileViewPanel.tsx
+
+// 공통 Props 인터페이스 선언. 보통 모바일 컴포넌트에 선언되어 있다.
+export interface ViewPanelProps {
+  name: string;
+  age: number;
+}
+
+// 모바일 컴포넌트 선언
+export const MobileViewPanel: FC<ViewPanelProps> = (props) => {
+  // codes...
+};
+```
+
+```tsx
+// ./feature/components-desktop/atoms/DesktopViewPanel.tsx
+import { ViewPanelProps } from '../../components';
+
+// 데스크탑 컴포넌트 선언
+export const DesktopViewPanel: FC<ViewPanelProps> = (props) => {
+  // codes...
+};
+```
+
+```ts
+// ./feature/components/atoms/ViewPanelAdaptive.ts
+import { ViewPanelProps, MobileViewPanel } from './MobileViewPanel';
+import { DesktopViewPanel } from '../../components-desktop';
+
+// 적응형 컴포넌트 선언.
+// 반드시 generic 으로 공통된 Props 를 넣어준다.
+// 접미어로 Adaptive 를 반드시 명시 해준다.
+export const ViewPanelAdaptive = withAdaptiveRender<ViewPanelProps>({
+  mobile: MobileViewPanel,
+  desktop: DesktopViewPanel,
+});
+```
+
+```tsx
+// ./feature/components/combines/ClientView.tsx
+import { ViewPanelAdaptive } from '../atoms';
+
+// 사용 예시
+export const ClientView: FC = () => {
+  return (
+    <section>
+      <ViewPanelAdaptive name="쏜쌤" age={29} />
+    </section>
+  );
+};
+```
+
+만들어진 적응형 컴포넌트는 그 atomic level 이 원천 컴포넌트의 레벨과 동일 하다.
+
+즉 `atom + atom = atom` 이며, `combine + combine = combine` 이다.
+
+다만 다른 레벨일 경우 그 중 가장 높은 레벨의 것을 참조하게 된다.
+
+즉 `atom + combine = combine` 이며, `complex + atom = complex` 이다.
+
+이 규칙에 따라, atomic level 이 서로 다른 컴포넌트를 적응형으로 만들면, 보다 높은 레벨의 컴포넌트가 위치하는 곳에 두도록 한다.
+
+추가적으로, 적응형 컴포넌트가 위치하는 곳은 일반적으로 `components` 내에 두도록 한다.
 
 ## 정리
 
