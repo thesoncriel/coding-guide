@@ -1,6 +1,13 @@
 # Atomic Design Guide
 
-컴포넌트의 재사용성과 느슨한 결합성(loose coupling)을 위해 Atomic Design 이라 불리는 컴포넌트 분리 패턴을 따른다.
+아래와 같은 목적으로 Atomic Desgin 이라 불리는 컴포넌트 분리 패턴을 따른다.
+
+- 컴포넌트의 재사용성
+- 느슨한 결합성 (loose coupling)
+- 관심사 분리 (Separation of Concerns)
+- 단일 책임 원칙 (SRP - Single Responsibility Principle)
+- 유지 보수성 증대
+- 보기 좋은 코드
 
 아토믹 디자인이란 각 페이지 부터 컴포넌트 까지 쪼개어지는 단위를 마치 화학구조의 그것을 닮도록 구조를 만드는 것에서 비롯된 패턴이다.
 
@@ -10,7 +17,7 @@
 
 - [Atomic Design 개요 및 설명](https://brunch.co.kr/@ultra0034/63)
 
-본디 아노믹 디자인은 위 글처럼 원래 **마크업(markup) 작업을 하기 위한 기준** 이다.
+본디 아토믹 디자인은 위 글처럼 원래 **마크업(markup) 작업을 하기 위한 기준** 이다.
 
 그러나 웹프론트엔드는 각각의 기능별로 컴포넌트를 만들어서 사용하기에 이에 맞춰 좀 더 확장된 기준을 제시한다.
 
@@ -43,30 +50,38 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 이제부터 설명할 아래 내용들을 요약하면 아래와 같은 조건으로 정리된다.
 
 1. 5단계로 쪼개며 각각 atoms, combines, complexes, containers, pages 이다.
-2. 하나의 컴포넌트는 최대 5개의 다른 컴포넌트 요소를 가질 수 있다.
-3. List 컴포넌트안에는 단 1가지의 Item 컴포넌트만 가질 수 있다.
-4. 컴포넌트는 `Controlled dumb Component` 형식으로 만든다. [참고](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
-5. 조건별 컴포넌트 출력은 `A or B` 형식을 지킨다.
-6. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
-7. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
-8. export 는 Page 를 제외, default 를 쓰지 않는다.
-9. import 시 circular dependancy 주의
+2. HOC 이용 시 atomic level 이 유지된다.
+3. 표현 컴포넌트 하나당 내부에 허용되는 요소를 제한 한다. atom 은 5개, combine ~ complex 는 10개.
+4. 컴포넌트간의 margin 은 그걸 벌리기 원하는 컴포넌트나 List Wrapper, Template 에게 맡긴다.
+5. List 컴포넌트안에는 가급적 1가지의 Item 컴포넌트만 가지도록 작성한다.
+6. 컴포넌트는 `Controlled dumb Component` 형식으로 만든다. [참고](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
+7. 조건별 컴포넌트 출력은 `A or B` 형식을 지킨다.
+8. 컴포넌트 내부에 데이터 조작 및 비즈니스 로직이 포함되면 안된다.
+9. 내부 Props 는 `Props` 로 고정, 외부 공유 시 `{컴포넌트명}Props` 로 export 한다.
+10. export 는 Page 를 제외, default 를 쓰지 않는다.
+11. import 시 circular dependancy 주의
 
-# 1. 각 단계별 명칭
+# 각 단계별 명칭
 
 위 블로그 내용처럼 5가지 구분 단계로 나뉘되 각 단계는 아래와 같이 실제 적용 기준을 변경하여 사용한다.
 
-| atomic level | 명칭 (원본) | 명칭 (실사용) | 설명                                                                                                                                                                                                              | 예시                |
-| :----------- | :---------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 1            | Atoms       | 동일          | 단일 컴포넌트 (Single Component). 더 이상 쪼개질 수 없는 최소한의 단위.                                                                                                                                           | Button, InputBox 등 |
-| 2            | Molecules   | Combines      | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       |
-| 3            | Organisms   | Complexes     | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     |
-| 4            | Templates   | Containers    | 하나의 업무를 구성할 수 있는 단위. Store 에서 State 및 Dispatch 한다.<br />내부에 스타일 코드를 가져선 안된다.<br />컨테이너는 내부에 또 다른 컨테이너를 가질 수 있다.                                            |                     |
-| 5            | Pages       | 동일          | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     |
+| atomic level | 명칭 (원본) | 명칭 (실사용)        | 설명                                                                                                                                                                                                              | 예시                | 하위 요쇼 최대 허용 개수 |
+| :----------- | :---------- | :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ | :----------------------- |
+| 1            | Atoms       | 동일                 | 단일 컴포넌트 (Single Component). 더 이상 쪼개질 수 없는 최소한의 단위.                                                                                                                                           | Button, InputBox 등 | 5                        |
+| 2            | Molecules   | Combines             | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       | 10                       |
+| 3            | Organisms   | Complexes            | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     | 10                       |
+| 4            | Templates   | `없음` -> Containers | 대신 Container 를 두며 이들은 하나의 업무를 구성하는 최소 단위가 된다. Template 과는 관계가 없다. 자세한 건 아래 내용 참고                                                                                        |
+| 5            | Pages       | 동일                 | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     | 제한 없음                |
 
-## Atoms ~ Complexes
+위 표에서도 보시다시피 아토믹 디자인에서 제시하는 Template 단계는 사실상 본 문서상의 규칙엔 존재하지 않는다.
 
-이들 1~3단계 컴포넌트들은 스타일링을 포함시킬 수 있는 유일한 컴포넌트이다.
+대신 그 단계는 Container 를 두나, 이는 서로 다른 의미로써 사용됨을 잊지 말자!
+
+## Presentational Component
+
+이들은 Atoms, Combine, Complexes 에 해당된다.
+
+이러한 atomic level 1~3단계 컴포넌트들은 스타일링을 포함시킬 수 있는 유일한 컴포넌트이다.
 
 4~5단계의 Container, Page 에는 가급적 스타일링을 포함시키지 않도록 한다.
 
@@ -100,16 +115,28 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 
 컨테이너 컴포넌트는 Redux 의 Store 나 Context 의 State 에 접근하여 하위 컴포넌트에 제공 될 수 있는 유일한 컴포넌트다.
 
-컨테이너는 Page 를 제외한 모든 레벨의 요소들을 포함할 수 있다.
+그 목적은 `하나의 작은 업무가 완성되는 단위` 로 정의한다.
 
-일반적으로 Atoms ~ Organisms 요소만을 업무에 이용되나 다음과 같은 사례에 유의한다.
+Redux 같은 Flux Architecture 가 설정되어 있거나, 자신이, 혹은 상위 요소에서 Context 로 State Provide 해 주는 상황이라는 가정하에 그 컨테이너는 어디서든 하나의 업무로써 정상 동작 되어야 한다.
 
-1. 한 페이지당 영역(Section)이 지나치게 많아서 (ex: 메인, 홈, 대시보드 등) Container 가 많아지면 업무 성향별로 묶어주고 정리하는 역할, 그 외의 것은 아무것도 하지 않는 경우가 있는데, 이것도 컨테이너로 간주한다.
-   - 하지만 이런 경우는 그리 많지 않다.
-2. AutoComplete, 외부 자료를 이용한 선택 상자 (Selectbox) 와 같은 역할을 하는 컴포넌트는 필연적으로 API 호출이 필요하기에 Container 로 감싸진 형태를 띄어 자신들의 업무가 완성된다.
-   - 이것처럼 Container 레벨이 아닌 그 보다 낮은 레벨의 컴포넌트에 Container 가 소속될 수 있으며 이를 허용한다. 단, `Container 를 포함할 수 있는 컴포넌트는 Complexes (Organisms) 로 제한` 한다.
-3. Did-mount 시 자료 호출을 맡을 수 있다.
-   - 다만 여러 sibling container 들에 영향을 미치기에 특정 컨테이너를 선택해 두기 애매하다면, 보다 상위 Container 를 만들어 포함 시키던지, 아니면 상위 Page 에서 호출 시키는 것도 나쁘지 않다.
+즉, 하나의 컨테이너는 특정 영역(Section) 이나 페이지(Page) 에 종속적(Dependancy) 이면 안된다.
+
+컨테이너는 Page 를 제외한 모든 atomic level 의 요소들을 포함할 수 있으며, 필요하다면 하위 컨테이너를 가지는 것도 허용된다.
+
+### 규칙
+
+1. 가장 중요한 규칙은 `하나의 작은 업무가 완성되는 단위` 로써 존재 해야 한다는 것.
+2. 컴포넌트 스스로가 `자신들의 작은 업무` 를 완성하기 위해 API 호출이 필요하다면, 이들은 Container 가 될 수 있다.
+   - AutoComplete, 혹은 외부 자료를 이용한 선택 상자 (Selectbox)같은 경우 이다.
+   - 이들이 서버로 부터 받는 자료는 외부 세계에선 관심이 없으며 오히려 자동완성의 사용자 입출력 데이터 뿐이다.
+   - 즉 관심사 분리(Separation of Concerns)와 캡슐화(Encapsulation)를 위해 필요하다.
+   - 또 한 이런 경우, 과도한 props drilling 이나 부모 컴포넌트 입장에서 불필요한 props 전달을 최소화 할 수 있다.
+   - 그런 경우가 아닌 일반적인 parent ~ children 관계일 뿐일 땐 오히려 props drilling 이 직관적이다.
+3. Container 는 `사용된 컴포넌트가 가지던 atomic level 을 유지`한다.
+   - 가령 atom 단계의 컴포넌트를 이용하여 Container 를 만들었다면, 이 컨테이너는 `atom` 이 된다.
+   - 다른 combine, complex 도 마찬가지.
+4. Did-mount, intersection 발동 시 자료 호출 및 하위 컴포넌트에 자료를 내려줄 수 있다.
+   - 물론 하위 컴포넌트의 이벤트에 따른 action 및 dispatch 도 가능하다.
 
 ## Page
 
@@ -276,7 +303,32 @@ export const ClientView: FC = () => {
 
 이들 역할을 반드시 지킬 수 있도록 노력한다.
 
-# 2. 최대 5개의 요소
+# High Order Component 를 이용하면 atomic level 을 유지 한다.
+
+언급된 `Adaptive Component` 나 `Container` 와도 같은 맥락이다.
+
+필요에 따른 HOC 사용에 따른 atomic level 은, 원천(origin) 컴포넌트의 atomic level 을 따른다.
+
+즉, `atom + hoc = atom` 이며, `complex + hoc = complex` 이다.
+
+```tsx
+// components/atoms/FollowButton.tsx
+export const FollowButton: FC<Props> = ({ onClick }) => {
+  return (
+    <button type="button" onClick={onClick}>
+      팔로우 하기!
+    </button>
+  );
+};
+
+// components/atoms/FollowButtonWithTracking.tsx
+// atom 컴포넌트가 hoc 를 거친 것은 atom 으로 간주된다.
+export const FollowButtonWithTracking = withTracking(FollowButton)({
+  className: 'home_follow-button-click',
+});
+```
+
+# 최대 5개의 요소
 
 컴포넌트 하나당 최대 5개의 요소를 허용한다.
 
@@ -315,7 +367,121 @@ export const SimpleInput: FC<Props> = ({ value, onChange }) => {
 };
 ```
 
-# 3. List 안에는 1가지 Item
+# 컴포넌트간의 여백 설정
+
+디자인 시안대로 작업할 시 디자이너의 의도대로 여백을 주어야 할 경우가 생긴다.
+
+내부 여백(padding)은 당연히 컴포넌트 스스로가 책임지는게 맞으며, 외부 여백(margin)은 아래와 같은 2가지 경우로 나눌 수 있다.
+
+1. 컴포넌트 스스로가 외부와 여백이 벌어지길 바라는 경우
+2. 컴포넌트 이용하는 주체가 여백을 조정하길 바라는 경우
+
+아래는 경우별 예시이며, 상황에 따라 적절한 방법을 선택한다.
+
+참고로 일반적으로 책임지는 외부 여백은 상하 배치일 경우 `margin-bottom`, 좌우 배치일 경우 `margin-right` 를 말한다.
+
+heading 이나 title 같은 경우는 padding 을, flex 를 쓸 경우 height 에 상하 중앙정렬을 하는 등, 스스로가 외부 여백에 간섭받지 않도록 작성한다.
+
+## 컴포넌트 스스로가 책임진다
+
+이러한 경우는 대체로 같은 컴포넌트를 사용한다면 같은 여백이 유지된다는 조건이 성립할 때 이다.
+
+```tsx
+// ReplyItem.tsx
+
+// 벌리고 싶은 여백은 스스로가 책임 진다.
+const Wrap = styled.div`
+  background: skyblue;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const ReplyItem: FC<Props> = ({ value, onChange }) => {
+  return (
+    <Wrap>
+      <strong>댓글 작성:</strong>
+      <br />
+      <textarea onChange={onChange}>{value}</textarea>
+    </Wrap>
+  );
+};
+```
+
+```tsx
+// ReplyList.tsx
+
+// 자기 영역외 바깥과의 여백만 이 부모 컴포넌트가 책임 진다.
+const Section = styled.section`
+  margin-bottom: 24px;
+`;
+
+export const ReplySection: FC<Props> = ({ items }) => {
+  return (
+    <Section>
+      {items.map((item, idx) => (
+        <ReplyItem key={idx} {...items} />
+      ))}
+      <a href="/to-more">더 보기</a>
+    </Section>
+  );
+};
+```
+
+## 컴포넌트 사용처에서 책임진다
+
+같은 컴포넌트를 사용하는데 사용처에 따라 다르거나, 사용되는 컴포넌트간의 여백이 일정 할 경우에 해당된다.
+
+```tsx
+// ReplyItem.tsx
+
+// 자신 스스로는 여백을 책임지지 않는다.
+const Wrap = styled.div`
+  background: skyblue;
+`;
+
+export const ReplyItem: FC<Props> = ({ value, onChange }) => {
+  return (
+    <Wrap>
+      <strong>댓글 작성:</strong>
+      <br />
+      <textarea onChange={onChange}>{value}</textarea>
+    </Wrap>
+  );
+};
+```
+
+```tsx
+// ReplyList.tsx
+
+// 영역 바깥과 함께, 사용되는 자식 컴포넌트 간의 여백도 모두 책임진다.
+const Section = styled.section`
+  & > div {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  margin-bottom: 24px;
+`;
+
+export const ReplySection: FC<Props> = ({ items }) => {
+  return (
+    <Section>
+      {items.map((item, idx) => (
+        <ReplyItem key={idx} {...items} />
+      ))}
+      <a href="/to-more">더 보기</a>
+    </Section>
+  );
+};
+```
+
+# List 안에는 1가지 Item
 
 List 컴포넌트를 작성할 때 아래와 같이 Array.prototype.map 을 이용하여 반복자 처리하는 경우가 많다.
 
@@ -397,7 +563,43 @@ export const List: FC<Props> = ({ items }) => {
 
 이렇게 되면 기존 Combine 요소였던 `List` 컴포넌트는 추가된 `Item` 컴포넌트로 인하여 Complex 로 승격될 수 있다.
 
-# 4. 내부 컴포넌트에 대한 조건별 렌더링 사용 제한
+## Item 요소에 대한 Children 허용
+
+가능한한 상기 언급한대로 작성하길 권장한다.
+
+다만, 상황에 따라 아래와 같은 형식이 보다 직관적이고 유연할 수 있다.
+
+```tsx
+// Content.tsx
+export const Content: FC<Props> = ({ name, age, desc }) => {
+  return (
+    <div>
+      이름: {name} | 나이: {age}
+      <br />
+      설명: {desc}
+    </div>
+  );
+};
+
+// ContentList.tsx
+export const ContentList: FC<props> = ({ items }) => {
+  return (
+    <ul>
+      {items.map((item, idx) => (
+        <li key={idx}>
+          <Content {...item} />
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+위와 같은 형식을 허용한다. 다만, 작성자 스스로가 저러한 상황이 최선인지 고민을 해 보길 바란다.
+
+항상 UI 작성 전에 `설계를 먼저 하는 습관` 을 기르면 저런 형식이 최소화 될 수 있다.
+
+# 내부 컴포넌트에 대한 조건별 렌더링 사용 제한
 
 아래와 같이 컴포넌트를 사용함에 있어 children 을 통한 Wrapping 은 매우 자연스러운 현상이다.
 
@@ -487,7 +689,7 @@ const Sample: FC<Props> = ({ title, desc, imgSrc }) => {
 
 [참고글](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
 
-# 5. 조건별 컴포넌트 출력은 A or B
+# 조건별 컴포넌트 출력은 A or B
 
 데이터 로딩중일 때 대신 사용하는 Indicator 나 Skeleton 은 그 조건에 따라 출력하게 된다.
 
@@ -560,7 +762,7 @@ const ViewContainer: FC = () => {
 
 대체로 Fragment 로 감싸진 것은 하나의 컴포넌트로 분리된다 보아도 좋다.
 
-# 6. 단순함
+# 단순함
 
 UI 컴포넌트는 그 내부에 데이터 조작 로직이 가능한 한 들어가서는 안된다.
 
@@ -699,7 +901,7 @@ export const SampleButton: FC<SampleButtonProps> = ({
 };
 ```
 
-# 8. export 규칙
+# export 규칙
 
 SSOT (Single Source Of Truth - 단일진실공급원) 원리에 따라 모든 컴포넌트는 자신이 속한 모듈내 `index.ts` 파일에 자신의 사용처를 제한한다.
 
@@ -759,7 +961,7 @@ const ExampleButtonComponent: FC<Props> = (props) => {
 export const ExampleButton = withCustom(ExampleButtonComponent);
 ```
 
-# 9. import 시 주의 (순환적 의존)
+# import 시 주의 (순환적 의존)
 
 컴포넌트 끼리가 아닌 외부에서 import 할 때는 `./components` 와 같이 index.ts 를 대상으로 가져와서 사용한다.
 
