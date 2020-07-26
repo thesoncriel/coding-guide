@@ -45,10 +45,10 @@
   - 다만 그 어떤 업무라도 가장 기본 단계인 `Use Case` 작성은 필수적으로 하게됨
   - 이유: 생각을 정리하는 단계이기 때문
 - `Class Diagram` 은 필요한 부분만 유연하게 작성
-  - 단, 설계 후 작성이 익숙해졌을 경우에만 권장
+  - 단, 설계 후 코딩이 익숙해졌을 경우에만 권장
 - `Use Case Diagram` 과 `Sequence Diagram` 은 타 부서나 다른 멤버와의 소통시에 필요. 굳이 없어도 됨
   - 본인이 파악한 시스템의 의도와 목적을 정리하기 위한 목적으로 임시로 그려도 무방
-- UML 작성 시 전문 도구를 이용하기 보단 간편하게 쓸 수 있는 ![웹 다이어그램 도구](app.diagrams.net) 같은 간단한 다이어그램 도구 사용을 권장.
+- UML 작성 시 전문 도구를 이용하기 보단 간편하게 쓸 수 있는 [웹 다이어그램 도구](app.diagrams.net) 같은 간단한 다이어그램 도구 사용을 권장.
   - 도구를 배우고 익히는데도 많은 시간이 소요되기 때문
   - Sequence Diagram 은 특성상 그리기가 상당히 불편하므로 `Star UML` 같은 전문 도구를 활용할 것을 권장
 - 개인 업무용 설계로 끝난다면 이것도 저것도 필요 없이 종이와 펜으로만 고민하고 끝내도 무관
@@ -71,10 +71,14 @@ UML 을 사용하기 때문에 아래 내용을 미리 보고 오시면 좋습�
 
 ## 본격적으로 시작 해 보기
 
-아래 내용을 확인하시고 천천히 따라와 주세요 🙂
+아래 내용으로 천천히 따라와 주세요 🙂
 
-- [UI Component Design](ui-design-001.md)
+- UI 컴포넌트 설계
+  - [영역 분석](ui-design-001.md)
+  - [기능 분석](ui-design-002.md)
+  - [다이어그램 작성](ui-design-003.md)
+  - [연관 관계 표현](ui-design-004.md)
 
 ## 참고 문헌
 
-- ![Use Interface Design with UML](https://www.omg.org/news/meetings/workshops/UML_2003_Manual/03-3_Armstrong.pdf)
+- [Use Interface Design with UML](https://www.omg.org/news/meetings/workshops/UML_2003_Manual/03-3_Armstrong.pdf)
