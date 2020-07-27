@@ -134,7 +134,7 @@ UI 컴포넌트 입장에선 seq Props에 따라 어떻게 출력할지 매우 �
 
 그러나 seq Props를 제공하는 Model 입장에선 `응? 난 자료만 잘 주면 되는거 아니야?` ..가 됩니다.
 
-엇! 갑자기 뜬금없이 `Model` 튀어 나왔습니다만, 여기서 모델은 `UI Model` 을 말합니다.
+참고로 여기서 언급된 모델이란 `UI Model` 을 말합니다.
 
 잊지 마세요! 우린 `Presentation Model Pattern` 을 사용하고 있습니다.
 
@@ -177,8 +177,6 @@ SubHeading 이 Date 객체를 받거나 별도 날짜형 모델을 받아서 스
 2번이 낫다고 판단 되신다면 `관심사 분리`의 중요성을 이해 하신겁니다!
 
 이렇게 변화에 대한 수용 시, 다른 계층과의 관계에 있어 조금이라도 적게 변경 되는 방향으로 선택하시면 됩니다.
-
-## Wrapper 살펴보기
 
 ### 목록형 입력기 살펴보기
 
@@ -236,7 +234,7 @@ ShopItem 은 좋아요 버튼 기능을 함께 내포하고 있으며
 
 이유는 "Item 에서 입력이 이뤄지면 본래 제공된 List 의 몇번째 요소의 것인지를 스스로 알 방법이 없기 때문" 입니다.
 
-물론 가능한 방법이 있습니다만 제 경험상 어디선가 굉장히 복잡해지는 경우가 매우 많았습니다.
+물론 가능한 다른 방법이 있습니다만 제 경험상 어디선가 굉장히 복잡해지는 경우가 매우 많았습니다.
 
 그래서 아래와 같이 자신이 소속된 index 값을 함께 넘겨주길 권장합니다.
 
@@ -245,11 +243,190 @@ ShopItem 은 좋아요 버튼 기능을 함께 내포하고 있으며
   - item
   - onLikeChange
 
-### 이제 끝인가요? 까도 까도 계속 나오는 느낌이..
+`ShopList` 컴포넌트도 함께 볼까요?
 
-네! 더 있습니다.
+외부에서 ShopList 와 ShopItem 컴포넌트를 사용할 때는 아래와 같이 쓰게 될겁니다.
 
-다만 여기서 모두 말하기엔 여러분들이 혼란스러울 수 있으므로 남은 것들은 클래스 다이어그램을 직접 그리면서 확인하고 설명 드리겠습니다.
+```tsx
+const Comp: FC<Props> = ({ items, onLikeChange }) => {
+  return (
+    <>
+      <OtherHeader />
+      <ShopList>
+        {items.map((item, idx) => (
+          <ShopItem
+            key={idx}
+            index={idx}
+            item={item}
+            onLikeChange={onLikeChange}
+          />
+        ))}
+      </ShopList>
+      <OtherFooter />
+      <OtherAside />
+    </>
+  );
+};
+```
+
+헛! 근데 사용처에서 너무 많은 것을 알아야 하는군요.
+
+덕분에 코드도 길어졌습니다.
+
+이렇게 관심사 분리를 하려면 어떻게 해야 할까요?
+
+답은 간단합니다.
+
+기존 단순 Wrapper 였던 `ShopList` 에 기능을 부여 해 주면 됩니다.
+
+그래서 아래와 같이 props 가 추가됩니다.
+
+- ShopList
+  - items : 출력 할 목록 자료
+  - onLikeChange : 하위 Item 컴포넌트에서 `좋아요` 변경 시 받은 이벤트를 forward 해줌.
+
+그럼 아래와 같은 방법으로 쓸 수 있도록 바뀝니다.
+
+```tsx
+const Comp: FC<Props> = ({ items, onLikeChange }) => {
+  return (
+    <>
+      <OtherHeader />
+      <ShopList items={items} onLikeChange={onLikeChange} />
+      <OtherFooter />
+      <OtherAside />
+    </>
+  );
+};
+```
+
+### 미디어 객체 살펴보기
+
+미디어 객체 (Media Object) 란 아래와 같이 이미지와 제목, 문장이 복합적으로 이뤄진 형태의 UI 를 말합니다.
+
+![미디어 객체](images/ui-design-002/ui-design-media-object-example.png)
+
+설계 대상인 `ShopItem` 컴포넌트의 가운데 영역이 이와 매우 유사함을 알 수 있습니다.
+
+기존 `ShopItemMedia` 는 아래 컴포넌트를 감싸는 래퍼(Wrapper) 역할에 불가 했습니다.
+
+- ShopItemImage
+- ShopItemBody
+- ShopItemHeading
+
+이제 이 것을 하나의 독립된 개체로 정의해 보겠습니다.
+
+그럼 어떤게 필요할까요?
+
+네! 언급된 하위 컴포넌트가 필요로 하는 속성들이 필요할 것입니다.
+
+이들이 필요로 하는 props 를 모두 합쳐서 3개 이하라면 각각의 Field 를 받아들이면 됩니다.
+
+다만, 너무 많아지면 그냥 `UI Model` 하나 받아들이는게 낫습니다.
+
+지금은 3개이니까 props 를 각자 받아들이는 방향으로 진행 하겠습니다.
+
+- ShopItemMedia
+  - imageUrl : 이미지 경로
+  - title : 제목
+  - desc : 설명글
+
+이렇게 속성을 두면 하위 컴포넌트에게 필요한 값을 전달 할 수 있을겁니다.
+
+### 헤더 살펴보기
+
+같은 방법으로 헤더쪽도 이렇게 관심사 분리가 필요한 부분은 없을지 살펴 보겠습니다.
+
+마찬가지로 헤더쪽 코드를 아래와 같이 사용한다 가정 해 보겠습니다.
+
+```tsx
+const CompPage: FC<Props> = () => {
+  const handleSortChange = () => {
+    // codes...
+  };
+  return (
+    <>
+      <Header>
+        <Heading>
+          제목
+          <SubHeading>서브 제목</SubHeading>
+        </Heading>
+        <SortPanel onSortChange={handleSortChange} />
+      </Header>
+      <ShopList />
+    </>
+  );
+};
+```
+
+아마 `이정도도 괜찮지 않나요?` ..라고 하는 분도 계실것 같습니다.
+
+하지만 저는 좀 더 간단하게 사용 했으면 합니다.
+
+바로 아래와 같이 말이죠.
+
+```tsx
+const CompPage: FC<Props> = () => {
+  const handleSortChange = () => {
+    // codes...
+  };
+  return (
+    <>
+      <Header title="제목" subTitle="서브 제목">
+        <SortPanel onSortChange={handleSortChange} />
+      </Header>
+      <ShopList />
+    </>
+  );
+};
+```
+
+외부 컴포넌트에서는 **title** 과 **subTitle** 을 가지며 이들 **제목**을 Header 에게 줄 수 있습니다.
+
+하지만 Header 에게 필요한 여러 부속 컴포넌트(Heading, SubHeading)의 사용법을 알고 싶지 않습니다.
+
+그래서 title 과 subTitle 속성을 전달 합니다.
+
+> 엇! 근데 SortPanel 은 왜 바깥에 두나요?
+
+이런 질문을 하실 수 있습니다.
+
+Header 는 화면 상단의 영역과 제목 출력을 책임 집니다.
+
+단, 자신의 페이지에 쓰이는 자료 제어에는 관심이 없습니다.
+
+이 것은 어느 정도 확장성(extensibility)을 염두에 둔 것입니다.
+
+컴포넌트의 children 은 이렇게 확장성을 고려 할 때 쓰입니다.
+
+만약 설계 초기이고, 굳이 이러한 확장성이 필요 없다면 `Header` 컴포넌트가 onSortChange 이벤트도 가질 수 있습니다.
+
+하지만 기획과 디자인 시안상, 상단 Header 와 같은 기능이 다른 페이지에서도 반복된다면?
+
+분리를 충분히 고려 해 보셔야 합니다! 🙂
+
+그래서 `Header` 는 다음과 같은 기능을 가지게 됩니다.
+
+- Header
+  - _`children`_
+  - `title`
+  - `subTitle`
+
+### 끝인가요? 나중에 이런게 발견되면 어쩌죠?
+
+지금은 이렇게 미리 다 짚고 넘어가지만
+
+분명 여러분들이 실제 업무에 활용 시 다음 단계인 다이어그램을 그리는 중에도 계속 추가적인 기능이 발견될 수 있습니다.
+
+이렇게 설계 단계에서 발견되는 것은 아무런 문제가 되지 않습니다!
+
+또 한 매우 자연스러운 현상이므로 처음부터 너무 완벽하게 하지 않으셔도 됩니다.
+
+즉, 여러분들이 실제 코드로 옮기기 전 까지만 발견되어 정리되면 그걸로 충분합니다.
+
+이렇게 `코드상에서 이뤄질 여러 시행착오들을 분석/설계 단계에서 보완`하는 것.
+
+이게 지금 분석/설계를 하는 가장 큰 이유입니다!
 
 ### 조사 마무리
 
@@ -257,6 +434,10 @@ ShopItem 은 좋아요 버튼 기능을 함께 내포하고 있으며
 
 children 은 _`이탤릭체`_ 로 구분 해 두었습니다.
 
+- Header
+  - _`children`_
+  - `title`
+  - `subTitle`
 - Heading
   - ~~제목~~ --> ~~title~~ --> _`children`_
 - SubHeading
@@ -269,12 +450,19 @@ children 은 _`이탤릭체`_ 로 구분 해 두었습니다.
   - ~~레이블~~ --> ~~label~~ --> _`children`_
   - ~~선택 상태~~ --> `checked`
   - ~~상태 변화 알림~~ --> `onChange`
+- ShopList
+  - `items`
+  - `onLikeChange`
 - ShopItem
   - `index`
   - `item`
   - `onLikeChange`
 - ShopItemSeq
   - ~~번호~~ --> `seq` (순위별 디자인이 다름)
+- ShopItemMedia
+  - `imageUrl`
+  - `title`
+  - `desc`
 - ShopItemImage
   - ~~이미지 경로~~ --> `imageUrl`
 - ShopItemBody
