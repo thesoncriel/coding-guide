@@ -133,7 +133,7 @@ const Example: FC<Props> = () => {
 };
 ```
 
-만약 children 을 핸들링 하지 않는다면 위 예시의 하위 컴포넌트는 아무런 의미가 없게 될 것입니다.
+만약 컴포넌트 내부에서 children 을 별도로 핸들링 하지 않는다면 위 예시의 하위 컴포넌트는 아무런 의미가 없게 될 것입니다. ~~(당연한 말씀)~~
 
 ### Props가 없는 컴포넌트
 
@@ -172,6 +172,10 @@ Header 컴포넌트는 사용 시 SortPanel 같은 외부 컴포넌트를 감싸
 
 반면 다른 children 이 필요한 곳은 `문자열(string)` 로 고정 하였습니다.
 
+SortPanel 의 `onSortChange` 이벤트는 전달 인자값(Event Arguments)을 문자열로 주도록 했습니다.
+
+검색 필터 (Search Filter) 기능이 복잡해 진다면 `Composite Pattern` 을 쓰기 위해 필드명과 값을 묶어서 보내주는게 맞겠지만, 여기에선 본 기능이 매우 단순하므로 변경된 값만을 넘기기 위함 입니다.
+
 다음은 List Section 소속 컴포넌트 입니다.
 
 - ShopList
@@ -201,13 +205,13 @@ Header 컴포넌트는 사용 시 SortPanel 같은 외부 컴포넌트를 감싸
 
 ShopList 및 ShopItem 에서 쓰이는 UI Model 은 `ShopListItemUiModel` 로 두었습니다.
 
-아직 어떤 Field(항목)가 들어갈지 정의하진 않았지만, 지금까지 분석하고 다이어그램을 그려봤다면
+아직 어떤 필드가 들어갈지 정의하진 않았지만, 지금까지 분석하고 다이어그램을 그려봤다면
 
-대략 어떠한 항목이 들어갈지 짐작은 가실겁니다 🙂
+대략 어떠한 항목이 들어갈지 짐작은 가실겁니다. 🙂
 
 덧붙여 `좋아요`가 변경되었을 때 전달 할 이벤트 객체는 `ShopLikeChangeArgs` 로 명명 하였습니다.
 
-### 모델 작성
+## 모델 작성
 
 이번 단계에선 언급된 UI 모델을 작성 해 볼것입니다.
 
@@ -227,13 +231,161 @@ ShopList 및 ShopItem 에서 쓰이는 UI Model 은 `ShopListItemUiModel` 로 �
 
 이 중 `ShopListItemUiModel.seq` 는 제외 할 것입니다.
 
-이유는 ShopList 컴포넌트 안에서 순회(looping)할 때 index 값을 이용하면 충분하기 때문입니다.
+이유는 ShopList 컴포넌트 안에서 순회(looping)할 때 참조 할 수 있는 **index** 값을 이용하면 충분하기 때문입니다.
 
-추가로 `id` 항목이 추가 되었는데, 이건 List 형태의 컴포넌트 내부에 있는 Item 컴포넌트가 이벤트를 가질 경우, 각 아이템의 고윳값을 이벤트 객체로 넘겨주면 이 후 프로세스가 훨씬 수월하기 때문입니다.
+`id` 항목이 추가 되었는데, 이건 List 형태의 컴포넌트 내부에 있는 Item 컴포넌트가 이벤트를 가질 경우, 각 아이템의 고윳값을 이벤트 객체로 넘겨주면 이 후 프로세스가 훨씬 수월해 지기 때문입니다.
 
 그래서 **ShopListItemUiModel** 과 **ShopListItemUiModel** 2가지에 모두 `id` 가 들어갑니다.
 
 ![](images/ui-design-003/ui-design-003-ClassDiagram_Model1.png)
+
+### 모델 분리
+
+UI Model 은 컴포넌트에서 직접적으로 사용하는 모델 입니다.
+
+다만, 그 안의 모든 필드를 상위 컴포넌트가 받아 들일지언정 하위 컴포넌트는 각자가 필요한 필드만 사용하기 마련입니다.
+
+이에 따라 각 컴포넌트가 필요한 모델을 분리 해아하며 이러한 행위는 객체지향 5원칙 중 ISP(Interface Segregation Principle)를 지키는 일이 됩니다.
+
+그럼 무엇을 어떻게 분리해야 할까요?
+
+먼저 사용하는 컴포넌트를 들여다 볼 필요가 있습니다.
+
+함께 그려낸 모델 다이어그램이 **ShopListItemUiModel** 과 **ShopListItemUiModel** 2가지 입니다.
+
+그 중 **ShopListItemUiModel** 을 사용하는 컴포넌트는 어떤게 있을까요?
+
+네! `ShopItem` 컴포넌트 입니다.
+
+ShopItem 에 대한 컴포넌트 마크업은 다음과 같습니다.
+
+```xml
+<ShopItem>
+  <ShopItemSeq />
+  <ShopItemMedia>
+    <ShopItemImage />
+    <ShopItemBody>
+      <ShopItemHeading />
+    </ShopItemBody>
+  </ShopItemMedia>
+  <ShopLikeButton />
+</ShopItem>
+```
+
+오오.. 😱 좀 많군요!
+
+하지만 부담 가지지 말고 보십시요.
+
+그리고 하나씩 필요한 필드를 넣어보겠습니다.
+
+어떤 것 부터 넣어볼까요?
+
+ShopItem 에 `item` 필드 부터 넣어보겠습니다.
+
+```xml
+<ShopItem item>
+  <ShopItemSeq />
+  <ShopItemMedia>
+    <ShopItemImage />
+    <ShopItemBody>
+      <ShopItemHeading />
+    </ShopItemBody>
+  </ShopItemMedia>
+  <ShopLikeButton />
+</ShopItem>
+```
+
+다음은 각 하위 컴포넌트에 필요한 필드를 넣어보겠습니다.
+
+각 아이템의 이미지와 제목, 설명을 추가 하겠습니다.
+
+```xml
+<ShopItem item>
+  <ShopItemSeq />
+  <ShopItemMedia>
+    <ShopItemImage imageUrl />
+    <ShopItemBody desc>
+      <ShopItemHeading title />
+    </ShopItemBody>
+  </ShopItemMedia>
+  <ShopLikeButton />
+</ShopItem>
+```
+
+위 내용에서 미디어 객체만 따로 떼어 보겠습니다.
+
+```xml
+<ShopItemMedia>
+  <ShopItemImage imageUrl />
+  <ShopItemBody desc>
+    <ShopItemHeading title />
+  </ShopItemBody>
+</ShopItemMedia>
+```
+
+미디어 객체 담당인 `ShopItemMedia` 컴포넌트가 필요한 속성이 보이시나요?
+
+imageUrl, desc, title, 이렇게 3가지가 되겠습니다.
+
+이들 속성은 ShopItemMedia 컴포넌트가 받아들여서 하위 컴포넌트에 전달 해 줄겁니다.
+
+그럼 이 컴포넌트의 Props 는 다음과 같은 형태가 되겠군요.
+
+```ts
+interface Props {
+  imageUrl: string;
+  desc: string;
+  title: string;
+}
+```
+
+하지만 우린 이 Props 를 ShopItemMedia 컴포넌트에서만 쓰게 놔두진 않을겁니다.
+
+이유는 **ShopListItemUiModel** 과 필드가 겹치기 때문입니다.
+
+단순히 UI 모델의 필드 일부분과 겹친다고 컴포넌트에서 분리한다 ...라?
+
+선뜻 이해가 되지 않으실겁니다.
+
+클린 아키텍처 (Clean Architecture)에 따르면 고수준 요소는 저수준 요소를 알지 못하게 하는 것이 원칙 입니다.
+
+여기서 말하는 고수준엔 `Entity (엔티티)`가 포함되어 있으며 이 엔티티는 대표적으로 Model 을 의미 하기도 합니다. (100%는 아닙니다~)
+
+생각해보세요!
+
+UI Model 은 자신이 어디서 쓸지에 관심 있을까요?
+
+넵. 없습니다.
+
+마찬가지로 Props 로 쓰이는 모델도 사실 엔티티의 한 종류라 보시면 됩니다.
+
+다만 편의상 컴포넌트 코드에 편입시켜 작성 할 뿐인 것이죠!
+
+그런데 Props 의 필드 출처가 UI Model 이라면?
+
+혹은 Props 가 UI Model 의 부분집합(Sub Set) 이라면?
+
+이 코드는 어디에 있어야 할까요?
+
+정답은 외부 model 관련 모듈 입니다!
+
+그래서 위 Props 를 별도 Ui Model 로 분리하고 이름도 붙여줄겁니다.
+
+이름은 뭘로 할까요?
+
+미디어 객체를 대상으로 하고 있으니 `ShopItemMediaUiModel` 로 하겠습니다.
+
+한편 기존 ShopListItemUiModel 은 자신의 서브셋인 ShopItemMediaUiModel 을 상속 받은 형태로
+
+![](images/ui-design-003/ui-design-003-ClassDiagram_Model2.png)
+
+좌측이 원래 모델, 우측이 새로 만들어진 모델 입니다.
+
+다만 좌측 모델은 우측 모델 기반으로 추가된 필드로 구성되어 있으므로 아래와 같이 상속 여부를 연관 시켜 줍니다.
+
+![](images/ui-design-003/ui-design-003-ClassDiagram_Model3.png)
+
+추가로 좌측 모델 기준으로 우측 모델의 중복되는 필드는 제외 시켰습니다.
 
 ```ts
 interface ShopListItemUiModel {
