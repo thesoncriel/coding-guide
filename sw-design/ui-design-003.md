@@ -1,4 +1,4 @@
-# User Interface Design - 3. 클래스 다이어그램 작성
+# UI Component Design - 3. 클래스 다이어그램 작성
 
 이름과 Props가 정해졌으니 다어그램으로 그려 보겠습니다.
 

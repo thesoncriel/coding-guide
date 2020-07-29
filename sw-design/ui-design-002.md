@@ -1,4 +1,4 @@
-# User Interface Design - 2. 기능 분석
+# UI Component Design - 2. 기능 분석
 
 화면 내 영역 분석이 끝났으므로 추출된 컴포넌트에 기능을 넣어 줄 차례 입니다.
 

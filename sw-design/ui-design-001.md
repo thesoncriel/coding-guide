@@ -1,4 +1,4 @@
-# User Interface Design - 1. 영역 분석
+# UI Component Design - 1. 영역 분석
 
 많은 경우의 UI는 그 `디자인 시안` 과 `기획서` 가 존재 합니다.
 
