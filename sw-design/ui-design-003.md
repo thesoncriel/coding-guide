@@ -251,7 +251,9 @@ ShopList 및 ShopItem 에서 쓰이는 UI Model 은 `ShopListItemUiModel` 로 �
 
 ### 모델 분리
 
-> 참고: 여기서 말하는 Model 이란 `DTO(Data Transfer Object)`, `VO(Value Object)` 를 의미합니다.
+> **참고**
+>
+> 여기서 말하는 Model 이란 `DTO(Data Transfer Object)`, `VO(Value Object)` 를 의미합니다.
 
 UI Model 은 컴포넌트에서 직접적으로 사용하는 모델 입니다.
 
