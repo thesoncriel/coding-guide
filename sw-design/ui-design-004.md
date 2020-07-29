@@ -1,4 +1,4 @@
-# UI Component Design - 4. 연관관계 작성
+# UI Component Design - 4. 연관관계 표현
 
 작성된 클래스 다이어그램을 이용하여 상호간의 연관관계(association)를 그려 보겠습니다.
 
