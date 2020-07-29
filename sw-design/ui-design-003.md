@@ -241,6 +241,8 @@ ShopList 및 ShopItem 에서 쓰이는 UI Model 은 `ShopListItemUiModel` 로 �
 
 ### 모델 분리
 
+> 참고: 여기서 말하는 Model 이란 `DTO(Data Transfer Object)`, `VO(Value Object)` 를 의미합니다.
+
 UI Model 은 컴포넌트에서 직접적으로 사용하는 모델 입니다.
 
 다만, 그 안의 모든 필드를 상위 컴포넌트가 받아 들일지언정 하위 컴포넌트는 각자가 필요한 필드만 사용하기 마련입니다.
@@ -312,7 +314,7 @@ ShopItem 에 `item` 필드 부터 넣어보겠습니다.
 </ShopItem>
 ```
 
-위 내용에서 미디어 객체만 따로 떼어 보겠습니다.
+위 내용에서 미디어 객체만 따로 떼어 보았습니다.
 
 ```xml
 <ShopItemMedia>
@@ -323,13 +325,13 @@ ShopItem 에 `item` 필드 부터 넣어보겠습니다.
 </ShopItemMedia>
 ```
 
-미디어 객체 담당인 `ShopItemMedia` 컴포넌트가 필요한 속성이 보이시나요?
+이렇게 두고 보니 미디어 객체 담당인 `ShopItemMedia` 컴포넌트가 필요한 속성이 보이시나요?
 
 imageUrl, desc, title, 이렇게 3가지가 되겠습니다.
 
 이들 속성은 ShopItemMedia 컴포넌트가 받아들여서 하위 컴포넌트에 전달 해 줄겁니다.
 
-그럼 이 컴포넌트의 Props 는 다음과 같은 형태가 되겠군요.
+그럼 이 컴포넌트의 Props 는 다음과 같은 형태로 코드가 이뤄지겠군요.
 
 ```ts
 interface Props {
@@ -375,28 +377,36 @@ UI Model 은 자신이 어디서 쓸지에 관심 있을까요?
 
 미디어 객체를 대상으로 하고 있으니 `ShopItemMediaUiModel` 로 하겠습니다.
 
-한편 기존 ShopListItemUiModel 은 자신의 서브셋인 ShopItemMediaUiModel 을 상속 받은 형태로
-
 ![](images/ui-design-003/ui-design-003-ClassDiagram_Model2.png)
 
-좌측이 원래 모델, 우측이 새로 만들어진 모델 입니다.
+좌측이 처음 만들었던 모델, 우측이 새로 만들어진 모델 입니다.
 
-다만 좌측 모델은 우측 모델 기반으로 추가된 필드로 구성되어 있으므로 아래와 같이 상속 여부를 연관 시켜 줍니다.
+좌측 모델은 우측 모델 기반으로 추가된 필드로 구성되어 있으므로 아래와 같이 상속 여부를 연관 시켜 줍니다.
 
 ![](images/ui-design-003/ui-design-003-ClassDiagram_Model3.png)
 
 추가로 좌측 모델 기준으로 우측 모델의 중복되는 필드는 제외 시켰습니다.
 
+두 모델을 제외한 다른 다어그램간의 연관 관계는 다음 챕터에서 더 상세히 다룰겁니다.
+
+지금까지 작성된 두 모델에 대한 예상되는 코드는 다음과 같습니다.
+
 ```ts
-interface ShopListItemUiModel {
-  seq: number;
-  id: string;
+interface ShopItemMediaUiModel {
   imageUrl: string;
   title: string;
   desc: string;
-  activeLike: boolean;
 }
 
+interface ShopListItemUiModel extends ShopItemMediaUiModel {
+  id: string;
+  activeLike: boolean;
+}
+```
+
+남은 이벤트 전달 객체인 **ShopLikeChangeArgs** 는 코드로 작성된다면 이렇게 되겠습니다.
+
+```ts
 interface ShopLikeChangeArgs {
   index: number;
   id: string;
@@ -404,4 +414,30 @@ interface ShopLikeChangeArgs {
 }
 ```
 
-## 연관관계 작성
+자! 이제 함께 작성된 다이어그램을 쭉~ 나열해 보겠습니다.
+
+![](images/ui-design-003/ui-design-ClassDiagramHeaderSection.png)
+
+![](images/ui-design-003/ui-design-ClassDiagramListSection.png)
+
+![](images/ui-design-003/ui-design-003-ClassDiagram_Model4.png)
+
+작성하느라 수고 하셨습니다! 👍
+
+## 정리하며
+
+처음 UML 을 접하는 분들이 많을거라 판단하여 이 것이 실제 쓰일때의 코드를 다수 포함 시켜 설명 하였습니다.
+
+다만 이것을 보시면서 `이러고 있을 시간에 그냥 코드 한줄 더 짜겠다` ..라고 생각 하실 수 있습니다.
+
+이후에도 강조 하겠지만, 현재 실습 대상으로 삼은 디자인 시안은 매우 단순한 편입니다.
+
+그래서 간단한 요청사항을 코드로 옮기는 것에 익숙한 분들은 답답하실 수 있어요.
+
+하지만 그렇다고 처음부터 복잡한 것을 할순 없잖아요? 😅
+
+앞서 언급 했듯이 지금 배워 나가는 내용은 이 후 복잡해지는 업무를 경험 하셨을 때 그 것을 좀 더 잘 풀어나가기 위한 방법 입니다.
+
+다소 답답하더라도 끝까지, 묵묵히 따라와 주시기 바라겠습니다!
+
+그럼 다음으로 쓩~!!
