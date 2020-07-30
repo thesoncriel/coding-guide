@@ -383,6 +383,8 @@ UI Pattern 을 보자면 전형적인 `Radio Button` 입니다.
 
 이 기능 분석이 마쳐지면 이 후 `Class Diagram` 과 함께 `설계` 하는 작업을 하시게 될겁니다.
 
+그럼 다음으로 쓩~!!
+
 ## QnA
 
 Q1. Component Markup 을 꼭 따라 해야 하나요?
@@ -396,5 +398,3 @@ Header
 ⎿ Heading
   ⎿ SubHeading
 ```
-
-그럼 다음으로 쓩~!!
