@@ -19,7 +19,7 @@
 
 ![](images/ui-design-006/ui-design-006-Container001.png)
 
-이 컨테이너들을 바탕으로 인터렉터가 가져야 할액션(Action) 부터 추출 해 보겠습니다.
+이 컨테이너들을 바탕으로 인터렉터가 가져야 할 액션(Action) 부터 추출 해 보겠습니다.
 
 HeaderContainer 부터 보면 아래와 같은 액션이 필요함을 알 수 있습니다.
 
