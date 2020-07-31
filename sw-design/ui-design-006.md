@@ -1,6 +1,6 @@
 # UI Component Design - 6. 스토어 작성
 
-이전 장에서 언급되었던 인터렉터(Interactor)와 상태(State) 관리기를 함께 작성 해 보겠습니다.
+이전 장에서 언급 되었던 인터렉터(Interactor)와 상태(State) 관리기를 함께 작성 해 보겠습니다.
 
 ## 진행 순서
 

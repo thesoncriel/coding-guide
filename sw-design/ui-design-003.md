@@ -151,7 +151,7 @@ const Example: FC<Props> = () => {
 
 ![](images/ui-design-003/ui-design-ClassDiagramDefault2.png)
 
-보시다시피 그냥 사각형에 이름만 덩그러니 주시면 됩니다 🙂
+보시다시피 그냥 사각형에 이름넣고 줄 하나 덩그러니 그어 주시면 됩니다 🙂
 
 ## 컴포넌트 그리기
 
