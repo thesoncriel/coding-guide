@@ -147,6 +147,6 @@ UI 에서는 서버 모델에 대해서 알지 못하기 때문입니다.
 
 이쯤하여 밥 아저씨 소환 들어갑니다!
 
-![](https://lh3.googleusercontent.com/proxy/j2jjOW4zxonabck8SOt_Q0nsw8BGvogq4EegwjCRzGUO-LOz5ho6FWLeoptsPBhBfrXPgWJ2PvwhqbPAe-eKea1DIVtjh0aRgMeN1fjsXZvRPdU2xwqlj3Hk6wJcUd25b_DjVnbRBoN0T2zFIGVGVbhewRy6fqxuzopYTm9hj5_uir-7lrbrChRn83eSMjnqh1Bv9D7rE-K4wmCJSxslxjnaRZkGK14Cl6rjEiXrK7UbE6yyOI2eXo2qBwXtr07J3z73TBjhqEkubb_t7Okgrg_7W6KFnLb5XqYibY68xaehQchnRNVfX2hFrugmYrxMjw)
+![](https://mblogthumb-phinf.pstatic.net/MjAxNjEwMjNfMTUz/MDAxNDc3MjI3MTQzODcw.HRb8raTYXi7WUIcvFuXFUIvACB4Cb5fKllFrR3JSLQMg.DCIIkGk7gr_uBIE3ytGgmfVIZuJzvQJ482XOtgJqlWkg.JPEG.retspe/%25EC%25B0%25B8%25EC%2589%25BD%25EC%25A3%25A0.jpg?type=w800)
 
 그럼 다음으로 쓩~!
