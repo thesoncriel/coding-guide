@@ -44,7 +44,7 @@
 
 간만에 최초 시안을 다시 소환 하겠습니다!
 
-![](images/ui-design-001/ui-design-001_001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-001/ui-design-001_001.png)
 
 위 시안에서 파라미터가 될 만한걸 찾으셨나요?
 
@@ -94,7 +94,7 @@
 
 이들을 코드로 녹이기 위해 영문자료 풀면 `goods`와 `ranking` 이 되겠습니다.
 
-웹프론트엔그 기준, 주력 언어는 TypeScript 입니다.
+웹프론트엔드 기준, 주력 언어는 TypeScript 입니다.
 
 여기서 여러가지 선택지 중 한가지를 고르게 하는 타입이 있습니다.
 
@@ -135,7 +135,7 @@ enum ShopListSortType {
 
 위 열거형을 다이어그램으로 표현하면 다음과 같습니다.
 
-![](images/ui-design-009/ui-design-009-enum001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-enum001.png)
 
 좌측이 사용값 까지 모두 표현한 상태, 우측이 간략화 한 것입니다.
 
@@ -147,7 +147,7 @@ enum ShopListSortType {
 
 선언된 열거형을 바탕으로 쿼리 모델(Query Model)을 작성하면 다음과 같습니다.
 
-![](images/ui-design-009/ui-design-009-model001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-model001.png)
 
 > **참고하세요!**
 >
@@ -173,7 +173,7 @@ enum ShopListSortType {
 
 혹시 더 있다고 판단되셔도 이 후 내용에서 함께 보시면 좋을거 같아요!
 
-![](images/ui-design-009/ui-design-009-page001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page001.png)
 
 **ShopListPage** 컴포넌트에서 컨테이너를 여럿 가지기 위해 containers 멤버를 가지며 이에 대한 타입은 `ContainerList` 입니다.
 
@@ -181,7 +181,7 @@ enum ShopListSortType {
 >
 > ContainerList 는 편의상 만든 임의의 타입이며, 이게 직관적이지 않다고 느끼신다면 아래와 같이 하셔도 무방합니다!
 >
-> ![](images/ui-design-009/ui-design-009-page002.png)
+> ![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page002.png)
 >
 > 이 외 여러가지 variation 이 있겠지만 여러분의 상상에 맡기며 생략 하겠습니다. 🙂
 
@@ -235,11 +235,19 @@ sort 파라미터는 HeaderContainer 의 몫이 되었습니다.
 
 그럼 현재 did-mount 시 호출되는 자료 요청은 어떻게 되나요?
 
+여전히 ShopListContainer 가 가지고 있습니다.
+
+근데 이것보단 앞으로 sort 파라미터를 가지게 될 HeaderContainer 가 요청하게 하는게 낫지 않을까요?
+
+어떻하죠?
+
 음..
 
 어쩔 수 없군요!
 
-불가피하지만 수정이 필요해 보입니다. 😱
+불가피하지만 설계 수정을 하도록 하겠습니다! 😱
+
+~~(안돼)~~
 
 ## 설계 수정하기
 
@@ -249,7 +257,7 @@ sort 파라미터는 HeaderContainer 의 몫이 되었습니다.
 
 그럼 고쳐야 할 두 컨테이너를 다시 보시죠.
 
-![](images/ui-design-009/ui-design-009-container001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-container001.png)
 
 어딜 고쳐야 할까요?
 
@@ -263,7 +271,7 @@ sort 파라미터는 HeaderContainer 의 몫이 되었습니다.
 
 비록 하나 밖에 없지만, 이후 수정을 최소화 하기 위해 저는 그냥 객체 하나를 다 주도록 하겠습니다. 🙂
 
-![](images/ui-design-009/ui-design-009-container002.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-container002.png)
 
 보시다시피 HeaderContainer 에 `query` 멤버를 추가 하였습니다.
 
@@ -284,7 +292,7 @@ const Page: FC = () => {
 
 다음은 did-mount 기능을 ShopListContainer 에서 뺏어올 차례 입니다.
 
-![](images/ui-design-009/ui-design-009-container003.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-container003.png)
 
 어떤가요?
 
@@ -300,7 +308,7 @@ const Page: FC = () => {
 
 전에 작성했던 인터렉터를 살펴 보겠습니다.
 
-![](images/ui-design-006/ui-design-006-Interactor001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-006/ui-design-006-Interactor001.png)
 
 현재 기준으로 이게 어떤 것이 문제라 보시나요?
 
@@ -321,7 +329,7 @@ const Page: FC = () => {
 - 기존 did-mount 에서 사용하던 것은 단순 자료 호출(loadItems) 이었다.
 - 반면, HeaderContainer 는 외부에서 준 sort 를 받아들일 수 있다.
 - sort는 기본값(랭킹)이 정해져 있으나 페이지 최초 호출 시 sort 파라미터를 이용하면 `랭킹`이 아닐 수 있다.
-- 그래서 2번 호출 하지 않으려면 did-mount 를 통한 최초 호출 시 전달 받은 sort 를 이용 해야 한다.
+- 그래서 2번 호출 하지 않으려면 did-mount 를 통한 최초 호출 시 전달 받은 sort 를 **직접** 이용 해야 한다.
 
 어떤걸 바꿔야 할지 감이 잡히시나요?
 
@@ -334,11 +342,11 @@ const Page: FC = () => {
 
 ..해서 아래와 같이 `search` 메서드 하나로 통합 하였습니다.
 
-![](images/ui-design-009/ui-design-009-inter002.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-inter002.png)
 
 이제 이거 하나로 `onSortChange` 이벤트와 `did-mount` 이벤트 때 함께 사용 할 수 있습니다!
 
-![](images/ui-design-009/ui-design-009-page003.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page003.png)
 
 ## Query Parameter Selector - QPS
 
@@ -388,7 +396,7 @@ QPS 는 익히 아시는 선택자 패턴을 이용 합니다.
 
 그럼 아래와 같은 모양새가 나옵니다.
 
-![](images/ui-design-009/ui-design-009-page004.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page004.png)
 
 ShopListPage 는 **useQueryParams** 를 이용 할 것입니다.
 
@@ -398,23 +406,23 @@ ShopListPage 는 **useQueryParams** 를 이용 할 것입니다.
 
 이건 Aggregation(집합) 이라 하며 이전의 Composition 관계와는 달리 속이 빈 하얀 마름모꼴을 하고 있습니다.
 
-![](images/ui-design-009/ui-design-009-agg001.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-agg001.png)
 
 통칭 `흰 다이아`라 부르며 이 것은 Composition 과는 반대로 A 가 B를 필요로 할 때 A가 죽더라도 B는 영향을 받지 않는 관계 입니다.
 
 단, 이러한 관계가 대체로 모호한 면이 많아서 저는 주로 `멤버 함수 호출 시 특정한 기능을 가진 객체를 잠시만 필요할 때` 씁니다.
 
-이 때 필요한 객체는 DTO, VO 같은 모델이나 엔티니가 아니어야 합니다.
+이 때 필요한 객체는 DTO, VO 같은 모델이나 엔티티가 아니어야 합니다.
 
 돌아와서, 이러한 관계가 아무리 설계 단계지만 다소 복잡해 보이므로 저는 이번처럼 `useQueryParams`를 사용하는 경우에 한하여 아래와 같이 간소화 하겠습니다.
 
-![](images/ui-design-009/ui-design-009-page005.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page005.png)
 
 보시다사피 UseQueryParams 의 private member 로 **Selector** 가 있는 모습입니다.
 
 그리고 아래는 이번장에서의 최종 페이지 컴포넌트 모습 입니다.
 
-![](images/ui-design-009/ui-design-009-page006.png)
+![](https://raw.githubusercontent.com/thesoncriel/coding-guide/master/sw-design/images/ui-design-009/ui-design-009-page006.png)
 
 ## 정리하며
 
