@@ -120,6 +120,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { CardItem as CardItemBase } from '../atoms';
 
+const CardItem = styled(CardItemBase)`
   border-color: darkblue;
   font-size: 2rem;
 `;
@@ -154,7 +155,7 @@ export const CardItem: FC<Props> = ({ keyword, title, className }) => {
 };
 ```
 
-## color 나 size 등 공용 테마(theme)에 지정된 것을 활용
+## color 나 size 등 고정값은 공용 테마(theme)에 지정된 것을 활용
 
 컴포넌트에 스타일링을 하는 것은 매우 중요한 일입니다.
 
@@ -177,11 +178,24 @@ export Sample: FC = () => {
 };
 ```
 
-## size unit 은 rem 을 활용
+### font-size 의 값은 theme 활용
 
-사용자의 확대 축소에 유연하게 반응하기 위하여 px 보단 `rem` 을 권장합니다.
+사용자의 확대 축소에 유연하게 반응하기 위하여 문자(font)에 한하여 px 보단 `rem` 을 권장합니다.
 
-대체로 theme 에 정의된 것을 쓰게되나 부득이하게 customize 해야 할 경우 [polished](https://github.com/styled-components/polished) 라이브러리에서 제공되는 **rem** 함수로 `px to rem` 변환해서 사용 합니다.
+단, 디자인 시스템 가이드에 따라, 쓰여져야 할 크기는 테마(theme)에 미리 정해져 있으므로 이를 활용합니다.
+
+아래는 예시 입니다. (테마 컬러에 skyblue 라는 값이 있다는 가정)
+
+```tsx
+const StyledAnchor = styled.a`
+  display: block;
+  font-size: ${({ theme }) => theme.color.skyblue};
+`;
+```
+
+만약 부득이하게 customize 해야 할 경우 [polished](https://github.com/styled-components/polished) 라이브러리에서 제공되는 **rem** 함수로 `px to rem` 변환해서 사용 합니다.
+
+이 때는 별도로 사용하는 이유에 대하여 동료 분들에게 가급적 공유 하도록 합시다. 🙂
 
 ```tsx
 import { rem } from 'polished';
@@ -189,6 +203,24 @@ import { rem } from 'polished';
 // 14px 을 그에 맞는 rem 단위로 바꿔줍니다.
 const StyledAnchor = styled.a`
   display: block;
-  height: ${rem(14)};
+  font-size: ${rem(14)};
+`;
+```
+
+## 기존 테마는 old namespace 로 접근하여 사용 (Draft)
+
+Web 2.0 의 디자인 시스템을 프론트엔드에 접목시키기로 하였습니다.
+
+그에 따라 기존 테마는 legacy 로 남겨두기 위해 `old` 라 명명된 namespace 로 접근하여 사용 합니다.
+
+```tsx
+// before
+const StyledText = styled.p`
+  color: ${({ theme }) => theme.color.gray40};
+`;
+
+// after
+const StyledText = styled.p`
+  color: ${({ theme }) => theme.old.color.gray40};
 `;
 ```
