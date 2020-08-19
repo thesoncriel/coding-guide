@@ -89,4 +89,4 @@ type 은 다음 표를 참고 한다.
 2. [서비스 작성](guide-002-service.md)
 3. [컨텍스트 작성](guide-003-context.md)
 4. [컴포넌트 작성(Atomic Design)](atomic-design.md)
-5. [추가 코딩 규칙](ss-code-convention.md)
+5. [추가 코딩 규칙](../ss-conventions/README.md)
