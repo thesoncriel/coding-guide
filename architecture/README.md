@@ -12,6 +12,10 @@
 
 이하 편의상 평어체로 서술 합니다.
 
+# 다이어그램
+
+![아키텍처 다이어그램](images/fe_architecture_simple.png)
+
 # 폴더 구조
 
 프로젝트 내 폴더 구조는 `by Feature` 규칙을 따른다.

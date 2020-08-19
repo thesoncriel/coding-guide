@@ -310,8 +310,19 @@ export const NowUsePage = subContext.withCtx(
 );
 ```
 
+만약 이렇게 컨텍스트의 `withCtx`만을 이용하여 구성한다면, 아래와 같이 `compose` 유틸리티를 이용해도 된다.
+
+```tsx
+export const NowUsePage = compose(
+  subContext,
+  childContext,
+  yourContext,
+  ourContext,
+)(NowUseComponent);
+```
+
 다소 극단적인 예시이지만, 업무를 구성하다 보면 이런 일도 있지 않을까 한다.
 
 다만, 이런 경우가 발생 되었다면 이 후 저 컨텍스트는 하나로 묶어서 쓰도록 리팩토링이 필요한 시점일 수도 있다.
 
-(아닐 수도 있고...)
+만약 그렇게 판단된다면, 다소 불편하더라도 재설계를 시도하는 것을 권장한다.

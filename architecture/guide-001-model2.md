@@ -141,6 +141,10 @@ export const dataService = {
 
 좀 길어도 가급적 위의 예시처럼 쓰길 권장한다.
 
+#### Type Alias (Deprecated)
+
+> 아래 내용은 권장하지 않습니다.
+
 그러나 generic 을 합쳐 type alias 하여 사용하고자 한다면 아래와 같은 규칙을 따른다.
 
 1. DataRes, 혹은 ItemsRes 기반으로 type generic 된 것만을 허용한다.

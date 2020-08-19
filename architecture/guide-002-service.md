@@ -160,7 +160,7 @@ export const addressDataService = {
 
 그래서 모델을 먼저 잘 작성하는 것이 중요하며, 설사 그 과정이 부족했다 할지라도 이 후 모델 추가 작성/변경 후 다시 이 부분을 만져주면 된다.
 
-여기서 주의점은 이 자료 변환기는 **절대 Data Service, Component 에서 쓰이면 안된다**는 것이다.
+여기서 주의점은 이 **자료 변환기는 절대 Data Service, Component 에서 쓰이면 안된다**는 것이다!
 
 (단, Data Service 에서 테스트 용도로써 Mockup 자료 생성 및 활용은 가능하다.)
 

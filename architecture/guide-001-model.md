@@ -4,9 +4,19 @@
 
 모델은 특별한 사유가 없는한, 반드시 `interface` 로만 구성한다.
 
-예외적으로 `Function Type`은 다음과 같이 `type` 을 허용한다.
+~~예외적으로 `Function Type`은 다음과 같이 `type` 을 허용한다.~~
+
+추가적인 코드들에 함수형 타입이 필요하다면, 다음과 같이 함수형 인터페이스를 선언하여 사용한다.
+
+(변경 사유: 모든 형태의 타입들에 대한 기본을 interface 나 enum 선언된 것을 바탕으로 가져가기 위함 - `일관성`)
 
 ```ts
+// recommended
+export interface SimpleClickEventHandler {
+  (): void;
+}
+
+// deprecated
 export type SimpleClickEventHandler = () => void;
 ```
 
