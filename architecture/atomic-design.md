@@ -1,13 +1,10 @@
 # Atomic Design Guide
 
-아래와 같은 목적으로 Atomic Desgin 이라 불리는 컴포넌트 분리 패턴을 따른다.
+> 아래 내용은 실 업무에 사용한 경험이 있으나 개인별로 호불호가 갈릴 수 있는 요소가 많습니다.
+>
+> 따라서 내용 중 동의하거나 참고 할 부분만 눈여겨 보시길 권장 드립니다. 😅
 
-- 컴포넌트의 재사용성
-- 느슨한 결합성 (loose coupling)
-- 관심사 분리 (Separation of Concerns)
-- 단일 책임 원칙 (SRP - Single Responsibility Principle)
-- 유지 보수성 증대
-- 보기 좋은 코드
+Atomic Desgin 은 컴포넌트 분리 방법론 이다.
 
 아토믹 디자인이란 각 페이지 부터 컴포넌트 까지 쪼개어지는 단위를 마치 화학구조의 그것을 닮도록 구조를 만드는 것에서 비롯된 패턴이다.
 
@@ -21,25 +18,9 @@
 
 그러나 웹프론트엔드는 각각의 기능별로 컴포넌트를 만들어서 사용하기에 이에 맞춰 좀 더 확장된 기준을 제시한다.
 
-# 사용 이유
+## View 에만 초점이 맞춰짐
 
-이유는 명백하다. 컴포넌트를 쪼개야 하기 때문이다.
-
-안쪼개고 그냥 쓰게 되면,
-
-내부에 각종 UI 로직과 스타일이 얽히고 섥혀서 CBD(Component Based Development) 기반 개발이 될 수가 없다.
-
-CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할 때의 기준이 필요하다.
-
-이미 하나의 Page 나 Container 안에 온갖 잡다한 로직을 섞어서 쓰고 펑펑(!!) 터진 경험이 여럿 있을 것이다.
-
-이들을 어떻게 하면 해결하지...? 라는 당연히 엔지니어로써의 고민을 안해 본 프론트 개발자는 없을터.
-
-그 방법론으로 아토믹 디자인을 이용하는 것이다.
-
-## 오해?!
-
-아토믹은 View 단을 쪼개는 기준을 제시 할 뿐이지, 비즈니스 로직은 염두에 두고 있지 않다!
+아토믹은 View 단을 쪼개는 기준을 제시 할 뿐이지, 비즈니스 로직은 염두에 두고 있지 않다.
 
 비즈니스 로직에 대한 쪼개기는 별도 Flux Architecture 혹은 그에 준하는 아키텍처를 활용하여 처리한다.
 
@@ -51,7 +32,7 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 
 1. 5단계로 쪼개며 각각 atoms, combines, complexes, containers, pages 이다.
 2. HOC 이용 시 atomic level 이 유지된다.
-3. 표현 컴포넌트 하나당 내부에 허용되는 요소를 제한 한다. atom 은 5개, combine ~ complex 는 10개.
+3. 표현 컴포넌트 하나당 내부에 허용되는 요소를 제한 한다. (특수한 경우가 아니라면 최대 5개)
 4. 컴포넌트간의 margin 은 그걸 벌리기 원하는 컴포넌트나 List Wrapper, Template 에게 맡긴다.
 5. List 컴포넌트안에는 가급적 1가지의 Item 컴포넌트만 가지도록 작성한다.
 6. 컴포넌트는 `Controlled dumb Component` 형식으로 만든다. [참고](https://stackoverflow.com/questions/34348165/react-conditional-render-pattern)
@@ -68,8 +49,8 @@ CBD가 되기 위해선 Ui 컴포넌트의 분리가 필요하고, 그 분리할
 | atomic level | 명칭 (원본) | 명칭 (실사용)        | 설명                                                                                                                                                                                                              | 예시                | 하위 요쇼 최대 허용 개수 |
 | :----------- | :---------- | :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ | :----------------------- |
 | 1            | Atoms       | 동일                 | 단일 컴포넌트 (Single Component). 더 이상 쪼개질 수 없는 최소한의 단위.                                                                                                                                           | Button, InputBox 등 | 5                        |
-| 2            | Molecules   | Combines             | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       | 10                       |
-| 3            | Organisms   | Complexes            | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     | 10                       |
+| 2            | Molecules   | Combines             | 조합 컴포넌트 (Combine Component). Atom 컴포넌트가 최소 1개 이상 조합됨                                                                                                                                           | InputGroup 등       | 5                        |
+| 3            | Organisms   | Complexes            | 복합 컴포넌트 (Complex Component). 최소 1개 이상의 Molecule 컴포넌트와 함께 다른 Atom, Molecule 컴포넌트가 조합됨.<br/>스타일링이 포함될 수 있는 최고 단계.<br />Organisms 컴포넌트 끼리 조합되어도 이 곳에 둔다. |                     | 5                        |
 | 4            | Templates   | `없음` -> Containers | 대신 Container 를 두며 이들은 하나의 업무를 구성하는 최소 단위가 된다. Template 과는 관계가 없다. 자세한 건 아래 내용 참고                                                                                        |
 | 5            | Pages       | 동일                 | 하나의 화면을 구성할 수 있는 단위. Query 및 URL Parameter 를 Container 에게 전달 할 수 있다.<br />Page 내부에 Container 를 가질 수 있으나 그 외 하위 단계의 컴포넌트를 내포하는 것은 가급적 지양한다.             |                     | 제한 없음                |
 
@@ -91,11 +72,16 @@ margin 이나 padding 같은 주변 컴포넌트와의 간격 조정 등도 외�
 
 또한 지나친 확장성은 고려하지 않는다.
 
-예컨데, 각종 글자색과 배경색, 테두리 등이 다르고 나머지 기능이 동일하더라도 이들에게 무리하게 props 를 주지 말고, 각자 개별 컴포넌트로 만들도록하자.
+예컨데, 각종 글자색과 배경색, 테두리 등이 다르고 나머지 기능이 동일하더라도 이들에게 무리하게 props 를 주지 말고, 각자 개별 컴포넌트로 만들도록 한다.
 
 즉 `너무 공용화를 염두에 두며 개발하지 말것` ..이다.
 
 반응형(responsible/scalable)은 한 컴포넌트에서 media query 로 대처하되, 적응형(adaptive)은 이 후 내용을 참고 한다.
+
+> 공용화를 염두에 두며 개발하지 말라는 의미는 공통화에 목매인 나머지, 본디 그 컴포넌트가 잘 해야할 기능 이상의 것을 굳이 할 필요가 없다는 의미 이다.
+> 그리고 이 것과 **보기 좋은 코드를 만드는 것**과는 별개의 문제다.
+>
+> 그 어떤 코딩을 하든 깔끔하고 보기 좋은 코드를 작성하기 위해 고민해야 하는건 당연한 것이다.
 
 ### 스타일 중복은 어떻게 ??
 
@@ -149,10 +135,10 @@ Redux 같은 Flux Architecture 가 설정되어 있거나, 자신이, 혹은 상
 이들은 아래와 같은 일을 주로 맡는다.
 
 1. 현재 페이지 호출 시 함께 전달된 Query Parameter 를 받아서 하위 컨테이너 컴포넌트에게 적절히 분배한다.
-2. PageTemplate 을 불러와 현재 페이지와 관련된 제목이나 전반적인 레이아웃 처리를 맡는다.
+2. PageContainer 을 불러와 현재 페이지와 관련된 제목이나 전반적인 레이아웃 처리를 맡는다.
 3. (당연하지만) 가급적 스타일링 코드가 포함되면 안된다.
 4. (가능한 한) 하위에 컨테이너 컴포넌트만 가지도록 한다. 추가적인 레이아웃 처리가 필요하다면 그걸 처리하는 Container 나 Wapper Component 를 따로 만들고 아래에 하위 컨테이너를 두는 방향으로 하자.
-   - 만약 그 레이아웃 처리가 한 페이지를 모두 덮는 (Wrapping) 형태라면 차라리 PageTemplate 에게 그 기능을 위임한다.
+   - 만약 그 레이아웃 처리가 한 페이지를 모두 덮는 (Wrapping) 형태라면 차라리 PageContainer 에게 그 기능을 위임한다.
 
 아래는 사용 예시 이다.
 
@@ -161,10 +147,10 @@ const StylePage: FC = () => {
   const { keyword } = useQueryParams<StylePageQuery>();
 
   return (
-    <PageTemplate title="스타일의 완성!">
+    <PageContainer title="스타일의 완성!">
       <KeywordSearchContainer keyword={keyword} />
       <TopStyleSectionContainer />
-    </PageTemplate>
+    </PageContainer>
   );
 };
 
@@ -175,9 +161,9 @@ export default StylePage;
 
 아래는 특수한 상황에서 쓰이는 컴포넌트 종류이다.
 
-### PageTemplate (구 PageContainer)
+### PageContainer
 
-페이지 템플릿은 페이지 컴포넌트에서만 쓰이는 특별한 컴포넌트이다.
+페이지 컨테이너는 페이지 컴포넌트에서만 쓰이는 특별한 컴포넌트이다.
 
 이들은 아래와 같은 역할 및 특징을 가진다.
 
@@ -185,9 +171,9 @@ export default StylePage;
 2. header, footer, navigation 등 기본적으로 반복되는 요소들의 렌더링에 대한 책임
 3. title, description, open graph 등의 메타 데이터 관리
    - 필요하다면, title 을 제외한 나머지 자료는 Redux Store 나 Context State 에서 제공받을 수 있다.
-4. 일반적으로 `/components/pageTemplates` 내에 위치 한다.
+4. 일반적으로 `/components/pageContainers` 내에 위치 한다.
 
-기본적으로 공용으로 사용되지만, 만약 페이지마다 레이아웃이나 메타 데이터등의 요소가 달라진다면 (당연히) 페이지별로 따로 페이지 템플릿을 만들어 운용한다.
+기본적으로 공용으로 사용되지만, 만약 페이지마다 레이아웃이나 메타 데이터등의 요소가 달라진다면 (당연히) 페이지별로 따로 페이지 컨테이너를 만들어 운용한다.
 
 **주의:** 현 페이지에서 쓰일 여러 Context 를 묶어서 보내지 않는다. 컨텍스트는 관련된 각각의 Container 가 책임을 져야 한다!
 
@@ -198,14 +184,15 @@ interface Props {
   title?: string;
 }
 
-// 공통으로 가장 많이 쓰이는 페이지 템플릿은 아래와 같이 PageTemplate 으로 명칭을 고정한다.
-export const PageTemplate: FC<Props> = ({ title, children }) => {
-  // 필요하다면 컨텍스트를 이용할 수 있다.
-  const ogMeta = metaContext.useCtxSelector(selOgMeta);
+// 공통으로 가장 많이 쓰이는 페이지 컨테이너는 아래와 같이 PageContainer 으로 명칭을 고정한다.
+export const PageContainer: FC<Props> = ({ title, children }) => {
+  // 필요하다면 컨텍스트 or 스토어를 이용할 수 있다.
+  const ogMeta = useSelector(selOgMeta);
 
   // 필요에 따라 fragment 가 아닌 일반 Wapper 를 써도 된다.
   return (
     <>
+      {/* 필요하다면 Helmet 부분만 따로 분리하여 컴포넌트화 할 수 있다. */}
       <Helmet>
         <meta content={ogMeta.descrition} property="og:description" />
         <meta content={ogMeta.image} property="og:image" />
@@ -562,42 +549,6 @@ export const List: FC<Props> = ({ items }) => {
 훨씬 깔끔해졌다.
 
 이렇게 되면 기존 Combine 요소였던 `List` 컴포넌트는 추가된 `Item` 컴포넌트로 인하여 Complex 로 승격될 수 있다.
-
-## Item 요소에 대한 Children 허용
-
-가능한한 상기 언급한대로 작성하길 권장한다.
-
-다만, 상황에 따라 아래와 같은 형식이 보다 직관적이고 유연할 수 있다.
-
-```tsx
-// Content.tsx
-export const Content: FC<Props> = ({ name, age, desc }) => {
-  return (
-    <div>
-      이름: {name} | 나이: {age}
-      <br />
-      설명: {desc}
-    </div>
-  );
-};
-
-// ContentList.tsx
-export const ContentList: FC<props> = ({ items }) => {
-  return (
-    <ul>
-      {items.map((item, idx) => (
-        <li key={idx}>
-          <Content {...item} />
-        </li>
-      ))}
-    </ul>
-  );
-};
-```
-
-위와 같은 형식을 허용한다. 다만, 작성자 스스로가 저러한 상황이 최선인지 고민을 해 보길 바란다.
-
-항상 UI 작성 전에 `설계를 먼저 하는 습관` 을 기르면 저런 형식이 최소화 될 수 있다.
 
 # 내부 컴포넌트에 대한 조건별 렌더링 사용 제한
 

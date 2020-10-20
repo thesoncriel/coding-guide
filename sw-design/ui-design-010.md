@@ -127,7 +127,7 @@
 다이어그램에선 별도 모델을 분리하여 나타내었지만, 실제 코딩은 React SPA 기준, 아래와 같이 `<Helmet>` 컴포넌트를 쓰게 될 것입니다.
 
 ```tsx
-const PageTemplate: FC<Props> = ({ title, children }) => {
+const PageContainer: FC<Props> = ({ title, children }) => {
   return (
     <>
       <Helmet>
