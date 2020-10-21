@@ -235,8 +235,8 @@ export const MobileViewPanel: FC<ViewPanelProps> = (props) => {
 ```
 
 ```tsx
-// ./feature/components-desktop/atoms/DesktopViewPanel.tsx
-import { ViewPanelProps } from '../../components';
+// ./feature/components/atoms/DesktopViewPanel.tsx
+import { ViewPanelProps } from './MobileViewPanel';
 
 // 데스크탑 컴포넌트 선언
 export const DesktopViewPanel: FC<ViewPanelProps> = (props) => {
@@ -247,7 +247,7 @@ export const DesktopViewPanel: FC<ViewPanelProps> = (props) => {
 ```ts
 // ./feature/components/atoms/ViewPanelAdaptive.ts
 import { ViewPanelProps, MobileViewPanel } from './MobileViewPanel';
-import { DesktopViewPanel } from '../../components-desktop';
+import { DesktopViewPanel } from './DesktopViewPanel';
 
 // 적응형 컴포넌트 선언.
 // 반드시 generic 으로 공통된 Props 를 넣어준다.

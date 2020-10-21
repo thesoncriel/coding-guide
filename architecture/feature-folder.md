@@ -40,9 +40,6 @@ Feature 는 일반적으로 `기능` 위주이고, 그 뜻은 각 페이지 라�
     - 페이지 컴포넌트 에서만 쓰이는 특수한 컴포넌트.
     - header/footer 와 같은 반복 요소를 포함하고, 페이지 전체 layout 을 잡아주는 역할을 한다.
     - 또 한 title 이나 open-graph 와 같은 meta tag 요소들도 이들이 관리 한다.
-- components-desktop
-  - 일반적으로 Mobile First 로 컴포넌트가 작성되나, 데스크탑 전용 컴포넌트가 별도로 만들어져 기존 feature component 대비, 그 개수가 많아질 경우 이 폴더에서 desktop 전용 컴포넌트를 작성하여 이용한다.
-  - 상세 하위 구조는 위 `components`와 같다.
 - contexts
   - 페이지, 혹은 컨테이너 컴포넌트의 상태 관리를 하는 컨텍스트를 정의한 곳. 컨텍스트는 특별한 사유가 아닌한 `contextInjector`를 통하여 정의하도록 한다.
   - 사용되는 state 는 반드시 models/{feature}.ui.ts 의 내용을 기반으로 구성되어야 한다.

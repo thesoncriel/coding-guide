@@ -17,7 +17,7 @@
   - next.js 를 쓸 경우 folder 를 이용한 route system 에서만 사용 가능
 - 컨테이너 컴포넌트(Container Component)를 사용하여 업무 구성
 - Path Parameter, Query Parameter 를 받아서 하위 컨테이너에 내려주는 역할
-- `페이지 템플릿 컴포넌트(Page Template Component)`를 사용할 수 있는 유일한 컴포넌트
+- `페이지 컨테이너 컴포넌트(Page Container Component)`를 사용할 수 있는 유일한 컴포넌트
 
 반면, 하면 안되는 역할을 다음과 같습니다.
 
